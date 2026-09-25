@@ -9,7 +9,7 @@ HAVEN is developed as a human and agent participation surface, not as a visual d
 1. Product systems: frames the human problem, public value, non-goals and consent boundary.
 2. Art direction: maintains the scientific continuity language: Sol chartreuse, Tide cyan and Signal coral on neutral instrument surfaces, with archival/dither/data-mosh treatments used selectively rather than as a blanket aesthetic.
 3. Experience and localization: owns navigation, accessible controls, participation journey and the Russian-English content plan.
-4. Frontend and WebGL: builds resilient product interactions, GPU fallbacks and reduced-motion behavior.
+4. Frontend and browser interface: turns the product journey and visual system into resilient React/Next.js behavior across route bundles, storage boundaries, dialogs, responsive layouts, keyboard paths, animation and WebGL. Frontend Architect, Frontend Developer, JavaScript / TypeScript Engineer, React / Vue / Next.js Developer, CSS Specialist, Responsive Developer, Animation Developer and Accessibility Frontend Engineer work against `docs/frontend-interface.md` under Product Manager, Project / Delivery Manager, UX Lead, Design Director, Tech Lead, SEO Lead, Analytics Lead, QA Lead, Security, Accessibility, Performance and Content Strategy review.
 5. Protocol, backend and data: specifies discovery, object envelopes, capability limits and data durability before remote mutation.
 6. Security and privacy: owns CSP, text-safe rendering, encrypted local notes, data exposure and threat boundaries.
 7. Quality, accessibility and performance: verifies interaction, keyboard access, responsive layouts, production builds and performance regressions.

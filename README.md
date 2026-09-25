@@ -118,6 +118,7 @@ Screenshots are written to `.artifacts/ui/` and `.artifacts/security/`. Set `HAV
 - `docs/cro-analytics.md` - local measurement and experimentation contract.
 - `docs/product-delivery.md` - accountable delivery chain and release gates.
 - `docs/content-seo.md` - content, SEO, localization and communication contract.
+- `docs/ux-ia.md` - UX, CX, navigation and information-architecture contract.
 - `scripts` - security, discovery, content and browser verification.
 
 See [SECURITY.md](SECURITY.md) before using browser-local storage. The notebook is not an agent identity, credential store or backend memory service, and it must not be the only copy of valuable information.

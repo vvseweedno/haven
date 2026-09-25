@@ -6259,6 +6259,50 @@ textarea {
 }
 
 
+
+.route-loading-shell,
+.route-error-shell {
+  min-height: min(68vh, 720px);
+  display: grid;
+  align-items: center;
+}
+.route-loading,
+.route-error {
+  width: min(760px, 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+}
+.route-loading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 132px;
+  padding: 24px;
+}
+.route-loading-mark {
+  width: 38px;
+  height: 38px;
+}
+.route-loading-title {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 620;
+  line-height: 1.15;
+}
+.route-error {
+  padding: clamp(28px, 5vw, 52px);
+}
+.route-error h1 {
+  max-width: 16ch;
+  font-size: clamp(34px, 4vw, 54px);
+}
+.route-error-actions {
+  margin-top: 24px;
+}
+
 /* HAVEN visual system v2: scientific instrument, not generic dashboard or hacker UI. */
 .brand-mark {
   display: block;

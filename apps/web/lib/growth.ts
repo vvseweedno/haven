@@ -140,7 +140,6 @@ function isInternalRoute(value: unknown): value is string {
 }
 
 function signalForRoute(pathname: string): FunnelSignalId | null {
-  if (pathname === "/delivery") return "pilot_reviewed";
   if (pathname === "/proof-desk") return "proof_started";
   if (boundaryRoutes.has(pathname)) return "boundary_reviewed";
   if (evidenceRoutes.has(pathname)) return "evidence_opened";
@@ -218,6 +217,21 @@ export function setGrowthAudience(
     ...state,
     audience,
     observedSignals: deriveSignals(audience, state.visitedRoutes, state.observedSignals),
+  };
+}
+
+export function recordGrowthSignal(
+  state: GrowthJourneyState,
+  signal: FunnelSignalId,
+): GrowthJourneyState {
+  if (state.observedSignals.includes(signal)) return state;
+  return {
+    ...state,
+    observedSignals: deriveSignals(
+      state.audience,
+      state.visitedRoutes,
+      [...state.observedSignals, signal],
+    ),
   };
 }
 

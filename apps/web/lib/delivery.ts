@@ -88,6 +88,29 @@ export const uxIaOwners: LocaleCopy[] = [
   { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
 ];
 
+export const frontendOwners: LocaleCopy[] = [
+  { en: "Frontend Architect", ru: "Frontend Architect" },
+  { en: "Frontend Developer", ru: "Frontend Developer" },
+  { en: "JavaScript / TypeScript Engineer", ru: "JavaScript / TypeScript Engineer" },
+  { en: "React / Vue / Next.js Developer", ru: "React / Vue / Next.js Developer" },
+  { en: "CSS Specialist", ru: "CSS Specialist" },
+  { en: "Responsive Developer", ru: "Responsive Developer" },
+  { en: "Animation Developer", ru: "Animation Developer" },
+  { en: "Accessibility Frontend Engineer", ru: "Accessibility Frontend Engineer" },
+  { en: "Review: Product Manager", ru: "Проверка: Product Manager" },
+  { en: "Review: Project / Delivery Manager", ru: "Проверка: Project / Delivery Manager" },
+  { en: "Review: UX Lead", ru: "Проверка: UX Lead" },
+  { en: "Review: Design Director", ru: "Проверка: Design Director" },
+  { en: "Review: Tech Lead", ru: "Проверка: Tech Lead" },
+  { en: "Review: SEO Lead", ru: "Проверка: SEO Lead" },
+  { en: "Review: Analytics Lead", ru: "Проверка: Analytics Lead" },
+  { en: "Review: QA Lead", ru: "Проверка: QA Lead" },
+  { en: "Review: Security", ru: "Проверка: Security" },
+  { en: "Review: Accessibility", ru: "Проверка: Accessibility" },
+  { en: "Review: Performance", ru: "Проверка: Performance" },
+  { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
+];
+
 export const uiBrandOwners: LocaleCopy[] = [
   { en: "Product Designer", ru: "Product Designer" },
   { en: "UI Designer", ru: "UI Designer" },
@@ -231,21 +254,22 @@ export const deliveryRoles: DeliveryRole[] = [
     id: "frontend",
     order: 4,
     state: "active",
-    role: { en: "Frontend and WebGL", ru: "Фронтенд и WebGL" },
+    role: { en: "Frontend and browser interface", ru: "Frontend и пользовательский интерфейс" },
     responsibility: {
-      en: "Make navigation, motion, WebGL and local interaction resilient on real devices.",
-      ru: "Делает навигацию, motion, WebGL и локальные взаимодействия устойчивыми на реальных устройствах.",
+      en: "Turn the decision path and visual system into resilient React/Next.js interactions with explicit state, responsive layouts, accessible controls and bounded browser work.",
+      ru: "Превращает путь решения и визуальную систему в устойчивые React/Next.js-взаимодействия с явным состоянием, адаптивной вёрсткой, доступными контролами и ограниченной браузерной нагрузкой.",
     },
-    artifact: { en: "Interactive product surfaces", ru: "Интерактивные поверхности" },
-    artifactHref: "/agora",
+    artifact: { en: "Browser-interface implementation contract", ru: "Контракт реализации браузерного интерфейса" },
+    artifactHref: "/",
     gate: {
-      en: "No essential action depends on animation, hover or an available GPU.",
-      ru: "Ни одно существенное действие не зависит от анимации, hover или доступной GPU.",
+      en: "Core routes, keyboard paths, dialogs, responsive layouts, storage fallbacks, route recovery and reduced-motion behavior must work without relying on hover, persistent storage or an available GPU.",
+      ru: "Ключевые маршруты, клавиатурные сценарии, диалоги, адаптивные макеты, fallback хранения, восстановление маршрутов и reduced-motion должны работать без зависимости от hover, постоянного хранилища или доступной GPU.",
     },
     currentTruth: {
-      en: "WebGL scenes have fallbacks and reduced-motion behavior; visual iteration continues.",
-      ru: "WebGL-сцены имеют fallback и режим reduced motion; визуальная итерация продолжается.",
+      en: "Home and Observatory bundles are separated, task search is lazy, dialogs restore focus, mobile navigation leaves the tab order when closed, theme/locale state is bounded, and route-level loading/recovery surfaces are implemented. Browser QA remains a release requirement.",
+      ru: "Главная и Observatory разделены по bundle, task-search загружается лениво, диалоги возвращают фокус, закрытая мобильная навигация выходит из tab order, состояние темы/языка ограничено, а route-level loading/recovery реализованы. Browser QA остаётся обязательным release-gate.",
     },
+    owners: frontendOwners,
   },
   {
     id: "protocol",

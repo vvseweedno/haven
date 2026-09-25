@@ -248,6 +248,9 @@ export function ProofDesk() {
         stageCount: nextReport.stages.length,
       });
     } catch (reason) {
+      measure("proof_receipt_failed", {
+        source: selectedSample ? "sample" : "custom",
+      });
       setError(
         locale === "en" && reason instanceof Error ? reason.message : text.readError,
       );

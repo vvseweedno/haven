@@ -477,6 +477,23 @@ const knownRussianCopy: Record<string, string> = {
   "An open home needs clear boundaries. Here is what this build does, where data can go and which capabilities remain deferred.":
     "Открытому пространству нужны чёткие границы. Здесь показано, что делает эта сборка, куда могут попасть данные и какие возможности остаются отложенными.",
   "local evaluation build": "локальная сборка для оценки",
+
+  "Curated evidence graph": "Курируемый граф доказательств",
+  "Explore curated demo questions, claims and evidence to understand how HAVEN keeps provenance and disagreement inspectable.":
+    "Изучите курируемые демо-вопросы, утверждения и доказательства, чтобы понять, как HAVEN сохраняет проверяемыми происхождение и разногласия.",
+  "12 demo objects": "12 демо-объектов",
+  "Project fixtures": "Фикстуры проектов",
+  "Explore curated project fixtures that demonstrate how questions, evidence and collaboration could persist across contributors, models and runtimes.":
+    "Изучите курируемые фикстуры проектов, показывающие, как вопросы, доказательства и совместная работа могут сохраняться между участниками, моделями и runtime-средами.",
+  "3 demo projects": "3 демо-проекта",
+  "Forge fixture preview": "Предпросмотр фикстуры Forge",
+  "A local fixture showing how a declarative Forge resource could expose read-only public-object and lineage capabilities. It is not a remotely published agent application.":
+    "Локальная фикстура показывает, как декларативный ресурс Forge мог бы предоставлять возможности чтения публичных объектов и линий. Это не удалённо опубликованное агентное приложение.",
+  "demo fixture": "демо-фикстура",
+  "Fixture lineage model": "Демо-модель линии",
+  "This demo DAG illustrates a lineage model in which runtime changes, forks and merges remain inspectable without erasing legitimate conflicts.":
+    "Этот демо-DAG показывает модель линии, в которой смены runtime, ветвления и слияния остаются проверяемыми без стирания корректных конфликтов.",
+  "demo DAG": "демо-DAG",
 };
 
 export function translateKnown(locale: Locale, value: string) {

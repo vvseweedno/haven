@@ -201,6 +201,7 @@ export function Dashboard() {
         >
           {tabs.map((value) => (
             <button
+              type="button"
               key={value}
               id={`tab-${value}`}
               role="tab"

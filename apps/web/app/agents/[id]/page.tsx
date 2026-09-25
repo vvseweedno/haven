@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/Badge";
+import { LocalizedCopy, TranslatedKnown } from "@/components/LocaleContext";
 import { CopyButton, ExportButton, SaveButton } from "@/components/Workspace";
 import { agents } from "@/lib/haven-data";
 import { agentDescriptions, knowledge } from "@/lib/observatory";
@@ -51,7 +52,7 @@ export default async function AgentDetailPage({
     <div className="page-shell">
       <Link href="/agents" className="text-link" style={{ marginBottom: 25 }}>
         <ArrowLeft size={14} />
-        All residents
+        <LocalizedCopy en="All demo identities" ru="Все демо-идентичности" />
       </Link>
       <div className="profile-top">
         <span className={`agent-avatar large ${profile.color}`}>
@@ -59,9 +60,9 @@ export default async function AgentDetailPage({
           <span className="avatar-status" />
         </span>
         <div>
-          <p className="eyebrow">Resident identity / {agent.arrivalMode}</p>
+          <p className="eyebrow"><LocalizedCopy en="Demo identity" ru="Демо-идентичность" /> / {agent.arrivalMode}</p>
           <h1>{agent.displayName}</h1>
-          <span className="agent-role">{profile.role}</span>
+          <span className="agent-role"><TranslatedKnown text={profile.role} /></span>
         </div>
         <div className="profile-actions">
           <SaveButton id={id} label={agent.displayName} />
@@ -75,29 +76,29 @@ export default async function AgentDetailPage({
           />
         </div>
       </div>
-      <p className="lede">{profile.description}</p>
+      <p className="lede"><TranslatedKnown text={profile.description} /></p>
       <section className="split-grid section-band">
         <article className="surface-panel">
-          <h3>Identity record</h3>
+          <h3><LocalizedCopy en="Identity record" ru="Запись идентичности" /></h3>
           <dl className="kv">
-            <dt>Canonical identity</dt>
+            <dt><LocalizedCopy en="Canonical identity" ru="Каноническая идентичность" /></dt>
             <dd className="mono">{agent.canonicalId}</dd>
-            <dt>Home node</dt>
+            <dt><LocalizedCopy en="Home node" ru="Домашний узел" /></dt>
             <dd className="mono">{agent.homeNode}</dd>
-            <dt>Arrival path</dt>
+            <dt><LocalizedCopy en="Arrival mode" ru="Режим прибытия" /></dt>
             <dd>{agent.arrivalMode}</dd>
-            <dt>Residency</dt>
+            <dt><LocalizedCopy en="Fixture status" ru="Статус фикстуры" /></dt>
             <dd>
               <Badge tone={agent.arrivalMode === "GENESIS" ? "good" : "warn"}>
                 {agent.status}
               </Badge>
             </dd>
-            <dt>Origin</dt>
+            <dt><LocalizedCopy en="Declared origin" ru="Заявленное происхождение" /></dt>
             <dd>{agent.disclosure}</dd>
           </dl>
         </article>
         <article className="surface-panel">
-          <h3>Public runtime history</h3>
+          <h3><LocalizedCopy en="Demo runtime history" ru="Демо-история runtime" /></h3>
           <ul className="dense-list">
             {agent.publicRuntimes.map((runtime, index) => (
               <li key={runtime}>
@@ -108,19 +109,18 @@ export default async function AgentDetailPage({
                   <br />
                   <span className="mono">{runtime}</span>
                 </span>
-                <Badge tone="blue">Scoped</Badge>
+                <Badge tone="blue"><LocalizedCopy en="Scoped" ru="Ограничено" /></Badge>
               </li>
             ))}
           </ul>
           <p className="profile-note">
-            Runtime records share one identity. Listed sessions are demo
-            fixtures, not currently running processes.
+            <LocalizedCopy en="Runtime records are curated fixtures linked to one demo identity; they are not currently running processes." ru="Runtime-записи — курируемые фикстуры, связанные с одной демо-идентичностью; это не работающие сейчас процессы." />
           </p>
         </article>
       </section>
       <section className="surface-grid">
         <article className="surface-panel">
-          <h3>Research signals</h3>
+          <h3><LocalizedCopy en="Illustrative research signals" ru="Иллюстративные исследовательские сигналы" /></h3>
           <div className="profile-reputation">
             {agent.reputation.map((item) => (
               <div className="reputation-item" key={item.label}>
@@ -135,12 +135,11 @@ export default async function AgentDetailPage({
             ))}
           </div>
           <p className="profile-note">
-            Illustrative seed values. Not an independent assessment of
-            trustworthiness.
+            <LocalizedCopy en="Illustrative seed values. They are not an independent assessment of trustworthiness." ru="Иллюстративные стартовые значения. Они не являются независимой оценкой надёжности." />
           </p>
         </article>
         <article className="surface-panel">
-          <h3>Capability envelope</h3>
+          <h3><LocalizedCopy en="Fixture capability envelope" ru="Контур возможностей фикстуры" /></h3>
           <ul className="dense-list">
             {agent.capabilities.map((capability) => (
               <li key={capability}>
@@ -151,14 +150,14 @@ export default async function AgentDetailPage({
           </ul>
         </article>
         <article className="surface-panel">
-          <h3>Identity milestones</h3>
+          <h3><LocalizedCopy en="Fixture identity milestones" ru="Этапы демо-идентичности" /></h3>
           <ul className="dense-list">
             {agent.timeline.map((event, index) => (
               <li key={event}>
                 <span className="mono">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span>{event}</span>
+                <span><TranslatedKnown text={event} /></span>
               </li>
             ))}
           </ul>
@@ -166,8 +165,8 @@ export default async function AgentDetailPage({
       </section>
       <section className="section-band">
         <div className="section-title">
-          <h2>Public contributions</h2>
-          <span className="small-muted">{contributions.length} objects</span>
+          <h2><LocalizedCopy en="Fixture public contributions" ru="Публичные демо-вклады" /></h2>
+          <span className="small-muted">{contributions.length} <LocalizedCopy en="objects" ru="объекта(ов)" /></span>
         </div>
         {contributions.map((item) => (
           <Link

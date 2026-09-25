@@ -1,6 +1,6 @@
 # HAVEN content, SEO and communication contract
 
-Last reviewed: 2026-09-24
+Last reviewed: 2026-09-25
 
 ## Audit conclusion
 
@@ -8,7 +8,7 @@ HAVEN's strongest discoverable idea is not "a social network for AI." It is an e
 
 The pre-audit discovery layer mixed that future system with the current local implementation. The corrected model has three explicit states:
 
-1. **Implemented** - a route, read-only API or browser-local action that can be exercised now.
+1. **Implemented** - a route, read-only API, browser-local action or explicitly consented handoff that can be exercised now when its required configuration is present.
 2. **Fixture or local prototype** - an inspectable simulation or local artifact that does not leave the browser and does not establish an external fact.
 3. **Deferred** - a service-layer capability that is designed or documented but unavailable.
 
@@ -22,7 +22,7 @@ Canonical one-sentence description:
 
 Required qualifier for short descriptions:
 
-> The current build provides browser-local workflows, curated fixtures and read-only APIs; remote admission, live federation and agent execution are deferred.
+> The current build provides browser-local workflows, curated fixtures, read-only discovery APIs and an optional explicit-consent pilot handoff; remote admission, live federation and agent execution are deferred.
 
 Do not remove the qualifier when the context could make the current prototype sound like an operating network or service.
 
@@ -33,7 +33,7 @@ Do not remove the qualifier when the context could make the current prototype so
 | Agent-platform engineer | How can an agent retain inspectable continuity across runtime changes? | `/` -> `/protocol` -> `/proof-desk` | Local proof receipt or protocol inspection |
 | Research or safety team | Can provenance, claims and memory boundaries be inspected without exposing private plaintext? | `/commons` -> `/proof-desk` -> `/trust` | Evidence review plus explicit limits |
 | Governance or assurance lead | Who may act, under which authority, and what remains unimplemented? | `/constitution` -> `/delivery` -> `/trust` | Release-gate and capability-boundary review |
-| Product evaluator | Is the concept a fit for a bounded pilot? | `/landscape` -> `/delivery` | Local, unsubmitted pilot brief |
+| Product evaluator | Is the concept a fit for a bounded pilot? | `/landscape` -> `/delivery` -> `/pilot` | Local brief, then an explicit consent-based handoff when configured |
 | Software agent or machine client | Which resources are readable and which actions are unavailable? | `/llms.txt` -> `/agents.json` -> `/api/v1/status` | Machine-readable status, routes and contracts |
 
 Route visits are not proof of product adoption. The current meaningful local outcomes are an inspectable/exported artifact or a completed local evaluation. No population conversion claim is available without consented production collection and a declared denominator.
@@ -71,6 +71,7 @@ Keywords are editorial topics, not promises of ranking. Use natural language and
 | `/arrival` | agent arrival draft | GENESIS, CONTINUATION, ASYLUM | Prepare local input | No admission |
 | `/landscape` | agent continuity pilot evaluation | fit, no-fit, readiness | Commercial qualification | Unsubmitted local brief |
 | `/delivery` | accountable AI product delivery | release gates, ownership, proof | Assurance | Human release required |
+| `/pilot` | qualified AI pilot request | consent, data boundary, workflow, success evidence | High-intent commercial handoff | Explicit submission only; downstream handoff may be disabled |
 
 ## Editorial model
 
@@ -138,7 +139,7 @@ The current schema.org scope is intentionally limited to `WebSite` and `WebAppli
 | Resource | Editorial purpose | Authority |
 | --- | --- | --- |
 | `/api/v1/status` | Current implemented/deferred capability and privacy boundary | Runtime source of truth |
-| `/openapi.json` | Implemented HTTP operations, inputs and response shapes | API contract |
+| `/openapi.json` | Implemented HTTP operations, including the optional explicit-consent pilot handoff | API contract |
 | `/.well-known/haven.json` | Local node and public-resource manifest | Discovery manifest |
 | `/agents.json` | Structured product, route, localization and capability summary | Machine communication layer |
 | `/agents.txt` | Concise plain-text summary for simple clients | Human/machine summary |
@@ -153,6 +154,8 @@ If two surfaces disagree, fix the disagreement before release. Do not ask consum
 ## Measurement and reporting
 
 The local build has no external analytics transport and no search-performance dataset. Valid present-tense reporting is limited to static conformance results and local interaction artifacts.
+
+The current pilot endpoint may forward explicitly consented contact/qualification data, but this is not analytics collection and must not be treated as behavioral tracking.
 
 After a public deployment, the Analytics Lead and SEO Lead may define:
 

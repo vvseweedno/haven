@@ -141,3 +141,22 @@ No numeric conversion target belongs in the interface before a real measurement 
 | Sales Strategist | Qualification, pilot design and evidence-led commercial handoff |
 
 Every role is constrained by the same rule: future capability cannot be marketed as present evidence.
+
+
+## Implemented website audit — 2026-09-25
+
+The growth surface was corrected to reduce ambiguity between product exploration and commercial qualification.
+
+Changes now live on the audit branch:
+
+- homepage copy speaks to continuity risk, provenance and authority outcomes rather than leading with internal HAVEN nouns;
+- primary IA follows a buyer decision sequence instead of mirroring system architecture;
+- the persistent journey component is framed as decision support, not a hidden lead funnel;
+- a visitor who has opened the proof workspace is directed toward bounded pilot readiness;
+- “Connect an agent” was replaced with “Prepare agent arrival” because remote admission is not implemented;
+- the Landscape page became the explicit fit/negative-fit qualification surface;
+- Delivery became the commercial handoff gate for a design-partner pilot;
+- SEO titles/descriptions were rewritten around fit, verification, evidence, continuity and pilot intent;
+- local privacy constraints remain intact: no contact record, CRM event or behavioral profile is created.
+
+The next demand-generation step should be distribution of deep links to the relevant evaluation surface, not paid traffic to a generic homepage.

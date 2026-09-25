@@ -24,7 +24,14 @@ export function AgoraScene() {
       });
     } catch {
       element.dataset.webgl = "unavailable";
-      return;
+      const fallback = document.createElement("div");
+      fallback.className = "agora-scene-fallback";
+      fallback.setAttribute("aria-hidden", "true");
+      element.appendChild(fallback);
+      return () => {
+        fallback.remove();
+        delete element.dataset.webgl;
+      };
     }
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));

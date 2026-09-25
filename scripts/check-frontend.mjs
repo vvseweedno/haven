@@ -100,6 +100,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/Workspace.tsx",
     "apps/web/app/globals.css",
     "apps/web/next.config.ts",
+    ".github/workflows/ci.yml",
   ];
   for (const path of required) {
     check(existsSync(join(root, path)), `Missing frontend contract file: ${path}`);
@@ -120,6 +121,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const networkMap = read("apps/web/components/NetworkMap.tsx");
   const css = read("apps/web/app/globals.css");
   const nextConfig = read("apps/web/next.config.ts");
+  const ciWorkflow = read(".github/workflows/ci.yml");
   const contract = read("docs/frontend-interface.md");
   const delivery = read("apps/web/lib/delivery.ts");
 
@@ -225,6 +227,20 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   check(
     nextConfig.includes("poweredByHeader: false"),
     "Next.js powered-by header must remain disabled.",
+  );
+  check(
+    ciWorkflow.includes("python scripts/test-ui.py") &&
+      ciWorkflow.includes("python scripts/test-security-ui.py"),
+    "CI must execute both browser UI and browser security verification.",
+  );
+  check(
+    ciWorkflow.includes("npm run build") &&
+      ciWorkflow.indexOf("npm run build") < ciWorkflow.indexOf("python scripts/test-ui.py"),
+    "Browser verification must exercise a production build rather than the dev server.",
+  );
+  check(
+    ciWorkflow.includes("playwright") && ciWorkflow.includes("chromium"),
+    "CI must provision a Chromium Playwright runtime for browser verification.",
   );
   check(
     css.includes("@media (max-width: 760px)") &&

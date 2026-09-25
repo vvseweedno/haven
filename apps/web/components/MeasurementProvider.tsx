@@ -143,8 +143,11 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.download = "haven-session-measurement.json";
+    anchor.rel = "noopener";
+    document.body.appendChild(anchor);
     anchor.click();
-    URL.revokeObjectURL(url);
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }, [attribution, ledger]);
 
   const resetMeasurement = useCallback(() => {

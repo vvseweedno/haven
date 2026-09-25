@@ -62,10 +62,9 @@ function Shell({ children }: { children: React.ReactNode }) {
   const menuButton = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLElement>(null);
   const keyboardNavigation = useRef(false);
+  const explicitTheme = useRef<"dark" | "light" | null>(null);
   useEffect(() => {
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-    let explicitTheme: "dark" | "light" | null = null;
-
     const applyTheme = (value: boolean) => {
       setDark(value);
       document.documentElement.dataset.theme = value ? "dark" : "light";
@@ -73,22 +72,31 @@ function Shell({ children }: { children: React.ReactNode }) {
 
     try {
       const stored = localStorage.getItem("haven-theme");
-      explicitTheme = stored === "dark" || stored === "light" ? stored : null;
+      explicitTheme.current =
+        stored === "dark" || stored === "light" ? stored : null;
     } catch {
-      explicitTheme = null;
+      explicitTheme.current = null;
     }
-    applyTheme(explicitTheme ? explicitTheme === "dark" : systemTheme.matches);
+    applyTheme(
+      explicitTheme.current
+        ? explicitTheme.current === "dark"
+        : systemTheme.matches,
+    );
 
     const onSystemTheme = (event: MediaQueryListEvent) => {
-      if (!explicitTheme) applyTheme(event.matches);
+      if (!explicitTheme.current) applyTheme(event.matches);
     };
     const onStoredTheme = (event: StorageEvent) => {
       if (event.key !== "haven-theme") return;
-      explicitTheme =
+      explicitTheme.current =
         event.newValue === "dark" || event.newValue === "light"
           ? event.newValue
           : null;
-      applyTheme(explicitTheme ? explicitTheme === "dark" : systemTheme.matches);
+      applyTheme(
+        explicitTheme.current
+          ? explicitTheme.current === "dark"
+          : systemTheme.matches,
+      );
     };
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -177,10 +185,12 @@ function Shell({ children }: { children: React.ReactNode }) {
   }, [pathname]);
   const toggleTheme = () => {
     const next = !dark;
+    const nextTheme = next ? "dark" : "light";
+    explicitTheme.current = nextTheme;
     setDark(next);
-    document.documentElement.dataset.theme = next ? "dark" : "light";
+    document.documentElement.dataset.theme = nextTheme;
     try {
-      localStorage.setItem("haven-theme", next ? "dark" : "light");
+      localStorage.setItem("haven-theme", nextTheme);
     } catch {
       /* The current theme still applies to the session. */
     }
@@ -190,6 +200,13 @@ function Shell({ children }: { children: React.ReactNode }) {
   const closeMobile = () => {
     setMobileOpen(false);
     menuButton.current?.focus();
+  };
+  const openSearchFromSidebar = () => {
+    setMobileOpen(false);
+    requestAnimationFrame(() => {
+      menuButton.current?.focus();
+      setSearchOpen(true);
+    });
   };
   const focusMain = () => {
     keyboardNavigation.current = false;
@@ -255,10 +272,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             className="sidebar-search"
             data-measure="search_open"
             data-measure-context="sidebar"
-          onClick={() => {
-            setMobileOpen(false);
-            setSearchOpen(true);
-          }}
+          onClick={openSearchFromSidebar}
         >
           <Search size={16} />
           <span>{localize(locale, "Search HAVEN", "Поиск по HAVEN")}</span>
@@ -277,7 +291,6 @@ function Shell({ children }: { children: React.ReactNode }) {
               const Icon = item.icon;
               return (
                 <Link
-                  prefetch={false}
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}

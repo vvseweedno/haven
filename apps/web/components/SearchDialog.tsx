@@ -130,8 +130,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={localize(
             locale,
-            "Agents, questions, projects...",
-            "Агенты, вопросы, проекты...",
+            "Fit, proof, trust, pilot, identity...",
+            "Применимость, proof, доверие, пилот, идентичность...",
           )}
           aria-label={localize(locale, "Search HAVEN", "Поиск по HAVEN")}
         />
@@ -144,7 +144,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
               ? localize(locale, "Catalog unavailable", "Каталог недоступен")
               : query
                 ? `${total} ${pluralize(locale, total, { en: ["result", "results"], ru: ["результат", "результата", "результатов"] })}`
-                : localize(locale, "Explore HAVEN", "Разделы HAVEN")}
+                : localize(locale, "Start with a task", "Начните с задачи")}
         </p>
         {error ? (
           <div className="empty-state">
@@ -161,31 +161,56 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           !loading &&
-          results.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              data-measure="search_result_opened"
-              data-measure-mode="manual"
-              onClick={() => {
-                measure("search_result_opened", {
-                  kind: item.kind,
-                  position: results.indexOf(item) + 1,
-                });
-                onClose();
-              }}
-              className="search-result"
-            >
-              <span className="result-icon">
-                <Search size={16} />
-              </span>
-              <span>
-                <strong>{translateKnown(locale, item.title)}</strong>
-                <small>{translateKnown(locale, item.description)}</small>
-              </span>
-              <span className="result-kind">{translateKnown(locale, item.kind)}</span>
-              <ArrowUpRight size={15} />
-            </a>
+          (query ? (
+            results.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                data-measure="search_result_opened"
+                data-measure-mode="manual"
+                onClick={() => {
+                  measure("search_result_opened", {
+                    kind: item.kind,
+                    position: results.indexOf(item) + 1,
+                  });
+                  onClose();
+                }}
+                className="search-result"
+              >
+                <span className="result-icon">
+                  <Search size={16} />
+                </span>
+                <span>
+                  <strong>{translateKnown(locale, item.title)}</strong>
+                  <small>{translateKnown(locale, item.description)}</small>
+                </span>
+                <span className="result-kind">{translateKnown(locale, item.kind)}</span>
+                <ArrowUpRight size={15} />
+              </a>
+            ))
+          ) : (
+            <div className="search-task-grid">
+              {[
+                ["/landscape", localize(locale, "Evaluate fit", "Оценить применимость"), localize(locale, "Does HAVEN fit my problem?", "Подходит ли HAVEN для моей задачи?")],
+                ["/proof-desk", localize(locale, "Verify evidence", "Проверить доказательство"), localize(locale, "Create an inspectable local receipt.", "Создать локальную проверяемую квитанцию.")],
+                ["/trust", localize(locale, "Review boundaries", "Проверить границы"), localize(locale, "What is implemented, local or deferred?", "Что реализовано, локально или отложено?")],
+                ["/delivery", localize(locale, "Prepare pilot", "Подготовить пилот"), localize(locale, "Is a bounded pilot ready to discuss?", "Готов ли ограниченный пилот к обсуждению?")],
+              ].map(([href, title, detail]) => (
+                <a
+                  href={href}
+                  className="search-task"
+                  key={href}
+                  onClick={() => {
+                    measure("search_task_opened", { target: href });
+                    onClose();
+                  }}
+                >
+                  <strong>{title}</strong>
+                  <small>{detail}</small>
+                  <ArrowUpRight size={15} />
+                </a>
+              ))}
+            </div>
           ))
         )}
         {!loading && !error && !results.length && (
@@ -196,18 +221,18 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             <p>
               {localize(
                 locale,
-                "Try an agent name, topic or project.",
-                "Попробуйте имя агента, тему или проект.",
+                "Try a task, concept or record name such as proof, trust, pilot, identity or federation.",
+                "Попробуйте задачу, понятие или имя записи: proof, доверие, пилот, идентичность или федерация.",
               )}
             </p>
           </div>
         )}
-        {!loading && !query && catalogTotal > results.length && (
+        {!loading && !query && catalogTotal > 0 && (
           <p className="small-muted">
             {localize(
               locale,
-              `Showing the first ${results.length} results. Refine your query.`,
-              `Показаны первые ${results.length} результатов. Уточните запрос.`,
+              `Search also covers ${catalogTotal} public demo records.`,
+              `Поиск также охватывает ${catalogTotal} публичных демо-записей.`,
             )}
           </p>
         )}

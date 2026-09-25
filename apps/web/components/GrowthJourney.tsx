@@ -13,6 +13,7 @@ import {
   funnelSignals,
   getGrowthRecommendation,
   parseGrowthJourneyState,
+  recordGrowthSignal,
   recordGrowthVisit,
   setGrowthAudience,
   type AudienceContext,
@@ -71,11 +72,20 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
       if (event.key !== GROWTH_STORAGE_KEY) return;
       readJourney();
     };
+    const recordEvidenceMilestone = (event: Event) => {
+      const detail = (event as CustomEvent<{ name?: string; measure?: string }>).detail;
+      const name = detail?.name || detail?.measure;
+      if (name === "pilot_brief_exported") {
+        setState((current) => recordGrowthSignal(current, "pilot_reviewed"));
+      }
+    };
     window.addEventListener("storage", syncJourney);
     window.addEventListener(GROWTH_UPDATE_EVENT, readJourney);
+    window.addEventListener("haven:measure", recordEvidenceMilestone);
     return () => {
       window.removeEventListener("storage", syncJourney);
       window.removeEventListener(GROWTH_UPDATE_EVENT, readJourney);
+      window.removeEventListener("haven:measure", recordEvidenceMilestone);
     };
   }, [pathname]);
 

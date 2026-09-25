@@ -1,6 +1,7 @@
 import { Badge } from "@/components/Badge";
 import { LineageGraph } from "@/components/LineageGraph";
 import { PageHeader } from "@/components/PageHeader";
+import { LocalizedCopy } from "@/components/LocaleContext";
 import { lineageNodes } from "@/lib/haven-data";
 import { getRouteMetadata } from "@/lib/seo";
 
@@ -27,7 +28,7 @@ export default function LineagesPage() {
                 </Badge>
               </div>
               <p className="mono">{node.id}</p>
-              <p>{node.status}</p>
+              <p><LocalizedCopy en={node.status} ru={node.status === "active" ? "активно" : node.status === "proposal" ? "предложение" : node.status === "limited" ? "ограничено" : node.status === "conflict-preserved" ? "конфликт сохранён" : node.status} /></p>
             </article>
           ))}
         </div>

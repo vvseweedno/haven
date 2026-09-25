@@ -139,6 +139,14 @@ export function DeliveryRoom() {
     () => deliveryRoles.filter((role) => filter === "all" || role.state === filter),
     [filter],
   );
+  const filterOptions = useMemo(
+    () =>
+      (["all", "implemented", "active", "next"] as const).filter(
+        (state) =>
+          state === "all" || deliveryRoles.some((role) => role.state === state),
+      ),
+    [],
+  );
 
   return (
     <div className="delivery-page page-shell">
@@ -226,7 +234,7 @@ export function DeliveryRoom() {
         <div className="delivery-section-heading">
           <div><p className="signal-kicker"><Scale size={14} /> {text.handoff}</p><h2 id="responsibility-map">{text.roleMap}</h2></div>
           <div className="delivery-filter" aria-label={text.roleMap}>
-            {(["all", "implemented", "active", "next"] as const).map((state) => (
+            {filterOptions.map((state) => (
               <button
                 type="button"
                 className={filter === state ? "active" : ""}

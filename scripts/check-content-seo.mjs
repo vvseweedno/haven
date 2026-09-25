@@ -74,12 +74,20 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   const agentsText = read("apps/web/public/agents.txt");
   const agentsRaw = read("apps/web/public/agents.json");
   const openapiRaw = read("apps/web/public/openapi.json");
+  const ardRaw = read("apps/web/public/.well-known/ard.json");
+  const havenManifestRaw = read("apps/web/public/.well-known/haven.json");
+  const agentCardRaw = read("apps/web/public/.well-known/agent-card.json");
+  const deliveryRaw = read("apps/web/public/delivery.json");
   const layout = read("apps/web/app/layout.tsx");
   const havenData = read("apps/web/lib/haven-data.ts");
   const seoSource = read("apps/web/lib/seo.ts");
   const publicApi = read("apps/web/lib/server/public-api.ts");
   const agents = jsonByPath.get("apps/web/public/agents.json");
   const openapi = jsonByPath.get("apps/web/public/openapi.json");
+  const ard = jsonByPath.get("apps/web/public/.well-known/ard.json");
+  const havenManifest = jsonByPath.get("apps/web/public/.well-known/haven.json");
+  const agentCard = jsonByPath.get("apps/web/public/.well-known/agent-card.json");
+  const deliveryContract = jsonByPath.get("apps/web/public/delivery.json");
 
   check(llms.startsWith("# HAVEN local product prototype\n"), "llms.txt must begin with the canonical H1.");
   const llmsMeaningfulLines = llms.split(/\r?\n/).filter((line) => line.trim());
@@ -183,7 +191,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     }
   }
   const operationIds = Object.values(openapi?.paths ?? {}).flatMap((item) =>
-    ["get", "head"].map((method) => item[method]?.operationId).filter(Boolean),
+    ["get", "head", "post"].map((method) => item[method]?.operationId).filter(Boolean),
   );
   check(unique(operationIds), "OpenAPI operationId values must be unique.");
   check(openapi?.components?.schemas?.Status?.properties?.mode?.const === "local-demo", "OpenAPI status mode must match the runtime contract.");
@@ -216,6 +224,34 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   check(layout.includes("getSiteStructuredData"), "The root layout must render the shared structured-data graph.");
   check(seoSource.includes('\"@type\": \"WebSite\"'), "The root schema must describe the WebSite.");
   check(seoSource.includes('\"@type\": \"WebApplication\"'), "The root schema must describe the WebApplication.");
+
+  check(
+    ard?.resources?.[0]?.type === "agent-continuity-evaluation-prototype",
+    "ARD must describe HAVEN as an evaluation prototype, not a live agent network.",
+  );
+  check(
+    typeof ard?.resources?.[0]?.description === "string" &&
+      ard.resources[0].description.includes("not a live agent network"),
+    "ARD must state the live-network boundary explicitly.",
+  );
+  check(
+    havenManifest?.status?.federation === "fixture-only-live-replication-deferred",
+    "HAVEN manifest must keep live federation deferred.",
+  );
+  check(
+    havenManifest?.status?.pilotIntake === "explicit-consent-configurable",
+    "HAVEN manifest must describe pilot intake as explicit-consent and configurable.",
+  );
+  check(
+    Array.isArray(agentCard?.extensions?.haven?.boundaries) &&
+      agentCard.extensions.haven.boundaries.includes("seeded-agent-records-are-fixtures"),
+    "A2A Agent Card must identify seeded agent records as fixtures.",
+  );
+  check(
+    deliveryContract?.remoteWrite?.implicit === false &&
+      deliveryContract?.remoteWrite?.consentRequired === true,
+    "Delivery contract must prohibit implicit remote writes and require pilot consent.",
+  );
   const sitemapSource = read("apps/web/app/sitemap.ts");
   const agentDetailSource = read("apps/web/app/agents/[id]/page.tsx");
   const robotsSource = read("apps/web/app/robots.ts");
@@ -249,7 +285,19 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     }
   }
 
-  const claimSurfaces = [readme, llms, agentsText, agentsRaw, openapiRaw, layout, seoSource].join("\n");
+  const claimSurfaces = [
+    readme,
+    llms,
+    agentsText,
+    agentsRaw,
+    openapiRaw,
+    ardRaw,
+    havenManifestRaw,
+    agentCardRaw,
+    deliveryRaw,
+    layout,
+    seoSource,
+  ].join("\n");
   const forbiddenClaims = [
     ["legacy infrastructure claim", /HAVEN is an open, federated infrastructure/i],
     ["production-ready claim", /\bproduction[- ]ready\b/i],

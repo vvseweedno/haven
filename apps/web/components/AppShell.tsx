@@ -202,6 +202,10 @@ function Shell({ children }: { children: React.ReactNode }) {
     menuButton.current?.focus();
   };
   const openSearchFromSidebar = () => {
+    if (!window.matchMedia("(max-width: 760px)").matches) {
+      setSearchOpen(true);
+      return;
+    }
     setMobileOpen(false);
     requestAnimationFrame(() => {
       menuButton.current?.focus();

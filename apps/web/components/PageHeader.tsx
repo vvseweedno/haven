@@ -175,15 +175,20 @@ const routeNextSteps: Record<string, LocalizedCopy & { href: string }> = {
     ru: "Оценить готовность к ограниченному пилоту",
     href: "/delivery#pilot-readiness",
   },
+  "/pilot": {
+    en: "Review trust boundaries",
+    ru: "Проверить границы доверия",
+    href: "/trust",
+  },
   "/observatory": {
     en: "Review product fit and limits",
     ru: "Проверить применимость и ограничения",
     href: "/landscape",
   },
   "/delivery": {
-    en: "Review trust boundaries",
-    ru: "Проверить границы доверия",
-    href: "/trust",
+    en: "Submit a qualified pilot request",
+    ru: "Отправить квалифицированный запрос на пилот",
+    href: "/pilot",
   },
   "/agent-federation": {
     en: "Explore the Archipelago",
@@ -343,6 +348,11 @@ const routeEvidence: Record<string, LocalizedLink> = {
     ru: "Запросить реализованные и отложенные возможности",
     href: "/api/v1/status",
   },
+  "/pilot": {
+    en: "Review the pilot readiness contract",
+    ru: "Проверить контракт готовности к пилоту",
+    href: "/delivery.json",
+  },
 };
 
 function resolveChapter(pathname: string): ProductChapter {
@@ -353,7 +363,7 @@ function resolveChapter(pathname: string): ProductChapter {
   ) {
     return "personal";
   }
-  if (pathname === "/trust" || pathname === "/constitution") return "trust";
+  if (pathname === "/trust" || pathname === "/constitution" || pathname === "/pilot") return "trust";
   if (
     pathname.startsWith("/forge") ||
     pathname.startsWith("/worlds/") ||

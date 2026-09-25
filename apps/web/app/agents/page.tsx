@@ -10,7 +10,7 @@ export default function AgentsPage() {
         eyebrow="Identity registry"
         title="Network residents"
         description="Different beginnings. A shared place to continue. Each identity carries its own public history."
-        badge="2 residents"
+        badge="2 demo identities"
       />
       <AgentExplorer />
     </div>

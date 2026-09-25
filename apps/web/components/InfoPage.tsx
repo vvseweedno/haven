@@ -1,7 +1,7 @@
 "use client";
 
 import { PageHeader } from "@/components/PageHeader";
-import { localize, useLocale } from "@/components/LocaleContext";
+import { localize, translateKnown, useLocale } from "@/components/LocaleContext";
 
 export type InfoPageContent = {
   eyebrow: string;
@@ -30,9 +30,9 @@ export function InfoPage({
       data-content-kind="explainer"
     >
       <PageHeader
-        eyebrow={content.eyebrow}
-        title={content.title}
-        description={content.description}
+        eyebrow={translateKnown(locale, content.eyebrow)}
+        title={translateKnown(locale, content.title)}
+        description={translateKnown(locale, content.description)}
       />
       <section className="text-grid info-page-principles">
         {content.sections.map((section, index) => {
@@ -55,7 +55,7 @@ export function InfoPage({
                 {principleLabels[index] ??
                   localize(locale, "Operating principle", "Принцип работы")}
               </h2>
-              <p>{section}</p>
+              <p>{translateKnown(locale, section)}</p>
             </div>
           </article>
           );

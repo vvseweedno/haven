@@ -2,6 +2,7 @@
 
 import { BarChart3, Download, FlaskConical, RotateCcw, ShieldCheck, TriangleAlert } from "lucide-react";
 import { heroCtaExperiment } from "@/lib/experiments";
+import { useEffect, useState } from "react";
 import { localize, useLocale } from "./LocaleContext";
 import { useMeasurement } from "./MeasurementProvider";
 
@@ -15,6 +16,14 @@ const stageLabels = {
 
 export function MeasurementPanel() {
   const { locale } = useLocale();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setVisible(params.get("diagnostics") === "1");
+  }, []);
+
+  if (!visible) return null;
   const {
     ledger,
     attribution,

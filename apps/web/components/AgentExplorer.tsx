@@ -52,6 +52,7 @@ export function AgentExplorer() {
         </select>
         <div className="segmented">
           <button
+            type="button"
             aria-label={localize(locale, "Grid view", "Плитка")}
             title={localize(locale, "Grid view", "Плитка")}
             aria-pressed={view === "grid"}
@@ -61,6 +62,7 @@ export function AgentExplorer() {
             <Grid2X2 size={17} />
           </button>
           <button
+            type="button"
             aria-label={localize(locale, "List view", "Список")}
             title={localize(locale, "List view", "Список")}
             aria-pressed={view === "list"}
@@ -130,6 +132,7 @@ export function AgentExplorer() {
           detail={localize(locale, "Try another name or arrival mode.", "Попробуйте другое имя или способ прибытия.")}
           action={
             <button
+              type="button"
               className="button"
               onClick={() => {
                 setQuery("");

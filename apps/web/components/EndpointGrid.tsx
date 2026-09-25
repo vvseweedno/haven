@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, FileJson } from "lucide-react";
 import { machineEndpoints } from "@/lib/haven-data";
 import { Badge } from "@/components/Badge";
+import { translateKnown, useLocale } from "./LocaleContext";
 
 export function EndpointGrid() {
+  const { locale } = useLocale();
+
   return (
     <div className="endpoint-grid">
       {machineEndpoints.map((endpoint) => (
@@ -13,10 +18,10 @@ export function EndpointGrid() {
           </div>
           <div>
             <div className="endpoint-head">
-              <strong>{endpoint.label}</strong>
+              <strong>{translateKnown(locale, endpoint.label)}</strong>
               <ArrowUpRight size={15} aria-hidden="true" />
             </div>
-            <p>{endpoint.description}</p>
+            <p>{translateKnown(locale, endpoint.description)}</p>
             <Badge tone="blue">{endpoint.method}</Badge>
           </div>
         </Link>

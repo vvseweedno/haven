@@ -204,6 +204,26 @@ with sync_playwright() as p:
         )
     ).to_be_visible()
 
+    # A failed catalog request must not poison the task-first empty-query state.
+    visit("/")
+    page.route(
+        "**/api/v1/catalog?limit=100",
+        lambda route: route.fulfill(
+            status=503,
+            content_type="application/json",
+            body='{"error":"temporarily unavailable"}',
+        ),
+    )
+    page.get_by_role("button", name="Open search").click()
+    search_input = page.get_by_role("textbox", name="Search HAVEN", exact=True)
+    search_input.fill("identity")
+    expect(page.get_by_text("Catalog unavailable", exact=True)).to_be_visible()
+    search_input.fill("")
+    expect(page.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
+    expect(page.get_by_text("Catalog unavailable", exact=True)).to_have_count(0)
+    page.get_by_role("button", name="Close dialog").click()
+    page.unroute("**/api/v1/catalog?limit=100")
+
     # Observatory interactions live only on the Observatory route.
     visit("/observatory")
     assert page.locator(".react-flow__node").count() == 9

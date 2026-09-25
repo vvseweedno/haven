@@ -341,6 +341,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "docs/content-seo.md",
     "docs/ux-ia.md",
     "docs/ui-brand.md",
+    "docs/frontend-interface.md",
   ];
   for (const document of requiredDocs) {
     check(existsSync(join(root, document)), `Missing required product document: ${document}`);

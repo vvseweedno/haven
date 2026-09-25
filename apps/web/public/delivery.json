@@ -26,7 +26,8 @@
     "growth-learning",
     "cro-analytics-experimentation",
     "content-seo-communication",
-    "ux-cx-information-architecture"
+    "ux-cx-information-architecture",
+    "ui-brand-visual-experience"
   ],
   "businessCouncil": [
     "ceo-sponsor",
@@ -132,5 +133,34 @@
     "performance",
     "content-strategy"
   ],
-  "uxIaDocument": "docs/ux-ia.md"
+  "uxIaDocument": "docs/ux-ia.md",
+  "uiBrandCouncil": [
+    "product-designer",
+    "ui-designer",
+    "visual-designer",
+    "brand-designer",
+    "art-director",
+    "creative-director",
+    "design-system-designer",
+    "motion-designer",
+    "3d-artist",
+    "creative-developer",
+    "webgl-threejs-developer",
+    "ai-image-designer"
+  ],
+  "uiBrandReviewLeads": [
+    "product-manager",
+    "project-delivery-manager",
+    "ux-lead",
+    "design-director",
+    "tech-lead",
+    "seo-lead",
+    "analytics-lead",
+    "qa-lead",
+    "security",
+    "accessibility",
+    "performance",
+    "content-strategy"
+  ],
+  "uiBrandDocument": "docs/ui-brand.md"
 }

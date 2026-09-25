@@ -74,7 +74,7 @@ The local prototype does not emit behavioral analytics. Product metrics shown in
 
 Recommended model: open protocol and self-hosted reference implementation, followed by paid discovery workshops and design-partner pilots. Future revenue may come from managed nodes, organizational policy packs, long-term provenance storage, enterprise identity integration, operations and support.
 
-Public pricing is premature before a production service, support boundary and repeatable market evidence exist. The current conversion path is evaluation, local evidence export and a qualified pilot brief. Tokens, identity sales and a speculative agent marketplace are outside the present strategy.
+Public pricing is premature before a production service, support boundary and repeatable market evidence exist. The current conversion path is evaluation, local evidence export, a qualified pilot brief and—only with explicit consent—a structured pilot request through the configured server-side handoff. Tokens, identity sales and a speculative agent marketplace are outside the present strategy.
 
 ## Accountability
 
@@ -109,3 +109,16 @@ Implemented decisions:
 - Search metadata and page-level next steps were aligned to buyer intent rather than internal terminology.
 
 Commercial success remains defined by qualified evidence-led pilots and later retained deployments, not traffic volume, raw CTA clicks or speculative network scale.
+
+
+## Commercial handoff correction — 2026-09-25
+
+The website now has a concrete boundary between product evaluation and sales:
+
+1. Local product exploration and measurement remain browser-local.
+2. A visitor may export proof and pilot artifacts without becoming a lead.
+3. Pilot readiness is reviewed before contact.
+4. The `/pilot` handoff requires explicit contact data, an actual workflow, a pilot goal and consent.
+5. Only an accepted server-side handoff creates a sales-contact event.
+
+This keeps the open protocol/product experience separate from CRM behavior while still allowing qualified demand to reach a human operator when the deployment is configured for it.

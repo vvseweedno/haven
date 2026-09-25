@@ -1,3 +1,5 @@
+import { heroCtaExperiment } from "./experiments";
+
 export type AdoptionLocale = "en" | "ru";
 
 export type AdoptionCopy = Record<AdoptionLocale, string>;
@@ -405,9 +407,9 @@ export function buildAnalysisBrief(locale: AdoptionLocale) {
 
   return {
     kind: "haven.cro-analysis-brief",
-    version: "1.0",
+    version: "2.0",
     locale,
-    status: locale === "ru" ? "пустой локальный шаблон анализа" : "empty local analysis template",
+    status: locale === "ru" ? "локальный шаблон анализа без статистического вывода" : "local analysis template with no statistical conclusion",
     boundary:
       locale === "ru"
         ? "Файл создан локально и не содержит телеметрии, посетителей, конверсий, uplift или победителя эксперимента. Заполните его только наблюдаемыми данными с указанным периодом и знаменателем."
@@ -433,16 +435,30 @@ export function buildAnalysisBrief(locale: AdoptionLocale) {
       reason: localize(item.reason),
     })),
     experiment: {
-      hypothesis: "",
-      primaryMetric: "",
-      guardrails: [],
-      unitOfRandomization: "",
+      id: heroCtaExperiment.id,
+      status: heroCtaExperiment.status,
+      hypothesis: heroCtaExperiment.hypothesis,
+      primaryMetric: heroCtaExperiment.primaryMetric,
+      guardrails: [...heroCtaExperiment.guardrails],
+      unitOfRandomization: heroCtaExperiment.unitOfRandomization,
+      eligibility: heroCtaExperiment.eligibility,
       minimumDetectableEffect: null,
       requiredSampleSize: null,
+      alpha: null,
+      power: null,
       plannedDuration: "",
       stoppingRule: "",
+      sampleRatioCheck: "not available",
       result: "no conclusion",
-      decision: "do not ship on this template alone",
+      decision: heroCtaExperiment.decisionRule,
+    },
+    dataQuality: {
+      routeEventsVersioned: true,
+      funnelCompletionsRequireExplicitEvents: true,
+      attributionScope: "first-touch within one tab session",
+      crossSessionJoining: false,
+      freeFormTextInAnalytics: false,
+      populationInferenceAllowed: false,
     },
   };
 }

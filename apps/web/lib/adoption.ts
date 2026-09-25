@@ -100,8 +100,8 @@ export const funnelStages: FunnelStage[] = [
       ru: "Локальные сессии, в которых показан checklist готовности к пилоту.",
     },
     dropOff: {
-      en: "Readiness viewed but no analysis brief exported in that session.",
-      ru: "Готовность просмотрена, но analysis brief не экспортирован в этой сессии.",
+      en: "Readiness viewed but no qualified pilot brief exported in that session.",
+      ru: "Готовность просмотрена, но квалифицированный pilot brief не экспортирован в этой сессии.",
     },
     evidence: { en: "Qualified local pilot brief", ru: "Квалифицированный локальный pilot brief" },
   },

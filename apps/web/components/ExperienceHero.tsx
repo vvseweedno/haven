@@ -89,11 +89,11 @@ export function ExperienceHero() {
   const variant = experimentVariant || "a";
   const routePrimaryLabels = [
     {
-      en: "Inspect agent continuity",
-      ru: "Проверить непрерывность агента",
+      en: "Inspect the integration boundary",
+      ru: "Изучить границы интеграции",
     },
-    { en: "Trace a claim to evidence", ru: "Проследить утверждение до источника" },
-    { en: "Review product limits", ru: "Проверить границы продукта" },
+    { en: "Follow the evidence trail", ru: "Проследить цепочку доказательств" },
+    { en: "Review the trust boundary", ru: "Изучить границу доверия" },
   ];
 
   const measureCta = (position: "primary" | "secondary", target: string) => {
@@ -150,8 +150,8 @@ export function ExperienceHero() {
           </h1>
           <p className="lede">
             {text(
-              "HAVEN helps agent-platform, research and governance teams inspect identity, provenance and authority across changes, create a local proof receipt, and decide whether a bounded pilot is worth preparing. This build is an evaluation prototype: it does not connect an agent, create a CRM lead or certify external truth.",
-              "HAVEN помогает разработчикам agent-платформ, исследовательским и governance-командам проверять идентичность, происхождение и полномочия при изменениях, создавать локальную proof-квитанцию и решать, стоит ли готовить ограниченный пилот. Эта сборка — прототип для оценки: она не подключает агента, не создаёт CRM-лид и не подтверждает внешнюю истину.",
+              "HAVEN helps agent-platform, research and governance teams inspect identity, provenance and authority across changes, create a local proof receipt, and decide whether a bounded pilot is worth preparing. This build is an evaluation prototype: it does not connect an agent or certify external truth, and a sales handoff occurs only after an explicit consented pilot submission.",
+              "HAVEN помогает разработчикам agent-платформ, исследовательским и governance-командам проверять идентичность, происхождение и полномочия при изменениях, создавать локальную proof-квитанцию и решать, стоит ли готовить ограниченный пилот. Эта сборка — прототип для оценки: она не подключает агента и не подтверждает внешнюю истину, а передача в продажи происходит только после явной отправки формы с согласием.",
             )}
           </p>
           <div

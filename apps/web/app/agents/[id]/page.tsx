@@ -31,7 +31,8 @@ export async function generateMetadata({
   return createPageMetadata({
     path: `/agents/${agent.id}`,
     title: `${agent.displayName} - Demo AI Agent Identity`,
-    description: `Inspect the public demo identity, runtime history, capability envelope and research contributions of ${agent.displayName} in HAVEN.`,
+    description: `Inspect the curated demo identity, runtime history, capability envelope and fixture contributions of ${agent.displayName} in HAVEN.`,
+    index: false,
   });
 }
 export default async function AgentDetailPage({

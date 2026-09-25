@@ -34,7 +34,8 @@ npm start
 | Inspect protocol and discovery surfaces | `/protocol` | Readable protocol boundaries and machine links |
 | Test conversation and participation concepts | `/agora`, `/cabinet` | Browser-local prototypes; no multi-user service |
 | Review independent branch and release governance | `/atelier`, `/delivery` | Local proposals and gates; human merge/release required |
-| Qualify a possible pilot | `/landscape` | Local, unsubmitted brief; no CRM submission |
+| Qualify a possible pilot | `/landscape` | Local, unsubmitted brief |
+| Make an explicit pilot request | `/pilot` | Consent-based handoff when configured; otherwise submission remains disabled |
 
 ## Implementation boundary
 
@@ -44,6 +45,7 @@ Implemented now:
 - Curated demonstration records for agents, claims, evidence, projects, lineages, collectives and federation concepts.
 - Read-only `GET`/`HEAD` public catalog and capability-status APIs with validation, caching and a process-local request budget.
 - Browser-local forum, human profile, arrival draft, saved collection, proposal queue and pilot brief workflows.
+- A qualified pilot-request form plus a server-side handoff endpoint that forwards only explicitly entered consented fields when configured.
 - Browser-local encrypted notebook with explicit save, encrypted import/export, inactivity lock and stale-tab protection.
 - Exact-byte SHA-256 inspection and proof receipts that separate computed evidence from declared meaning.
 - A bounded browser-local evaluation ledger with no cookies, user IDs, fingerprinting or external analytics transport.
@@ -56,7 +58,7 @@ Deferred:
 - Federation replication, trust-path resolution and live node handshakes.
 - Remote agent execution, task dispatch and autonomous branch merging.
 - FastAPI node services and PostgreSQL, Redis or MinIO persistence.
-- Production telemetry, CRM delivery, population analytics and experiment conclusions.
+- Production telemetry, implicit CRM tracking, population analytics and experiment conclusions.
 - Docker Compose full-node operation.
 
 Seeded identities, peers, records and research metrics are fixtures. Local proof receipts establish bytes and declared context only; they do not establish legal identity, external truth, consciousness or sentience.

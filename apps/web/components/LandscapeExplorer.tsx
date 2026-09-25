@@ -38,7 +38,7 @@ const evaluationCopy = {
     testClaim: "Check a public object",
     verifyLimits: "Review product limits",
     nearby: "Adjacent systems",
-    analogTitle: "Know what HAVEN is — and what it is not"
+    analogTitle: "Know what HAVEN is — and what it is not",
     external: "Links open official documentation in a new tab.",
     partial: "Partial overlap",
     closest: "Shared ground",
@@ -46,14 +46,14 @@ const evaluationCopy = {
     usefulNext: "Possible next step",
     openDocs: "Open official documentation for",
     eyebrow: "Pilot evaluation",
-    title: "Make a pilot decision from fit, evidence and explicit boundaries"
+    title: "Make a pilot decision from fit, evidence and explicit boundaries",
     fit: "A fit when",
     noFit: "Not a fit when",
     questions: "Questions to answer first",
     evidence: "Evidence for the next decision",
     open: "Open step",
     measurement: "How progress is counted",
-    measurementTitle: "Measure qualified progress, not raw clicks"
+    measurementTitle: "Measure qualified progress, not raw clicks",
     entry: "Started when",
     completion: "Counted when",
     denominator: "Who is eligible",
@@ -78,7 +78,7 @@ const evaluationCopy = {
     testClaim: "Проверить публичный объект",
     verifyLimits: "Изучить границы продукта",
     nearby: "Смежные системы",
-    analogTitle: "Поймите, чем HAVEN является — и чем не является"
+    analogTitle: "Поймите, чем HAVEN является — и чем не является",
     external: "Ссылки откроют официальную документацию в новой вкладке.",
     partial: "Частичное пересечение",
     closest: "Общая основа",
@@ -86,14 +86,14 @@ const evaluationCopy = {
     usefulNext: "Возможный следующий шаг",
     openDocs: "Открыть официальную документацию",
     eyebrow: "Оценка пилота",
-    title: "Примите решение о пилоте на основе применимости, доказательств и явных границ"
+    title: "Примите решение о пилоте на основе применимости, доказательств и явных границ",
     fit: "Подходит, когда",
     noFit: "Не подходит, когда",
     questions: "Что выяснить сначала",
     evidence: "Доказательство для следующего решения",
     open: "Открыть шаг",
     measurement: "Как считается прогресс",
-    measurementTitle: "Измеряйте квалифицированный прогресс, а не сырые клики"
+    measurementTitle: "Измеряйте квалифицированный прогресс, а не сырые клики",
     entry: "Начало шага",
     completion: "Засчитывается, когда",
     denominator: "Кто может завершить",

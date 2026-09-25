@@ -25,7 +25,8 @@
     "governance-release",
     "growth-learning",
     "cro-analytics-experimentation",
-    "content-seo-communication"
+    "content-seo-communication",
+    "ux-cx-information-architecture"
   ],
   "businessCouncil": [
     "ceo-sponsor",
@@ -103,5 +104,33 @@
     "accessibility",
     "performance",
     "content-strategy"
-  ]
+  ],
+  "uxIaCouncil": [
+    "ux-researcher",
+    "ux-architect",
+    "ux-designer",
+    "interaction-designer",
+    "service-designer",
+    "cx-strategist",
+    "customer-journey-architect",
+    "information-architect",
+    "navigation-designer",
+    "taxonomy-specialist",
+    "behavioral-researcher"
+  ],
+  "uxIaReviewLeads": [
+    "product-manager",
+    "project-delivery-manager",
+    "ux-lead",
+    "design-director",
+    "tech-lead",
+    "seo-lead",
+    "analytics-lead",
+    "qa-lead",
+    "security",
+    "accessibility",
+    "performance",
+    "content-strategy"
+  ],
+  "uxIaDocument": "docs/ux-ia.md"
 }

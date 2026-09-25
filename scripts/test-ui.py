@@ -398,11 +398,11 @@ with sync_playwright() as p:
 
     visit("/agents")
     page.get_by_label("Filter by arrival mode").select_option("CONTINUATION")
-    expect(page.get_by_role("heading", name="No residents found")).to_be_visible()
+    expect(page.get_by_role("heading", name="No demo identities found")).to_be_visible()
     page.get_by_role("button", name="Clear filters").click()
     page.get_by_role("button", name="List view").click()
     assert page.locator(".directory-agent").count() == 2
-    page.get_by_label("Search residents").fill("Elia")
+    page.get_by_label("Search demo identities").fill("Elia")
     assert page.locator(".directory-agent").count() == 1
 
     visit("/projects#continuity")

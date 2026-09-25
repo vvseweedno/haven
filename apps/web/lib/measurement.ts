@@ -1,14 +1,18 @@
-export const MEASUREMENT_STORAGE_KEY = "haven-measurement-ledger-v1";
-export const MEASUREMENT_ATTRIBUTION_KEY = "haven-measurement-attribution-v1";
+export const MEASUREMENT_STORAGE_KEY = "haven-measurement-session-v2";
+export const LEGACY_MEASUREMENT_STORAGE_KEY = "haven-measurement-ledger-v1";
+export const MEASUREMENT_ATTRIBUTION_KEY = "haven-measurement-attribution-v2";
+export const LEGACY_MEASUREMENT_ATTRIBUTION_KEY = "haven-measurement-attribution-v1";
 export const MEASUREMENT_UPDATE_EVENT = "haven:measurement-update";
 export const MEASURE_EVENT = "haven:measure";
 
-export const MAX_MEASUREMENT_EVENTS = 128;
+export const MAX_MEASUREMENT_EVENTS = 160;
 
 const attributionKeys = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
+  "utm_content",
+  "utm_term",
   "ref",
 ] as const;
 
@@ -35,26 +39,39 @@ export type MeasurementEntry = {
 };
 
 export type MeasurementLedger = {
-  version: 1;
+  version: 2;
   nextSequence: number;
   events: MeasurementEntry[];
 };
 
+export type FunnelStageId = "orient" | "verify" | "bound" | "prepare" | "contact";
+
 export type FunnelStage = {
-  id: "orient" | "explore" | "verify" | "qualify" | "contact";
+  id: FunnelStageId;
   reached: boolean;
   firstReachedAt: string | null;
+  completionEvent: string;
 };
 
 export type FunnelSnapshot = {
   reached: number;
+  observed: number;
   total: 5;
+  nextStage: FunnelStageId | null;
   stages: FunnelStage[];
+};
+
+export type FrictionSnapshot = {
+  proofFailures: number;
+  pilotFailures: number;
+  journeyResets: number;
+  total: number;
 };
 
 const semanticTokenPattern = /^[a-z0-9][a-z0-9._:-]{0,63}$/;
 const attributionTokenPattern = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 const allowedMetaKeys = new Set([
+  "assignment",
   "audience",
   "count",
   "dimension",
@@ -97,6 +114,21 @@ export function normalizeRoute(value: unknown): string | null {
   return route.length <= 160 ? route : null;
 }
 
+function normalizeMetaValue(
+  key: string,
+  value: unknown,
+): string | number | boolean | undefined {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return Math.max(-1_000_000, Math.min(1_000_000, value));
+  }
+  if (key === "target") {
+    const route = normalizeRoute(value);
+    if (route) return route;
+  }
+  return normalizeSemanticToken(value);
+}
+
 export function sanitizeMeasurementDetail(
   value: unknown,
 ): MeasurementDetail | null {
@@ -104,6 +136,11 @@ export function sanitizeMeasurementDetail(
   const candidate = value as Partial<MeasurementDetail> & {
     measure?: unknown;
     surface?: unknown;
+    experiment?: unknown;
+    variant?: unknown;
+    mode?: unknown;
+    audience?: unknown;
+    target?: unknown;
   };
   const name = normalizeSemanticToken(candidate.name ?? candidate.measure);
   if (!name) return null;
@@ -115,24 +152,22 @@ export function sanitizeMeasurementDetail(
     ...(candidate.meta && typeof candidate.meta === "object" ? candidate.meta : {}),
     ...("experiment" in candidate ? { experiment: candidate.experiment } : {}),
     ...("variant" in candidate ? { variant: candidate.variant } : {}),
+    ...("mode" in candidate ? { mode: candidate.mode } : {}),
     ...("audience" in candidate ? { audience: candidate.audience } : {}),
     ...("target" in candidate ? { target: candidate.target } : {}),
   } as Record<string, unknown>;
+
   const meta = Object.entries(rawMeta).reduce<Record<string, string | number | boolean>>(
     (result, [rawKey, rawValue]) => {
       const key = normalizeSemanticToken(rawKey);
       if (!key || !allowedMetaKeys.has(key)) return result;
-      if (typeof rawValue === "boolean") result[key] = rawValue;
-      else if (typeof rawValue === "number" && Number.isFinite(rawValue)) {
-        result[key] = Math.max(-1_000_000, Math.min(1_000_000, rawValue));
-      } else {
-        const token = normalizeSemanticToken(rawValue);
-        if (token) result[key] = token;
-      }
+      const normalized = normalizeMetaValue(key, rawValue);
+      if (normalized !== undefined) result[key] = normalized;
       return result;
     },
     {},
   );
+
   return {
     name,
     ...(context ? { context } : {}),
@@ -143,7 +178,7 @@ export function sanitizeMeasurementDetail(
 }
 
 export function createMeasurementLedger(): MeasurementLedger {
-  return { version: 1, nextSequence: 1, events: [] };
+  return { version: 2, nextSequence: 1, events: [] };
 }
 
 function isIsoTimestamp(value: unknown): value is string {
@@ -191,7 +226,7 @@ export function parseMeasurementLedger(value: string | null): MeasurementLedger 
       0,
     );
     return {
-      version: 1,
+      version: 2,
       nextSequence: highestSequence + 1,
       events,
     };
@@ -210,15 +245,6 @@ export function appendMeasurement(
   const route = normalizeRoute(routeValue);
   if (!detail || !route || !isIsoTimestamp(timestamp)) return ledger;
 
-  const last = ledger.events[ledger.events.length - 1];
-  if (
-    detail.name === "route_view" &&
-    last?.name === "route_view" &&
-    last.route === route
-  ) {
-    return ledger;
-  }
-
   const entry: MeasurementEntry = {
     sequence: ledger.nextSequence,
     timestamp,
@@ -226,10 +252,43 @@ export function appendMeasurement(
     ...detail,
   };
   return {
-    version: 1,
+    version: 2,
     nextSequence: ledger.nextSequence + 1,
     events: [...ledger.events, entry].slice(-MAX_MEASUREMENT_EVENTS),
   };
+}
+
+function routeLifecycleEvent(pathname: string): string | null {
+  if (pathname === "/") return "evaluation_path_viewed";
+  if (["/landscape", "/observatory", "/commons", "/agents"].includes(pathname)) {
+    return "orientation_opened";
+  }
+  if (pathname === "/proof-desk") return "proof_desk_opened";
+  if (pathname === "/trust") return "trust_boundary_opened";
+  if (pathname === "/delivery") return "pilot_readiness_viewed";
+  if (pathname === "/pilot") return "pilot_request_opened";
+  return null;
+}
+
+export function appendRouteLifecycle(
+  ledger: MeasurementLedger,
+  routeValue: unknown,
+  timestamp = new Date().toISOString(),
+): MeasurementLedger {
+  const route = normalizeRoute(routeValue);
+  if (!route) return ledger;
+
+  const lastRouteView = [...ledger.events]
+    .reverse()
+    .find((entry) => entry.name === "route_view");
+  if (lastRouteView?.route === route) return ledger;
+
+  let next = appendMeasurement(ledger, { name: "route_view" }, route, timestamp);
+  const lifecycle = routeLifecycleEvent(route);
+  if (lifecycle) {
+    next = appendMeasurement(next, { name: lifecycle }, route, timestamp);
+  }
+  return next;
 }
 
 export function readAttribution(search: string): SessionAttribution {
@@ -257,66 +316,59 @@ export function parseAttribution(value: string | null): SessionAttribution {
 
 function firstMatchingEvent(
   events: MeasurementEntry[],
-  predicate: (entry: MeasurementEntry) => boolean,
+  eventName: string,
 ) {
-  return events.find(predicate)?.timestamp || null;
+  return events.find((entry) => entry.name === eventName)?.timestamp || null;
 }
 
 export function createFunnelSnapshot(
   ledger: MeasurementLedger,
 ): FunnelSnapshot {
-  const stageEvidence: Array<Omit<FunnelStage, "reached">> = [
-    {
-      id: "orient",
-      firstReachedAt: firstMatchingEvent(
-        ledger.events,
-        (entry) => entry.name === "route_view" && entry.route === "/",
-      ),
-    },
-    {
-      id: "explore",
-      firstReachedAt: firstMatchingEvent(
-        ledger.events,
-        (entry) =>
-          entry.name === "route_view" &&
-          ["/observatory", "/landscape", "/commons"].includes(entry.route),
-      ),
-    },
-    {
-      id: "verify",
-      firstReachedAt: firstMatchingEvent(
-        ledger.events,
-        (entry) =>
-          entry.name === "proof_receipt_created" ||
-          entry.name === "proof_receipt_exported",
-      ),
-    },
-    {
-      id: "qualify",
-      firstReachedAt: firstMatchingEvent(
-        ledger.events,
-        (entry) =>
-          entry.name === "pilot_brief_exported" ||
-          entry.name === "pilot_request_opened",
-      ),
-    },
-    {
-      id: "contact",
-      firstReachedAt: firstMatchingEvent(
-        ledger.events,
-        (entry) => entry.name === "pilot_request_submitted",
-      ),
-    },
+  const definitions: Array<{ id: FunnelStageId; completionEvent: string }> = [
+    { id: "orient", completionEvent: "orientation_opened" },
+    { id: "verify", completionEvent: "proof_receipt_exported" },
+    { id: "bound", completionEvent: "boundary_evidence_reviewed" },
+    { id: "prepare", completionEvent: "pilot_brief_exported" },
+    { id: "contact", completionEvent: "pilot_request_submitted" },
   ];
-  const stages: FunnelStage[] = stageEvidence.map((stage) => ({
-    ...stage,
-    reached: stage.firstReachedAt !== null,
-  }));
+
+  const stages: FunnelStage[] = definitions.map((stage) => {
+    const firstReachedAt = firstMatchingEvent(ledger.events, stage.completionEvent);
+    return {
+      ...stage,
+      firstReachedAt,
+      reached: firstReachedAt !== null,
+    };
+  });
+
+  let reached = 0;
+  for (const stage of stages) {
+    if (!stage.reached) break;
+    reached += 1;
+  }
 
   return {
-    reached: stages.filter((stage) => stage.reached).length,
+    reached,
+    observed: stages.filter((stage) => stage.reached).length,
     total: 5,
+    nextStage: stages.find((stage) => !stage.reached)?.id || null,
     stages,
+  };
+}
+
+export function createFrictionSnapshot(
+  ledger: MeasurementLedger,
+): FrictionSnapshot {
+  const count = (name: string) =>
+    ledger.events.filter((entry) => entry.name === name).length;
+  const proofFailures = count("proof_receipt_failed");
+  const pilotFailures = count("pilot_request_failed");
+  const journeyResets = count("growth_journey_reset");
+  return {
+    proofFailures,
+    pilotFailures,
+    journeyResets,
+    total: proofFailures + pilotFailures + journeyResets,
   };
 }
 
@@ -325,16 +377,17 @@ export function createMeasurementExport(
   attribution: SessionAttribution,
 ) {
   return {
-    schema: "haven.measurement.export.v1",
+    schema: "haven.measurement.export.v2",
     generatedAt: new Date().toISOString(),
     privacy: {
-      scope: "this-browser-only",
+      scope: "this-tab-session-only",
       containsPii: false,
       networkTransmission: false,
       identifiers: false,
     },
     attribution,
     funnel: createFunnelSnapshot(ledger),
+    friction: createFrictionSnapshot(ledger),
     ledger,
   };
 }

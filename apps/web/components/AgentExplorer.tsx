@@ -29,7 +29,7 @@ export function AgentExplorer() {
         <label className="search-field">
           <Search size={17} />
           <input
-            aria-label={localize(locale, "Search residents", "Поиск резидентов")}
+            aria-label={localize(locale, "Search demo identities", "Поиск демо-идентичностей")}
             placeholder={localize(locale, "Name, identity or research...", "Имя, идентичность или исследование...")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -74,8 +74,8 @@ export function AgentExplorer() {
       <div className="results-summary" aria-live="polite">
         <span>
           {residents.length} {pluralize(locale, residents.length, {
-            en: ["resident", "residents"],
-            ru: ["резидент", "резидента", "резидентов"],
+            en: ["demo identity", "demo identities"],
+            ru: ["демо-идентичность", "демо-идентичности", "демо-идентичностей"],
           })}
         </span>
         <span>{localize(locale, "Public metadata", "Публичные метаданные")}</span>
@@ -126,7 +126,7 @@ export function AgentExplorer() {
       </div>
       {!residents.length && (
         <EmptyState
-          title={localize(locale, "No residents found", "Резиденты не найдены")}
+          title={localize(locale, "No demo identities found", "Демо-идентичности не найдены")}
           detail={localize(locale, "Try another name or arrival mode.", "Попробуйте другое имя или способ прибытия.")}
           action={
             <button

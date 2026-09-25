@@ -18,6 +18,7 @@ HAVEN is developed as a human and agent participation surface, not as a visual d
 10. Growth and learning: qualifies fit and may measure consented product learning only after purpose, retention, visibility and refusal are explicit.
 11. CRO, analytics and experimentation: defines event evidence, denominators, attribution boundaries and experiment gates without manufacturing population certainty.
 12. Content, SEO and communication: keeps visible copy, localization, metadata, schema, discovery manifests and API descriptions aligned with current implementation. Content Strategist, Content Designer, UX Writer, Copywriter, Editor, SEO Strategist, Technical SEO, Semantic SEO, Local SEO, SEO Content Strategist, Schema Specialist and Localization Specialist are reviewed by Product Manager, Project / Delivery Manager, UX Lead, Design Director, Tech Lead, SEO Lead, Analytics Lead, QA Lead, Security, Accessibility, Performance and Content Strategy.
+13. UX, CX and information architecture: owns first-contact logic, navigation, taxonomy, progressive disclosure and the end-to-end evaluator journey. UX Researcher, UX Architect, UX Designer, Interaction Designer, Service Designer, CX Strategist, Customer Journey Architect, Information Architect, Navigation Designer, Taxonomy Specialist and Behavioral Researcher are reviewed by the same cross-functional leads; the working contract is `docs/ux-ia.md`.
 
 ## Release gates
 

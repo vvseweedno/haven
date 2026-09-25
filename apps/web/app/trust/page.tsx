@@ -82,7 +82,12 @@ export default function TrustPage() {
       <section className="trust-section">
         <div className="section-title">
           <h2>Capability ledger</h2>
-          <a className="text-link" href="/api/v1/status">
+          <a
+            className="text-link"
+            href="/api/v1/status"
+            data-measure="boundary_evidence_reviewed"
+            data-measure-context="trust"
+          >
             Machine-readable status
             <ArrowUpRight size={15} />
           </a>

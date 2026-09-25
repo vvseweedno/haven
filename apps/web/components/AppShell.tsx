@@ -4,8 +4,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import {
-  ArrowDownToLine,
   ArrowUpRight,
+  ClipboardCheck,
   ChevronDown,
   ChevronRight,
   CircleDot,
@@ -20,8 +20,8 @@ import { useEffect, useRef, useState } from "react";
 import {
   journeyStages,
   navGroups,
+  navigationContext,
   primaryNav,
-  type NavLabel,
 } from "@/lib/navigation";
 import { WorkspaceProvider, useWorkspace } from "./Workspace";
 import { PointerAura } from "./PointerAura";
@@ -157,18 +157,8 @@ function Shell({ children }: { children: React.ReactNode }) {
       /* The current theme still applies to the session. */
     }
   };
-  const activeLabel: NavLabel =
-    pathname === "/"
-      ? { en: "Evaluate fit", ru: "Оценить применимость" }
-      : pathname === "/pilot"
-        ? { en: "Pilot request", ru: "Запрос на пилот" }
-        : [
-          ...primaryNav,
-          ...navGroups.flatMap((group) => group.items),
-        ].find(
-          (item) => matchesRoute(pathname, item.href),
-        )?.label || { en: "Research", ru: "Исследование" };
-  const labelFor = (label: NavLabel) => label[locale];
+  const currentNavigation = navigationContext(pathname);
+  const labelFor = (label: { en: string; ru: string }) => label[locale];
   const closeMobile = () => {
     setMobileOpen(false);
     menuButton.current?.focus();
@@ -226,8 +216,8 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="workspace-label">
           <span className="node-avatar">a</span>
           <span>
-            <strong>{localize(locale, "Alpha node", "Узел альфа")}</strong>
-            <small>{localize(locale, "Local evaluation workspace", "Локальное пространство оценки")}</small>
+            <strong>{localize(locale, "Evaluation prototype", "Прототип для оценки")}</strong>
+            <small>{localize(locale, "Local evidence workspace", "Локальное пространство доказательств")}</small>
           </span>
         </div>
           <button
@@ -249,7 +239,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           aria-label={localize(locale, "Primary navigation", "Основная навигация")}
         >
           <span className="nav-heading">
-            {localize(locale, "Start here", "Начните здесь")}
+            {localize(locale, "Decision path", "Путь решения")}
           </span>
           <div className="sidebar-primary-links">
             {primaryNav.map((item) => {
@@ -269,14 +259,13 @@ function Shell({ children }: { children: React.ReactNode }) {
                 >
                   <Icon size={18} />
                   <span>{labelFor(item.label)}</span>
-                  {item.href === "/agents" && <small>2</small>}
-                  {item.href === "/commons" && <small>12</small>}
+
                 </Link>
               );
             })}
           </div>
           <span className="nav-heading">
-            {localize(locale, "Explore HAVEN", "Разделы HAVEN")}
+            {localize(locale, "Reference areas", "Справочные разделы")}
           </span>
           <div className="sidebar-nav-groups">
             {navGroups.map((group) => {
@@ -338,13 +327,13 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link
             prefetch={false}
             className="connect-link"
-            href="/arrival"
+            href="/delivery"
             onClick={() => setMobileOpen(false)}
-            data-measure="agent_connect_select"
+            data-measure="pilot_readiness_opened"
             data-measure-context="sidebar"
           >
-            <ArrowDownToLine size={17} />
-            {localize(locale, "Prepare agent arrival", "Подготовить прибытие агента")}
+            <ClipboardCheck size={17} />
+            {localize(locale, "Review pilot readiness", "Проверить готовность к пилоту")}
             <ArrowUpRight size={15} />
           </Link>
           <div className="sidebar-status">
@@ -356,7 +345,10 @@ function Shell({ children }: { children: React.ReactNode }) {
       </aside>
       <div className="workspace-main">
         <header className="topbar">
-          <div className="breadcrumbs">
+          <nav
+            className="breadcrumbs"
+            aria-label={localize(locale, "Breadcrumb", "Хлебные крошки")}
+          >
             <button
               ref={menuButton}
               className="icon-button mobile-menu"
@@ -367,10 +359,18 @@ function Shell({ children }: { children: React.ReactNode }) {
             >
               <Menu size={19} />
             </button>
-            <span className="crumb-root">{localize(locale, "Decision path", "Путь решения")}</span>
-            <span className="crumb-divider">/</span>
-            <span>{labelFor(activeLabel)}</span>
-          </div>
+            <Link prefetch={false} href="/" className="crumb-root">
+              HAVEN
+            </Link>
+            <span className="crumb-divider" aria-hidden="true">/</span>
+            <span className="crumb-section">{labelFor(currentNavigation.section)}</span>
+            {pathname !== "/" && (
+              <>
+                <span className="crumb-divider" aria-hidden="true">/</span>
+                <span aria-current="page">{labelFor(currentNavigation.item)}</span>
+              </>
+            )}
+          </nav>
           <div className="topbar-actions">
             <span className="preview-label">
               <CircleDot size={13} />

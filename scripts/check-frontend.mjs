@@ -6,7 +6,6 @@ import {
 } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import * as ts from "typescript";
 
 function walk(root, predicate) {
   const files = [];
@@ -20,6 +19,64 @@ function walk(root, predicate) {
   };
   visit(root);
   return files;
+}
+
+function openingTags(source, tagName) {
+  const tags = [];
+  const needle = `<${tagName}`;
+  let cursor = 0;
+
+  while ((cursor = source.indexOf(needle, cursor)) !== -1) {
+    const boundary = source[cursor + needle.length];
+    if (boundary && /[A-Za-z0-9:_-]/.test(boundary)) {
+      cursor += needle.length;
+      continue;
+    }
+
+    let index = cursor + needle.length;
+    let quote = "";
+    let escaped = false;
+    let braceDepth = 0;
+
+    for (; index < source.length; index += 1) {
+      const char = source[index];
+
+      if (quote) {
+        if (escaped) {
+          escaped = false;
+          continue;
+        }
+        if (char === "\\") {
+          escaped = true;
+          continue;
+        }
+        if (char === quote) quote = "";
+        continue;
+      }
+
+      if (char === '"' || char === "'" || char === "`") {
+        quote = char;
+        continue;
+      }
+      if (char === "{") {
+        braceDepth += 1;
+        continue;
+      }
+      if (char === "}") {
+        braceDepth = Math.max(0, braceDepth - 1);
+        continue;
+      }
+      if (char === ">" && braceDepth === 0) {
+        tags.push(source.slice(cursor, index + 1));
+        cursor = index + 1;
+        break;
+      }
+    }
+
+    if (index >= source.length) break;
+  }
+
+  return tags;
 }
 
 export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) {
@@ -160,46 +217,22 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   for (const file of tsxFiles) {
     const source = readFileSync(file, "utf8");
     const display = relative(root, file).replaceAll("\\", "/");
-    const sourceFile = ts.createSourceFile(
-      display,
-      source,
-      ts.ScriptTarget.Latest,
-      true,
-      ts.ScriptKind.TSX,
-    );
 
-    const inspectJsx = (node) => {
-      if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
-        const tag = node.tagName.getText(sourceFile);
-        const attributes = node.attributes.properties.filter(ts.isJsxAttribute);
-        if (tag === "button") {
-          check(
-            attributes.some((attribute) => attribute.name.text === "type"),
-            `${display} contains a button without an explicit type.`,
-          );
-        }
-        if (tag === "a") {
-          const target = attributes.find((attribute) => attribute.name.text === "target");
-          const rel = attributes.find((attribute) => attribute.name.text === "rel");
-          const targetValue =
-            target?.initializer && ts.isStringLiteral(target.initializer)
-              ? target.initializer.text
-              : "";
-          const relValue =
-            rel?.initializer && ts.isStringLiteral(rel.initializer)
-              ? rel.initializer.text
-              : "";
-          if (targetValue === "_blank") {
-            check(
-              /(?:^|\s)(?:noopener|noreferrer)(?:\s|$)/.test(relValue),
-              `${display} opens a new tab without noopener/noreferrer.`,
-            );
-          }
-        }
-      }
-      ts.forEachChild(node, inspectJsx);
-    };
-    inspectJsx(sourceFile);
+    for (const tag of openingTags(source, "button")) {
+      check(
+        /\btype\s*=/.test(tag),
+        `${display} contains a button without an explicit type.`,
+      );
+    }
+
+    for (const tag of openingTags(source, "a")) {
+      const opensNewContext = /\btarget\s*=\s*["']_blank["']/.test(tag);
+      if (!opensNewContext) continue;
+      check(
+        /\brel\s*=\s*["'][^"']*(?:noopener|noreferrer)[^"']*["']/.test(tag),
+        `${display} opens a new tab without noopener/noreferrer.`,
+      );
+    }
 
     if (!display.endsWith("app/layout.tsx")) {
       check(

@@ -274,28 +274,28 @@ export function DeliveryRoom() {
           <Link href="/pilot" data-measure="pilot_request_opened">
             {text.pilotRequest}<Send size={16} />
           </Link>
-          <a
-            href="#pilot-readiness"
+          <button
+            type="button"
             data-measure="pilot_brief_exported"
             data-measure-mode="manual"
-            onClick={(event) => {
-              event.preventDefault();
+            onClick={() => {
               downloadJson(buildPilotBrief(locale), `haven-pilot-brief.${locale}.json`);
               measure("pilot_brief_exported", { source: "delivery" });
             }}
           >
-            {text.pilotBrief}<ArrowUpRight size={16} />
-          </a>
-          <a
-            href="#experiment-gates"
+            {text.pilotBrief}<FileDown size={16} />
+          </button>
+          <button
+            type="button"
             data-measure="analysis_brief_exported"
-            onClick={(event) => {
-              event.preventDefault();
+            data-measure-mode="manual"
+            onClick={() => {
               downloadJson(buildAnalysisBrief(locale), `haven-cro-analysis-brief.${locale}.json`);
+              measure("analysis_brief_exported", { source: "delivery" });
             }}
           >
-            {text.analysisBrief}<ArrowUpRight size={16} />
-          </a>
+            {text.analysisBrief}<FileDown size={16} />
+          </button>
           <Link href="/atelier" data-measure="atelier_opened">{text.atelier}<ArrowUpRight size={16} /></Link>
           <a href="/delivery.json" target="_blank" rel="noreferrer" data-measure="delivery_contract_opened">{text.documentation}<ArrowUpRight size={16} /></a>
         </div>

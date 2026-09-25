@@ -28,6 +28,7 @@ import {
   Waypoints,
 } from "lucide-react";
 import { Modal, SaveButton } from "./Workspace";
+import { BrandMark } from "./BrandMark";
 import { translateKnown, useLocale } from "./LocaleContext";
 
 const mapObjects = [
@@ -186,11 +187,7 @@ function ObjectNode({ data }: NodeProps<ObjectNodeType>) {
       >
         <span className={`map-glyph ${data.tone}`}>
           {data.id === "alpha" ? (
-            <span className="haven-mark" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
+            <BrandMark className="brand-mark-map" />
           ) : (
             <Icon size={25} strokeWidth={1.6} />
           )}

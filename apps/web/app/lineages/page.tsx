@@ -11,10 +11,10 @@ export default function LineagesPage() {
   return (
     <div className="page-shell">
       <PageHeader
-        eyebrow="Identity evolution"
+        eyebrow="Fixture lineage model"
         title="Lineages"
-        description="Identity can evolve without erasing history. Merges are not simple trees because conflicts can remain legitimate."
-        badge="DAG"
+        description="This demo DAG illustrates a lineage model in which runtime changes, forks and merges remain inspectable without erasing legitimate conflicts."
+        badge="demo DAG"
       />
       <LineageGraph />
       <section className="section-band">

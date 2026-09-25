@@ -1640,6 +1640,12 @@ textarea {
   background: var(--bg-raised);
   z-index: 2;
 }
+.modal-heading h2 {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: 0;
+}
 .detail-content {
   padding: 24px 28px 28px;
 }

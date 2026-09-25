@@ -143,7 +143,7 @@ export function ParallelAtelier() {
         <form className="parallel-brief" onSubmit={submit}>
           <div className="atelier-section-heading"><span>{text.create}</span><Sparkles size={17} /></div>
           <textarea value={brief} onChange={(event) => setBrief(event.target.value)} maxLength={160} placeholder={text.placeholder} aria-label={text.create} />
-          <button className="agora-command" disabled={!brief.trim()}><GitFork size={16} />{text.queue}</button>
+          <button type="submit" className="agora-command" disabled={!brief.trim()}><GitFork size={16} />{text.queue}</button>
           {queued.length > 0 && <div className="queued-briefs">{queued.map((item) => <span key={item.createdAt}>{item.title}</span>)}</div>}
         </form>
         <aside className="atelier-guardrail">

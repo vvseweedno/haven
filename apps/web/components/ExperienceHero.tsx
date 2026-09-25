@@ -170,25 +170,25 @@ export function ExperienceHero() {
               <>
                 <Link
                   prefetch={false}
-                  href="/proof-desk#proof-workbench"
+                  href="/landscape"
                   className="button primary"
                   data-measure="hero_cta_click"
                   data-measure-mode="manual"
-                  onClick={() => measureCta("primary", "/proof-desk")}
+                  onClick={() => measureCta("primary", "/landscape")}
                 >
-                  <Fingerprint size={16} />
-                  {text(activeJourney.proofAction, activeJourney.proofActionRu)}
+                  <ArrowRight size={16} />
+                  {text("Evaluate fit first", "Сначала оценить применимость")}
                 </Link>
                 <Link
                   prefetch={false}
-                  href={activeJourney.href}
+                  href="/proof-desk#proof-workbench"
                   className="text-link"
                   data-measure="hero_cta_click"
                   data-measure-mode="manual"
-                  onClick={() => measureCta("secondary", activeJourney.href)}
+                  onClick={() => measureCta("secondary", "/proof-desk")}
                 >
-                  {text(activeJourney.routeCta, activeJourney.routeCtaRu)}
-                  <ArrowRight size={15} />
+                  <Fingerprint size={15} />
+                  {text("Verify a concrete claim", "Проверить конкретное утверждение")}
                 </Link>
               </>
             ) : (

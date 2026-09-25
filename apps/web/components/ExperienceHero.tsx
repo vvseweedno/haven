@@ -14,7 +14,7 @@ import {
   CTA_EXPERIMENT_ID,
   assignCtaExperiment,
   emitHavenMeasure,
-  type ExperimentVariant,
+  type ExperimentAssignment,
 } from "@/lib/experiments";
 import {
   GROWTH_STORAGE_KEY,
@@ -30,8 +30,8 @@ import { localize, useLocale } from "./LocaleContext";
 export function ExperienceHero() {
   const { locale } = useLocale();
   const [activeJourneyIndex, setActiveJourneyIndex] = useState(0);
-  const [experimentVariant, setExperimentVariant] =
-    useState<ExperimentVariant | null>(null);
+  const [experimentAssignment, setExperimentAssignment] =
+    useState<ExperimentAssignment | null>(null);
   const text = (english: string, russian: string) =>
     localize(locale, english, russian);
   const activeJourney = humanJourneys[activeJourneyIndex];
@@ -51,14 +51,15 @@ export function ExperienceHero() {
   }, []);
 
   useEffect(() => {
-    const variant = assignCtaExperiment();
-    setExperimentVariant(variant);
+    const assignment = assignCtaExperiment();
+    setExperimentAssignment(assignment);
     queueMicrotask(() => {
       emitHavenMeasure({
         measure: "hero_cta_exposure",
         surface: "experience_hero",
         experiment: CTA_EXPERIMENT_ID,
-        variant,
+        variant: assignment.variant,
+        mode: assignment.source,
       });
     });
   }, []);
@@ -80,13 +81,12 @@ export function ExperienceHero() {
     emitHavenMeasure({
       measure: "audience_context_selected",
       surface: "experience_hero",
-      experiment: CTA_EXPERIMENT_ID,
-      variant: experimentVariant || "a",
       audience: journeyAudiences[index],
     });
   };
 
-  const variant = experimentVariant || "a";
+  const variant = experimentAssignment?.variant || "a";
+  const experimentMode = experimentAssignment?.source || "control";
   const routePrimaryLabels = [
     {
       en: "Inspect the integration boundary",
@@ -102,6 +102,7 @@ export function ExperienceHero() {
       surface: `experience_hero_${position}`,
       experiment: CTA_EXPERIMENT_ID,
       variant,
+      mode: experimentMode,
       audience: journeyAudiences[activeJourneyIndex],
       target,
     });
@@ -113,6 +114,7 @@ export function ExperienceHero() {
       aria-labelledby="experience-title"
       data-experiment={CTA_EXPERIMENT_ID}
       data-variant={variant}
+      data-experiment-mode={experimentMode}
       data-measure="hero_cta_exposure"
       data-measure-mode="manual"
     >
@@ -160,6 +162,7 @@ export function ExperienceHero() {
             aria-live="polite"
             data-experiment={CTA_EXPERIMENT_ID}
             data-variant={variant}
+            data-experiment-mode={experimentMode}
             data-measure="hero_cta_order"
             data-measure-mode="manual"
           >

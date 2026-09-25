@@ -98,6 +98,7 @@ export default function ObjectInspector() {
           <div className="inspector-source-footer">
             <small>{filename}</small>
             <button
+              type="button"
               className="button primary"
               disabled={busy || !source.trim()}
               onClick={async () => {
@@ -175,6 +176,7 @@ export default function ObjectInspector() {
                 approval.
               </p>
               <button
+                type="button"
                 className="button"
                 onClick={() =>
                   downloadJson(report, "haven-object-inspection.json")

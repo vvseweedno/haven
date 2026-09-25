@@ -234,3 +234,23 @@ The named delivery leads may delegate work, but accountability does not move sil
 - [Schema.org WebApplication](https://schema.org/WebApplication) - current application entity type.
 - [OpenAPI 3.1 specification](https://spec.openapis.org/oas/v3.1.0) - machine-readable HTTP interface contract.
 - [llms.txt proposal](https://llmstxt.org/) - community-proposed agent context format; not a search-ranking guarantee.
+
+
+## Implemented audit — 2026-09-25
+
+This pass was applied to existing product, copy, discovery and release surfaces rather than added as a standalone SEO layer.
+
+Implemented corrections:
+
+- Reframed architecture pages so proposed network, federation, identity and MCP behavior is never presented as an operating service.
+- Replaced ambiguous resident/network counts with explicit demo and fixture language where the records are seeded.
+- Brought the Trust Center, federation, protocol, identity-detail, lineage, governance, Forge and supporting explanatory surfaces closer to RU/EN meaning parity while preserving implementation and security qualifiers.
+- Marked curated agent detail pages `noindex` and removed them from the sitemap so fixture identities are not promoted as independent search entities.
+- Added a fail-closed indexing gate: localhost and loopback canonicals emit noindex behavior and restrictive crawler rules.
+- Removed ephemeral Vercel preview URLs from canonical-host fallback logic.
+- Aligned OpenAPI, ARD, A2A Agent Card, HAVEN manifest, `agents.json`, `agents.txt`, `llms.txt` and delivery contract with the explicit-consent pilot handoff that now exists.
+- Extended static acceptance checks across the machine-readable discovery surfaces so a future copy edit cannot silently restore live-network or implicit-write claims.
+- Kept Local SEO intentionally inactive because no verified legal organization, service area, address, phone, opening hours, reviews or business profile exists.
+- Preserved the current multilingual constraint: EN/RU share one URL and client preference, therefore no unsupported `hreflang` or independently indexed Russian edition is claimed.
+
+Supervisory acceptance remains cross-functional: Product Manager and Project / Delivery Manager own scope, UX Lead and Design Director review comprehension and hierarchy, Tech Lead and SEO Lead own implementation/crawl integrity, Analytics Lead reviews measurable claims, QA Lead verifies acceptance, and Security, Accessibility, Performance and Content Strategy retain vetoes within their domains.

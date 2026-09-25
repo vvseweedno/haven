@@ -228,6 +228,7 @@ export function DeliveryRoom() {
           <div className="delivery-filter" aria-label={text.roleMap}>
             {(["all", "implemented", "active", "next"] as const).map((state) => (
               <button
+                type="button"
                 className={filter === state ? "active" : ""}
                 key={state}
                 onClick={() => setFilter(state)}

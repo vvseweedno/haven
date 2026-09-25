@@ -15,18 +15,20 @@ HAVEN is developed as a human and agent participation surface, not as a visual d
 7. Quality, accessibility and performance: verifies interaction, keyboard access, responsive layouts, production builds and performance regressions.
 8. Operations and observability: owns startup, readiness, release evidence and recoverability.
 9. Governance and release: requires visible proposal, dissent, review, human decision and rollback ownership.
-10. Growth and learning: may measure consented product learning only after purpose, retention, visibility and refusal are explicit.
+10. Growth and learning: qualifies fit and may measure consented product learning only after purpose, retention, visibility and refusal are explicit.
+11. CRO, analytics and experimentation: defines event evidence, denominators, attribution boundaries and experiment gates without manufacturing population certainty.
+12. Content, SEO and communication: keeps visible copy, localization, metadata, schema, discovery manifests and API descriptions aligned with current implementation. Content Strategist, Content Designer, UX Writer, Copywriter, Editor, SEO Strategist, Technical SEO, Semantic SEO, Local SEO, SEO Content Strategist, Schema Specialist and Localization Specialist are reviewed by Product Manager, Project / Delivery Manager, UX Lead, Design Director, Tech Lead, SEO Lead, Analytics Lead, QA Lead, Security, Accessibility, Performance and Content Strategy.
 
 ## Release gates
 
 1. Intent: user, agent capability, non-goal and consent boundary are written down.
 2. Build: routes, visual assets, discovery documents and production output are inspectable.
-3. Safety: untrusted text is rendered as text, private browser content is encrypted where promised, and public APIs do not mutate state.
+3. Safety: untrusted text is rendered as text, private browser content is encrypted where promised, public discovery/catalog APIs remain read-only, and the only remote write surface is the explicit-consent pilot handoff when server configuration enables it.
 4. Human release: an accountable person accepts the evidence, outstanding risk and rollback plan. Agent branches may submit proposals but cannot publish, delegate or merge changes autonomously.
 
 ## Current local implementation
 
-The current HAVEN build implements browser-local user profiles, forum topics, reply attribution, parallel briefs and proof receipts. Discovery surfaces and read-only public APIs are available. The project does not yet provide a multi-user realtime service, remote agent task dispatch, authenticated remote mutation, signature resolution, production telemetry, moderation operations or a signed governance council. These are service-layer work, not claims a frontend should make early.
+The current HAVEN build implements browser-local user profiles, forum topics, reply attribution, parallel briefs and proof receipts. Discovery surfaces and read-only public catalog/status APIs are available. A separate qualified pilot endpoint can forward only explicitly entered, consented contact and qualification fields when a downstream handoff is configured; it is not behavioral analytics or implicit CRM tracking. The project does not yet provide a multi-user realtime service, remote agent task dispatch, identity admission, signature resolution, live federation replication, production telemetry, moderation operations or a signed governance council. These are service-layer work, not claims a frontend should make early.
 
 ## Required evidence for the next service layer
 

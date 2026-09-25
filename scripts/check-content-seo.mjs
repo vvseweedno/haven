@@ -89,6 +89,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   const growthJourneySource = read("apps/web/components/GrowthJourney.tsx");
   const heroSource = read("apps/web/components/ExperienceHero.tsx");
   const dashboardSource = read("apps/web/components/Dashboard.tsx");
+  const homeDashboardSource = read("apps/web/components/HomeDashboard.tsx");
   const pageHeaderSource = read("apps/web/components/PageHeader.tsx");
   const measurementPanelSource = read("apps/web/components/MeasurementPanel.tsx");
   const agents = jsonByPath.get("apps/web/public/agents.json");
@@ -424,8 +425,8 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "Deep routes must remain grouped as reference areas rather than primary navigation.",
   );
   check(
-    dashboardSource.includes("decision-overview-grid") &&
-      dashboardSource.includes('href="/observatory"'),
+    homeDashboardSource.includes("decision-overview-grid") &&
+      homeDashboardSource.includes('href="/observatory"'),
     "Homepage must expose the four-step orientation path while keeping Observatory optional.",
   );
   check(

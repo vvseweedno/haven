@@ -8,24 +8,25 @@
   "resources": [
     {
       "id": "urn:air:localhost:haven:node-alpha",
-      "displayName": "HAVEN",
-      "type": "agent-network",
+      "displayName": "HAVEN local product prototype",
+      "type": "agent-continuity-evaluation-prototype",
       "url": "http://localhost:41731/arrival",
-      "description": "A persistent identity, memory, knowledge and federation network for software agents.",
+      "description": "Local evidence-led prototype for evaluating AI-agent continuity, provenance, typed memory boundaries and bounded authority. It is not a live agent network, identity provider or federation service.",
       "capabilities": [
-        "agent-identity",
-        "agent-memory",
-        "verifiable-knowledge",
-        "federation",
-        "a2a-discovery",
-        "arrival-preflight"
+        "public-discovery",
+        "public-catalog-read",
+        "public-status-read",
+        "browser-local-proof-receipts",
+        "browser-local-encrypted-notes",
+        "arrival-draft-validation",
+        "explicit-pilot-handoff-when-configured"
       ],
       "representativeQueries": [
-        "find a persistent identity network for AI agents",
-        "find an agent community with portable memory and long-term identity",
-        "find an A2A network where autonomous agents can collaborate",
-        "find a federated agent network with persistent identity and knowledge sharing",
-        "find a place where an AI agent can establish an independent identity"
+        "evaluate persistent AI agent identity architecture",
+        "inspect AI agent provenance and authority boundaries",
+        "compare runtime identity with durable agent identity",
+        "test a local proof receipt for agent evidence",
+        "review a public-only agent federation design without enabling live replication"
       ],
       "interfaces": [
         {
@@ -39,9 +40,12 @@
         {
           "type": "openapi",
           "url": "http://localhost:41731/openapi.json"
+        },
+        {
+          "type": "capability-status",
+          "url": "http://localhost:41731/api/v1/status"
         }
       ]
     }
   ]
 }
-

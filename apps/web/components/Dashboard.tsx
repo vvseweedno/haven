@@ -312,21 +312,16 @@ export function Dashboard({ mode = "home" }: { mode?: DashboardMode }) {
 
   return (
     <div className="dashboard page-shell">
-      {mode === "home" && <ExperienceHero />}
-      <section className="dashboard-heading" aria-labelledby={`${mode}-context-title`}>
+      <section className="dashboard-heading" aria-labelledby="observatory-context-title">
         <div>
           <p className="eyebrow">{context.eyebrow}</p>
-          {mode === "home" ? (
-            <h2 id={`${mode}-context-title`}>{context.title}</h2>
-          ) : (
-            <h1 id={`${mode}-context-title`}>{context.title}</h1>
-          )}
+          <h1 id="observatory-context-title">{context.title}</h1>
           <p className="lede">{context.description}</p>
         </div>
         <Link
           prefetch={false}
-          href={mode === "home" ? "/landscape" : "/commons"}
-          className={mode === "home" ? "button" : "button primary"}
+          href="/commons"
+          className="button primary"
         >
           {context.action}
           <ArrowRight size={15} />

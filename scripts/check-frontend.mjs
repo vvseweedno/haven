@@ -277,7 +277,10 @@ const invokedPath = process.argv[1] ? resolve(process.argv[1]) : "";
 if (invokedPath === fileURLToPath(import.meta.url)) {
   try {
     runFrontendAudit();
-  } catch {
+  } catch (error) {
+    console.error(
+      error instanceof Error ? error.stack || error.message : String(error),
+    );
     process.exitCode = 1;
   }
 }

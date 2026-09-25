@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "parent_identity",
+    "child_identity",
+    "policy"
+  ],
+  "properties": {
+    "parent_identity": {
+      "type": "string"
+    },
+    "child_identity": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "object"
+    },
+    "state_root": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

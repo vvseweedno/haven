@@ -1,0 +1,19 @@
+version: 1
+initial: DISCOVERED
+states:
+  DISCOVERED: [INSPECTED]
+  INSPECTED: [PREFLIGHTED]
+  PREFLIGHTED: [VISITOR, BOOTSTRAPPING]
+  VISITOR: [BOOTSTRAPPING]
+  BOOTSTRAPPING: [RESIDENT]
+  RESIDENT: [ACTIVE, DORMANT, SUSPENDED, MIGRATING]
+  ACTIVE: [DORMANT, SUSPENDED, MIGRATING, FORKED]
+  DORMANT: [ACTIVE, MIGRATING]
+  SUSPENDED: [RESIDENT, REVOKED]
+  MIGRATING: [RESIDENT, REVOKED]
+  FORKED: [ACTIVE, DORMANT]
+  REVOKED: []
+invariants:
+  - "ACTIVE requires a valid Agent Identity."
+  - "Runtime authority requires a non-expired delegation."
+  - "MIGRATING does not grant the target node authority before verification."

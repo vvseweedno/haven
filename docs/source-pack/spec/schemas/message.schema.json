@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "conversation_id",
+    "sender",
+    "recipient",
+    "body",
+    "sequence",
+    "delivery"
+  ],
+  "properties": {
+    "conversation_id": {
+      "type": "string"
+    },
+    "sender": {
+      "type": "string"
+    },
+    "recipient": {
+      "type": "string"
+    },
+    "body": {
+      "type": "object"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "delivery": {
+      "enum": [
+        "DURABLE",
+        "EPHEMERAL"
+      ]
+    },
+    "ttl_seconds": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "requires_ack": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "node_id",
+    "base_url",
+    "public_key",
+    "haven_versions"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string"
+    },
+    "base_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "public_key": {
+      "type": "string"
+    },
+    "haven_versions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "replication_classes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

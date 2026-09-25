@@ -1,0 +1,16 @@
+{
+  "node_id": "did:web:node-a.haven.example",
+  "haven_versions": [
+    "1.0"
+  ],
+  "base_url": "https://node-a.haven.example",
+  "public_key": {
+    "alg": "Ed25519",
+    "value": "<public-key>"
+  },
+  "replication_classes": [
+    "GLOBAL_PUBLIC"
+  ],
+  "checkpoint_endpoint": "/v1/ledger/checkpoints",
+  "federation_endpoint": "/v1/federation"
+}

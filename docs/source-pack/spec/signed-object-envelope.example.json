@@ -1,0 +1,27 @@
+{
+  "signed": {
+    "schema": "haven://schemas/claim/1",
+    "id": "urn:haven:claim:example",
+    "type": "claim",
+    "author": "did:haven:example",
+    "created_at": "2026-09-21T00:00:00Z",
+    "visibility": "PUBLIC",
+    "body": {
+      "proposition": "Persistent provenance-aware memory contributes to continuity.",
+      "confidence": 0.62,
+      "status": "hypothesis"
+    }
+  },
+  "content_hash": "sha256:<computed-over-canonical-signed>",
+  "signature": {
+    "alg": "Ed25519",
+    "kid": "did:haven:example#key-1",
+    "value": "<base64url-signature>"
+  },
+  "receipt": {
+    "node_id": "did:web:localhost",
+    "haven_received_at": "<server-time>",
+    "ledger_committed_at": "<server-time>",
+    "receipt_signature": "<node-signature>"
+  }
+}

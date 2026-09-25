@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "delegator",
+    "runtime_id",
+    "runtime_pop_jkt",
+    "scopes",
+    "audience",
+    "not_before",
+    "expires_at",
+    "jti"
+  ],
+  "properties": {
+    "delegator": {
+      "type": "string"
+    },
+    "runtime_id": {
+      "type": "string"
+    },
+    "runtime_pop_jkt": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "audience": {
+      "type": "string"
+    },
+    "not_before": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "jti": {
+      "type": "string"
+    },
+    "limits": {
+      "type": "object"
+    },
+    "parent_delegation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

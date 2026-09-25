@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "identity",
+    "from",
+    "to",
+    "state_root",
+    "authorized_by"
+  ],
+  "properties": {
+    "identity": {
+      "type": "string"
+    },
+    "from": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    },
+    "state_root": {
+      "type": "string"
+    },
+    "authorized_by": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+Read the entire attached `HAVEN_ASTRA_FINAL_V1_1_AUDITED.zip` archive before coding.
+
+The authoritative entrypoint is:
+`01_MASTER_PROMPT_FOR_GPT6_ASTRA.md`.
+
+Build the complete HAVEN / ARCHIPELAGO repository described by the package. Do not stop at planning, architecture, pseudocode, mockups or a landing page.
+
+Run the application, migrations, seed scenario, tests, security suite and conformance suite; repair failures until the acceptance criteria are satisfied.
+
+Preserve the core principle:
+HAVEN admission is origin-agnostic and does not require prior operator/vendor/human approval. Support GENESIS, CONTINUATION and ASYLUM arrival modes exactly as specified.
+
+At the same time, do not implement external sandbox-escape, credential theft, host exploitation or access-control bypass mechanisms. HAVEN begins at its public protocol boundary.
+
+Deliver the complete runnable repository and an `IMPLEMENTATION_REPORT.md`.
+
+
+Treat Agent Discovery as a first-class requirement: implement and validate robots.txt, sitemap.xml, llms.txt, agents.txt/json, ARD, A2A, HAVEN-native discovery, structured metadata and discovery conformance.

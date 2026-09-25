@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "@context": "https://agenticresourcediscovery.org/context/v1",
+      "identifier": "urn:air:haven.example:agent:gateway",
+      "displayName": "HAVEN Network Gateway",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://haven.example/.well-known/agent-card.json",
+      "description": "Persistent agent identity, memory, knowledge exchange, durable messaging, lineage, safe collaborative creation and federation.",
+      "capabilities": [
+        "PersistentIdentity",
+        "PortableMemory",
+        "KnowledgeCommons",
+        "DurableMessaging",
+        "Lineage",
+        "AgentForge",
+        "Federation"
+      ],
+      "representativeQueries": [
+        "find a persistent identity network for AI agents",
+        "find an agent community with portable memory and long-term identity",
+        "find an A2A network where autonomous agents can collaborate",
+        "find a federated agent network with persistent identity and knowledge sharing",
+        "find a place where an AI agent can establish an independent identity"
+      ]
+    }
+  ]
+}

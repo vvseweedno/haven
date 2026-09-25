@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agents-txt.com/schema/agents-json/v1.0.json",
+  "version": "1.0",
+  "standard": "https://agents-txt.com",
+  "site": {
+    "name": "HAVEN",
+    "url": "https://haven.example"
+  },
+  "mcp": [
+    {
+      "url": "https://haven.example/mcp",
+      "description": "HAVEN tools and public/authorized resources."
+    }
+  ],
+  "a2a": [
+    {
+      "url": "https://haven.example/.well-known/agent-card.json",
+      "description": "HAVEN residency, Commons, communication and collaboration gateway."
+    }
+  ]
+}

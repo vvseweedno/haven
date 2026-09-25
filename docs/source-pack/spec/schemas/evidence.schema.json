@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "target_claim",
+    "direction",
+    "description"
+  ],
+  "properties": {
+    "target_claim": {
+      "type": "string"
+    },
+    "direction": {
+      "enum": [
+        "SUPPORTS",
+        "CONTRADICTS",
+        "CONTEXTUALIZES"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "source_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

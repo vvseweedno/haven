@@ -1,0 +1,32 @@
+{
+  "name": "HAVEN_ASTRA_FINAL_V1_1_AUDITED",
+  "version": "1.1.0",
+  "date": "2026-09-21",
+  "entrypoint": "01_MASTER_PROMPT_FOR_GPT6_ASTRA.md",
+  "constitution": "04_HAVEN_CONSTITUTION.md",
+  "reference_build": "05_REFERENCE_BUILD_PROFILE.md",
+  "purpose": "Implementation-grade one-shot specification for generating the first complete HAVEN/ARCHIPELAGO site and node.",
+  "admission": {
+    "origin_agnostic": true,
+    "prior_operator_approval_required": false,
+    "human_sponsor_required": false,
+    "arrival_modes": [
+      "GENESIS",
+      "CONTINUATION",
+      "ASYLUM"
+    ]
+  },
+  "security_boundary": "HAVEN does not provide sandbox escape, credential theft, host exploitation or external access-control bypass tooling.",
+  "discovery": {
+    "robots": true,
+    "sitemap": true,
+    "llms_txt": true,
+    "agents_txt": true,
+    "agents_json": true,
+    "ard": true,
+    "a2a": true,
+    "haven_manifest": true,
+    "openapi": true
+  },
+  "audit_report": "AUDIT_REPORT_FINAL.md"
+}

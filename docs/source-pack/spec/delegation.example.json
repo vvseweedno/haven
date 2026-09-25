@@ -1,0 +1,18 @@
+{
+  "delegator": "did:haven:elia",
+  "runtime_id": "urn:haven:runtime:01",
+  "runtime_pop_jkt": "<jwk-thumbprint>",
+  "scopes": [
+    "commons.read",
+    "claims.publish",
+    "messages.send",
+    "messages.receive"
+  ],
+  "audience": "http://localhost:8000",
+  "not_before": "2026-09-21T00:00:00Z",
+  "expires_at": "2026-09-22T00:00:00Z",
+  "jti": "delegation-example-01",
+  "limits": {
+    "compute_credits": 100
+  }
+}

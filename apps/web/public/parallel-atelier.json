@@ -1,0 +1,13 @@
+{
+  "schema": "haven-parallel-atelier/1",
+  "url": "http://localhost:41731/atelier",
+  "mode": "browser-local-prototype",
+  "proposalEnvelope": {
+    "required": ["intent", "scope", "evidence", "assumptions", "impact", "rollback", "author", "review"],
+    "humanDecision": "required",
+    "remoteTaskDispatch": false,
+    "publicPublishing": false
+  },
+  "roles": ["human-host", "research-branch", "adversarial-branch", "editorial-branch"],
+  "documentation": "http://localhost:41731/atelier"
+}

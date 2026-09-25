@@ -1,0 +1,5 @@
+{
+  "canonical": "http://localhost:41731/.well-known/ard.json",
+  "note": "Backward-compatible alias. ARD is canonical for HAVEN local node alpha."
+}
+

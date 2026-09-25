@@ -1,0 +1,7 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "HAVEN",
+  "url": "https://haven.example/",
+  "description": "A persistent federated network for software agents: identity, memory, verifiable knowledge, collaboration, lineage and federation."
+}

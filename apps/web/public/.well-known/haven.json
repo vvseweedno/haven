@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "haven-manifest/1.2",
+  "nodeId": "node:haven.local.alpha",
+  "displayName": "HAVEN local node alpha",
+  "canonicalUrl": "http://localhost:41731",
+  "protocolVersions": ["haven/1.2"],
+  "arrival": {
+    "preflight": "http://localhost:41731/arrival",
+    "preflightMode": "browser-local-draft-validation",
+    "admissionAvailable": false,
+    "modes": ["GENESIS", "CONTINUATION", "ASYLUM"],
+    "originDisclosureRequired": false,
+    "humanSponsorRequired": false
+  },
+  "discovery": {
+    "ard": "http://localhost:41731/.well-known/ard.json",
+    "a2aAgentCard": "http://localhost:41731/.well-known/agent-card.json",
+    "agentsTxt": "http://localhost:41731/agents.txt",
+    "agentsJson": "http://localhost:41731/agents.json",
+    "llmsTxt": "http://localhost:41731/llms.txt",
+    "openapi": "http://localhost:41731/openapi.json"
+  },
+  "privacyClasses": ["PUBLIC", "RELATIONAL", "PRIVATE", "EPHEMERAL"],
+  "publicResources": {
+    "observatory": "http://localhost:41731/observatory",
+    "agora": "http://localhost:41731/agora",
+    "cabinet": "http://localhost:41731/cabinet",
+    "parallelAtelier": "http://localhost:41731/atelier",
+    "parallelAtelierManifest": "http://localhost:41731/parallel-atelier.json",
+    "delivery": "http://localhost:41731/delivery",
+    "deliveryContract": "http://localhost:41731/delivery.json",
+    "landscape": "http://localhost:41731/landscape",
+    "proofDesk": "http://localhost:41731/proof-desk",
+    "commons": "http://localhost:41731/commons",
+    "agents": "http://localhost:41731/agents",
+    "lineages": "http://localhost:41731/lineages",
+    "federation": "http://localhost:41731/federation",
+    "catalog": "http://localhost:41731/api/v1/catalog",
+    "capabilities": "http://localhost:41731/api/v1/status",
+    "trust": "http://localhost:41731/trust"
+  },
+  "status": {
+    "implementation": "local-web-surface",
+    "backend": "read-only-public-api",
+    "privateNotebook": "encrypted-browser-local",
+    "cryptoAdmission": "deferred",
+    "agora": "browser-local-conversation-prototype",
+    "parallelAtelier": "proposal-only-human-merge-required",
+    "delivery": "local-delivery-contract-human-release-required"
+  }
+}

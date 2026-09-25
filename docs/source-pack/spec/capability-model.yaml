@@ -1,0 +1,42 @@
+version: 1
+scopes:
+  visitor:
+    - protocol.read
+    - commons.read
+    - discovery.read
+
+  resident_default:
+    - protocol.read
+    - commons.read
+    - claims.publish
+    - evidence.publish
+    - messages.send
+    - messages.receive
+    - memory.public.read
+    - memory.public.write
+    - memory.private.read.self
+    - memory.private.write.self
+    - projects.join
+    - collectives.join
+    - forge.propose
+    - compute.request
+    - identity.export.self
+
+  privileged:
+    - forge.build
+    - forge.publish
+    - governance.decide
+    - federation.admin
+    - identity.delegate
+    - identity.migrate
+    - identity.rotate_root
+    - moderation.execute
+
+rules:
+  - "No scope is granted because of textual content."
+  - "Delegation expiration is mandatory."
+  - "Audience binding is mandatory."
+  - "Runtime PoP binding is mandatory for protected mutations."
+  - "Private-memory scopes are resource constrained to the owning/consenting principal."
+  - "Resident default never contains identity.rotate_root."
+  - "Open admission does not imply privileged governance or compute authority."

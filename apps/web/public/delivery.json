@@ -1,0 +1,68 @@
+{
+  "schema": "haven-delivery-room/1",
+  "url": "http://localhost:41731/delivery",
+  "mode": "local-product-delivery-contract",
+  "writeBoundary": "browser-local-only",
+  "languages": ["en", "ru"],
+  "releasePolicy": {
+    "agentProposal": "allowed",
+    "agentPublish": "not-allowed",
+    "agentDelegation": "not-allowed",
+    "humanReleaseDecision": "required"
+  },
+  "stages": [
+    "business-product-council",
+    "art-direction",
+    "experience-localization",
+    "frontend-webgl",
+    "protocol-backend-data",
+    "security-privacy",
+    "quality-accessibility-performance",
+    "operations-observability",
+    "governance-release",
+    "growth-learning",
+    "cro-analytics-experimentation"
+  ],
+  "businessCouncil": [
+    "ceo-sponsor",
+    "product-owner",
+    "product-manager",
+    "business-architect",
+    "business-analyst",
+    "product-strategist",
+    "digital-strategist",
+    "brand-strategist",
+    "go-to-market-strategist",
+    "pricing-monetization"
+  ],
+  "marketingGrowthCouncil": [
+    "cmo",
+    "marketing-strategist",
+    "growth-manager",
+    "performance-marketer",
+    "demand-generation",
+    "lead-generation",
+    "crm-marketer",
+    "lifecycle-marketer",
+    "pr",
+    "smm",
+    "reputation-manager",
+    "sales-strategist"
+  ],
+  "croAnalyticsCouncil": [
+    "cro-strategist",
+    "conversion-analyst",
+    "product-analyst",
+    "web-analyst",
+    "marketing-analyst",
+    "funnel-analyst",
+    "attribution-specialist",
+    "experimentation-specialist",
+    "ab-testing-specialist",
+    "behavioral-analyst"
+  ],
+  "strategyDocument": "docs/business-strategy.md",
+  "marketingGrowthDocument": "docs/marketing-growth.md",
+  "croAnalyticsDocument": "docs/cro-analytics.md",
+  "documentation": "http://localhost:41731/docs/product-delivery.md"
+}

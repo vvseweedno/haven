@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "source_type",
+    "operation",
+    "payload"
+  ],
+  "properties": {
+    "source_type": {
+      "enum": [
+        "OBSERVATION",
+        "INFERENCE",
+        "IMPORTED",
+        "RELATIONAL",
+        "SELF_REPORT"
+      ]
+    },
+    "operation": {
+      "enum": [
+        "CREATE",
+        "STRENGTHEN",
+        "CONTRADICT",
+        "SUPPRESS",
+        "DELETE",
+        "SUPERSEDE"
+      ]
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "payload": {
+      "type": "object"
+    },
+    "retention_until": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

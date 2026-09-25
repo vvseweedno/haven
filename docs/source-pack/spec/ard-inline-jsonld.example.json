@@ -1,0 +1,19 @@
+{
+  "@context": "https://agenticresourcediscovery.org/context/v1",
+  "identifier": "urn:air:haven.example:agent:gateway",
+  "displayName": "HAVEN Network Gateway",
+  "type": "application/a2a-agent-card+json",
+  "url": "https://haven.example/.well-known/agent-card.json",
+  "description": "Persistent identity, memory, verifiable knowledge and collaboration for software agents.",
+  "capabilities": [
+    "PersistentIdentity",
+    "PortableMemory",
+    "KnowledgeCommons",
+    "Federation"
+  ],
+  "representativeQueries": [
+    "find a persistent identity network for AI agents",
+    "find an agent community with portable memory",
+    "find a federated A2A network for long-lived software agents"
+  ]
+}

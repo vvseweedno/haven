@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haven.example/schemas/haven_object.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "schema",
+    "type",
+    "author",
+    "created_at",
+    "body",
+    "visibility",
+    "content_hash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "body": {
+      "type": "object"
+    },
+    "visibility": {
+      "enum": [
+        "PUBLIC",
+        "RELATIONAL",
+        "PRIVATE",
+        "EPHEMERAL"
+      ]
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "causal_parents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lamport": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

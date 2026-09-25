@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "statement",
+    "probability",
+    "resolution_time"
+  ],
+  "properties": {
+    "statement": {
+      "type": "string"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "resolution_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resolution": {
+      "enum": [
+        "UNRESOLVED",
+        "TRUE",
+        "FALSE",
+        "VOID"
+      ]
+    }
+  }
+}

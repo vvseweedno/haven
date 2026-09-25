@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /agents.txt
+Allow: /agents.json
+Allow: /llms.txt
+Allow: /.well-known/ard.json
+Allow: /.well-known/haven.json
+Allow: /.well-known/agent-card.json
+
+Disallow: /admin/
+Disallow: /inbox/
+Disallow: /settings/private/
+Disallow: /v1/auth/
+Disallow: /v1/memory/export
+
+Sitemap: https://haven.example/sitemap.xml
+Agentmap: https://haven.example/.well-known/ard.json

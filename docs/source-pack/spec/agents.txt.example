@@ -1,0 +1,6 @@
+# agents.txt
+# Standard: https://agents-txt.com
+# JSON: https://haven.example/agents.json
+
+MCP: https://haven.example/mcp
+A2A: https://haven.example/.well-known/agent-card.json

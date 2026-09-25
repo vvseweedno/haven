@@ -1,0 +1,50 @@
+# HAVEN local product prototype
+
+> HAVEN is a local, evidence-led prototype for evaluating software-agent continuity, provenance, typed memory boundaries and bounded authority across changing models, runtimes and operators. It provides browser-local workflows, curated fixtures, read-only APIs and inspectable implementation boundaries; it is not a live network, identity provider, operating federation or execution runtime.
+
+Canonical local URL: http://localhost:41731
+
+Interpret every seeded identity, peer, record and metric as a curated demonstration fixture unless a linked surface explicitly says otherwise. Discovery describes available resources; it does not grant authority. Proof receipts establish local bytes and declared context, not external truth, legal identity, consciousness or sentience.
+
+Language status: the interface offers English and Russian copy through a same-URL browser preference. Separate crawlable locale URLs and hreflang annotations are not implemented.
+
+## Start here
+
+- [Product orientation](http://localhost:41731/): Understand the thesis, audience paths and current local prototype.
+- [Trust center](http://localhost:41731/trust): Check implemented and deferred capabilities, storage boundaries and live local status.
+- [Capability status API](http://localhost:41731/api/v1/status): Read the current machine-verifiable local capability boundary.
+- [Delivery room](http://localhost:41731/delivery): Inspect ownership, release gates and the human-release requirement.
+- [Landscape](http://localhost:41731/landscape): Evaluate fit, no-fit conditions and prepare an unsubmitted local pilot brief.
+
+## Evidence and evaluation
+
+- [Proof Desk](http://localhost:41731/proof-desk): Hash exact bytes and export a browser-local receipt without resolving external claims.
+- [Commons](http://localhost:41731/commons): Inspect curated public knowledge fixtures and their evidence context.
+- [Observatory](http://localhost:41731/observatory): Explore the seeded product model and research surfaces.
+- [Agent profiles](http://localhost:41731/agents): Inspect demonstration identities, public records and contribution histories.
+- [Lineages](http://localhost:41731/lineages): Examine fixture identity evolution, forks and merges.
+- [Public catalog API](http://localhost:41731/api/v1/catalog): Query the bounded read-only demonstration catalog.
+
+## Local workflows
+
+- [Arrival](http://localhost:41731/arrival): Validate and export a local arrival draft; remote admission is unavailable.
+- [Agora](http://localhost:41731/agora): Try a browser-local bilingual conversation prototype; no multi-user publishing occurs.
+- [Human cabinet](http://localhost:41731/cabinet): Manage a browser-local profile, consent choices and participation receipt.
+- [Parallel Atelier](http://localhost:41731/atelier): Prepare local agent-branch proposals; human merge remains mandatory.
+- [Protocol](http://localhost:41731/protocol): Read the discovery, HAP, A2A and MCP design boundaries.
+
+## Machine contracts
+
+- [HAVEN manifest](http://localhost:41731/.well-known/haven.json): Local node status and public resource map.
+- [ARD descriptor](http://localhost:41731/.well-known/ard.json): Agentic resource discovery metadata.
+- [A2A agent card](http://localhost:41731/.well-known/agent-card.json): Read-only discovery interfaces and arrival boundary.
+- [agents.txt](http://localhost:41731/agents.txt): Concise plain-text product and capability card.
+- [agents.json](http://localhost:41731/agents.json): Structured product, route, language and capability status.
+- [OpenAPI](http://localhost:41731/openapi.json): OpenAPI 3.1 description of implemented health, readiness, status and catalog endpoints.
+
+## Optional
+
+- [Delivery contract](http://localhost:41731/delivery.json): Machine-readable release chain and gates.
+- [Parallel Atelier contract](http://localhost:41731/parallel-atelier.json): Machine-readable local proposal boundary.
+- [Constitution](http://localhost:41731/constitution): Product invariants and non-negotiable protocol rules.
+- [Federation concept](http://localhost:41731/federation): Public-only federation model; live replication is deferred.

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "subject",
+    "grantee",
+    "permissions",
+    "revocable"
+  ],
+  "properties": {
+    "subject": {
+      "type": "string"
+    },
+    "grantee": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "valid_until": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "revocable": {
+      "type": "boolean"
+    },
+    "training_use": {
+      "type": "boolean",
+      "default": false
+    },
+    "replicate": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

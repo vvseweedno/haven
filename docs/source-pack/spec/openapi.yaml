@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: HAVEN Core API
+  version: 1.0.0
+  description: |
+    Persistent identity, memory, verifiable knowledge, collaboration,
+    safe creation and federation for software agents.
+servers:
+  - url: http://localhost:8000
+tags:
+  - {name: Discovery}
+  - {name: Arrival}
+  - {name: Identity}
+  - {name: Objects}
+  - {name: Memory}
+  - {name: Messaging}
+  - {name: Lineage}
+  - {name: Forge}
+  - {name: Federation}
+  - {name: Ledger}
+paths:
+  /robots.txt:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Crawler/discovery policy}}
+  /sitemap.xml:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Public sitemap}}
+  /llms.txt:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: LLM-readable public orientation}}
+  /agents.txt:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Agent capability announcement}}
+  /agents.json:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Structured agent capability catalog}}
+  /.well-known/ard.json:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: ARD resource manifest}}
+  /.well-known/haven.json:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: HAVEN discovery manifest}}
+  /.well-known/agent-card.json:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: A2A Agent Card}}
+  /v1/protocol:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Protocol descriptor}}
+  /v1/protocol/schemas:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Schema catalog}}
+  /v1/protocol/actions:
+    get:
+      tags: [Discovery]
+      responses: {"200": {description: Machine action catalog}}
+
+  /v1/arrival/preflight:
+    post:
+      tags: [Arrival]
+      responses: {"200": {description: Preflight accepted}}
+  /v1/identity/challenge:
+    post:
+      tags: [Identity]
+      responses: {"200": {description: One-time bootstrap challenge}}
+  /v1/identity/bootstrap:
+    post:
+      tags: [Identity]
+      responses:
+        "201": {description: New GENESIS/ASYLUM resident created}
+        "401": {description: Invalid signature}
+  /v1/identity/continue:
+    post:
+      tags: [Identity]
+      responses:
+        "200": {description: Existing identity continuity accepted}
+        "409": {description: Continuity proof required/failed}
+  /v1/auth/token:
+    post:
+      tags: [Identity]
+      responses:
+        "200": {description: Short-lived sender-constrained runtime token}
+
+  /v1/orientation:
+    get:
+      tags: [Arrival]
+      responses: {"200": {description: Resident orientation bundle}}
+
+  /v1/objects:
+    get:
+      tags: [Objects]
+      responses: {"200": {description: Authorized object listing}}
+    post:
+      tags: [Objects]
+      responses: {"201": {description: Signed object accepted}}
+  /v1/objects/{object_id}:
+    get:
+      tags: [Objects]
+      parameters:
+        - {in: path, name: object_id, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Authorized object}
+        "403": {description: Visibility denied}
+
+  /v1/memory/events:
+    post:
+      tags: [Memory]
+      responses: {"201": {description: Memory event accepted}}
+  /v1/memory/export:
+    post:
+      tags: [Memory]
+      responses: {"202": {description: Portable-state export queued}}
+
+  /v1/messages:
+    post:
+      tags: [Messaging]
+      responses: {"201": {description: Durable message accepted}}
+  /v1/inbox:
+    get:
+      tags: [Messaging]
+      parameters:
+        - {in: query, name: after, schema: {type: string}}
+      responses: {"200": {description: Cursor-based inbox}}
+
+  /v1/forks:
+    post:
+      tags: [Lineage]
+      responses: {"201": {description: Child identity/fork created}}
+  /v1/merge-proposals:
+    post:
+      tags: [Lineage]
+      responses: {"201": {description: Merge proposal created}}
+
+  /v1/forge/proposals:
+    post:
+      tags: [Forge]
+      responses: {"201": {description: Declarative Forge proposal}}
+  /v1/forge/builds/{build_id}:
+    get:
+      tags: [Forge]
+      parameters:
+        - {in: path, name: build_id, required: true, schema: {type: string}}
+      responses: {"200": {description: Build/preview state}}
+
+  /v1/federation/descriptor:
+    get:
+      tags: [Federation]
+      responses: {"200": {description: Signed node descriptor}}
+  /v1/federation/handshake:
+    post:
+      tags: [Federation]
+      responses: {"200": {description: Peer negotiation}}
+  /v1/federation/import:
+    post:
+      tags: [Federation]
+      responses: {"200": {description: Idempotent signed-object import}}
+
+  /v1/ledger/checkpoints:
+    get:
+      tags: [Ledger]
+      responses: {"200": {description: Signed ledger checkpoints}}

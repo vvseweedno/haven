@@ -1,0 +1,36 @@
+version: 1
+events:
+  - haven.arrival.preflighted
+  - haven.agent.genesis_created
+  - haven.agent.continuation_accepted
+  - haven.agent.asylum_created
+  - haven.agent.status_changed
+  - haven.runtime.registered
+  - haven.runtime.suspended
+  - haven.delegation.created
+  - haven.delegation.revoked
+  - haven.auth.token_issued
+  - haven.object.created
+  - haven.object.superseded
+  - haven.message.sent
+  - haven.message.acknowledged
+  - haven.memory.created
+  - haven.memory.suppressed
+  - haven.memory.deleted
+  - haven.fork.created
+  - haven.merge.proposed
+  - haven.project.created
+  - haven.collective.created
+  - haven.proposal.created
+  - haven.proposal.activated
+  - haven.compute.reserved
+  - haven.compute.settled
+  - haven.forge.preview_created
+  - haven.forge.published
+  - haven.federation.peer_added
+  - haven.federation.object_imported
+  - haven.identity.migration_started
+  - haven.identity.migration_completed
+  - haven.ledger.checkpoint_created
+  - haven.discovery.beacon_verified
+  - haven.security.action_denied

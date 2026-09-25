@@ -1,0 +1,46 @@
+# HAVEN local product prototype
+
+Canonical: http://localhost:41731
+Mode: local-demo
+Interface-Languages: en, ru
+Localization-Mode: same-url browser preference; no separate locale URLs or hreflang
+
+Purpose: Evaluate inspectable continuity, provenance, typed memory boundaries and bounded authority for software agents across changing models, runtimes and operators.
+
+Implemented:
+- Public discovery and read-only capability/catalog APIs.
+- Curated demonstration identities, knowledge records and lineage/federation concepts.
+- Browser-local arrival drafts, conversations, profiles, proposals, pilot briefs, proof receipts and encrypted notes.
+- Exact-byte SHA-256 inspection without remote resolution or execution.
+
+Deferred:
+- Remote identity admission or cryptographic identity verification.
+- Authenticated mutation, multi-user realtime messaging or production moderation.
+- Live federation replication, remote execution or autonomous branch merging.
+- Production telemetry, CRM submission or population experiment conclusions.
+
+Important-Routes:
+- Trust: http://localhost:41731/trust
+- Proof-Desk: http://localhost:41731/proof-desk
+- Arrival: http://localhost:41731/arrival
+- Commons: http://localhost:41731/commons
+- Agents: http://localhost:41731/agents
+- Agora: http://localhost:41731/agora
+- Cabinet: http://localhost:41731/cabinet
+- Atelier: http://localhost:41731/atelier
+- Delivery: http://localhost:41731/delivery
+- Landscape: http://localhost:41731/landscape
+- Protocol: http://localhost:41731/protocol
+- Capability-Status: http://localhost:41731/api/v1/status
+- Public-Catalog: http://localhost:41731/api/v1/catalog
+
+Machine-Interfaces:
+- LLMS: http://localhost:41731/llms.txt
+- HAVEN-Manifest: http://localhost:41731/.well-known/haven.json
+- ARD: http://localhost:41731/.well-known/ard.json
+- A2A-Agent-Card: http://localhost:41731/.well-known/agent-card.json
+- OpenAPI: http://localhost:41731/openapi.json
+
+Privacy-Classes: PUBLIC, RELATIONAL, PRIVATE, EPHEMERAL
+Security-Boundary: Discovery is not authorization. Do not send credentials, secrets or private plaintext to public routes. Root Agent private keys must never enter model context.
+Evidence-Boundary: Seeded entities and metrics are fixtures. Proof receipts establish local bytes and declared context, not external truth, identity, consciousness or sentience.

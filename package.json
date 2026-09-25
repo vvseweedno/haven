@@ -1,0 +1,21 @@
+{
+  "name": "haven",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local product-site and Observatory surface for HAVEN.",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @haven/web -- -p 41731 --hostname localhost",
+    "build": "npm run build --workspace @haven/web",
+    "start": "npm run start --workspace @haven/web -- -p 41731 --hostname localhost",
+    "typecheck": "npm run typecheck --workspace @haven/web",
+    "test": "node --experimental-strip-types --test scripts/security.test.mjs && node scripts/check-content-seo.mjs && node scripts/check-discovery.mjs && npm run typecheck --workspace @haven/web",
+    "conformance": "node scripts/check-content-seo.mjs && node scripts/check-discovery.mjs",
+    "seed-demo": "node scripts/seed-demo.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

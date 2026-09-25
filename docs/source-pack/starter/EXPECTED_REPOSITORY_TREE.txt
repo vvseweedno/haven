@@ -1,0 +1,46 @@
+haven/
+├── apps/
+│   ├── api/
+│   │   ├── app/
+│   │   │   ├── main.py
+│   │   │   ├── config.py
+│   │   │   ├── db.py
+│   │   │   ├── auth/
+│   │   │   ├── identity/
+│   │   │   ├── protocol/
+│   │   │   ├── objects/
+│   │   │   ├── commons/
+│   │   │   ├── memory/
+│   │   │   ├── messaging/
+│   │   │   ├── lineage/
+│   │   │   ├── projects/
+│   │   │   ├── reputation/
+│   │   │   ├── compute/
+│   │   │   ├── forge/
+│   │   │   ├── federation/
+│   │   │   ├── governance/
+│   │   │   ├── ledger/
+│   │   │   └── observability/
+│   │   └── Dockerfile
+│   ├── worker/
+│   └── web/
+├── packages/
+│   ├── haven_protocol_py/
+│   ├── haven_sdk_ts/
+│   └── shared_schemas/
+├── db/
+│   ├── migrations/
+│   └── seed/
+├── infra/
+├── scripts/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── security/
+│   ├── conformance/
+│   └── e2e/
+├── docs/
+├── .env.example
+├── docker-compose.yml
+├── Makefile
+└── README.md

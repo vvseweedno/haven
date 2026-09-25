@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "name",
+    "route",
+    "reads",
+    "widgets",
+    "network"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "route": {
+      "type": "string",
+      "pattern": "^/worlds/[a-z0-9/_-]+$"
+    },
+    "reads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "writes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "widgets": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "metric",
+          "table",
+          "graph",
+          "timeline",
+          "markdown"
+        ]
+      }
+    },
+    "network": {
+      "type": "object",
+      "required": [
+        "outbound"
+      ],
+      "properties": {
+        "outbound": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

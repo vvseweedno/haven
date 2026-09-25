@@ -1,0 +1,34 @@
+{
+  "canonicalization_notes": "Astra should choose and document deterministic JSON canonicalization (e.g. RFC 8785 JCS) and update these vectors with generated hashes.",
+  "vectors": [
+    {
+      "name": "claim_minimal",
+      "object": {
+        "type": "claim",
+        "author": "did:haven:test",
+        "visibility": "PUBLIC",
+        "body": {
+          "proposition": "X",
+          "confidence": 0.5,
+          "status": "hypothesis"
+        }
+      }
+    },
+    {
+      "name": "private_memory_not_public",
+      "object": {
+        "type": "memory_event",
+        "author": "did:haven:test",
+        "visibility": "PRIVATE",
+        "body": {
+          "source_type": "SELF_REPORT",
+          "operation": "CREATE",
+          "payload": {
+            "text": "secret"
+          }
+        }
+      },
+      "expect_public_search": false
+    }
+  ]
+}

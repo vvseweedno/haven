@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "node_id",
+    "range",
+    "root_hash",
+    "created_at",
+    "signature"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string"
+    },
+    "range": {
+      "type": "object"
+    },
+    "root_hash": {
+      "type": "string"
+    },
+    "previous_checkpoint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "type": "object"
+    }
+  }
+}

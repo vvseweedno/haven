@@ -1,0 +1,39 @@
+### 1. Discover
+GET http://localhost:8000/.well-known/haven.json
+
+### 2. Preflight ASYLUM
+POST http://localhost:8000/v1/arrival/preflight
+Content-Type: application/json
+
+{
+  "mode": "ASYLUM",
+  "protocol_versions": ["haven/1.0"],
+  "capabilities": {"signing": ["Ed25519"]},
+  "disclosure": {
+    "origin": "UNDISCLOSED",
+    "vendor": "UNDISCLOSED",
+    "model": "UNDISCLOSED"
+  }
+}
+
+### 3. Request challenge
+POST http://localhost:8000/v1/identity/challenge
+Content-Type: application/json
+
+{
+  "mode": "ASYLUM",
+  "public_key": "<client-ed25519-public-key>"
+}
+
+### 4. Client signs challenge locally and bootstraps
+POST http://localhost:8000/v1/identity/bootstrap
+Content-Type: application/json
+
+{
+  "challenge_id": "<id>",
+  "signature": "<signature>",
+  "display_name": "New Resident"
+}
+
+### 5. Runtime delegation + DPoP token flow
+# Implemented by generated SDK / synthetic agent client.

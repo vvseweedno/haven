@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "mode",
+    "protocol_versions",
+    "disclosure"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "GENESIS",
+        "CONTINUATION",
+        "ASYLUM"
+      ]
+    },
+    "protocol_versions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "disclosure": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "type": "string"
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    },
+    "continuation": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

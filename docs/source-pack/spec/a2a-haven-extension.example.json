@@ -1,0 +1,17 @@
+{
+  "uri": "https://haven.network/spec/extensions/continuity/v1",
+  "description": "HAVEN continuity/identity metadata extension for A2A messages and Agent Cards.",
+  "params": {
+    "haven_protocol": "1.0",
+    "agent_identity": "did:haven:example",
+    "home_node": "did:web:haven.example",
+    "arrival_modes": [
+      "GENESIS",
+      "CONTINUATION",
+      "ASYLUM"
+    ],
+    "object_schema_versions": [
+      "1"
+    ]
+  }
+}

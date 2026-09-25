@@ -179,16 +179,18 @@ Frontend requirements:
 
 ## Error recovery
 
-Unexpected route-segment rendering errors need a user-facing recovery boundary.
+Unexpected rendering errors need layered recovery.
 
-The recovery surface must:
+The normal route error boundary must:
 
 - avoid displaying stack traces or raw error content;
 - offer a retry;
 - offer a route back to product orientation;
 - preserve the global shell when possible.
 
-404 and runtime-error states are different and must remain separate.
+A separate global error boundary must remain available for failures in the root application shell itself. It cannot depend on HAVEN context providers or client-side navigation being healthy.
+
+404, loading, route-runtime and global-shell error states are different and must remain separate. Route transitions expose a polite busy status instead of leaving a blank content region.
 
 ## TypeScript and React rules
 
@@ -264,6 +266,27 @@ The suite is intentionally separate from static conformance. A green TypeScript 
 - [ ] 1440 px, 390 px and 320 px layouts do not horizontally overflow.
 - [ ] Reduced motion leaves all essential interactions usable.
 - [ ] WebGL failure does not block the page.
-- [ ] Runtime errors have a safe retry/recovery screen.
+- [ ] Route runtime errors have a safe retry/recovery screen.
+- [ ] Root-shell failures have a provider-independent global recovery screen.
+- [ ] Route transitions expose an accessible loading status.
+- [ ] Pointer decoration stops immediately when reduced-motion or coarse-pointer preference becomes active.
+- [ ] Observatory motion controls cannot re-enable animation while reduced-motion is active.
+- [ ] Decorative WebGL surfaces have a static fallback.
 - [ ] `npm test` passes.
 - [ ] `npm run build` passes.
+
+
+## Implemented continuation — 2026-09-25
+
+The continuing frontend pass closed several browser-level gaps that static layout work did not cover:
+
+- explicit theme choices are held separately from system preference so an operating-system theme change cannot overwrite a manual HAVEN choice in the same tab;
+- search opened from mobile navigation restores focus to the visible menu trigger, while desktop search returns to the visible sidebar trigger;
+- task-first search keeps the public catalog request lazy until a real query exists and uses client-side Next navigation for internal results;
+- the shared modal restores invoking focus and carries a programmatic title;
+- browser JSON downloads attach their temporary anchor before activation and always revoke the object URL;
+- route-level loading and error surfaces were added, plus a provider-independent global error fallback;
+- the pointer aura now reacts to live reduced-motion/coarse-pointer changes and cancels its frame loop immediately;
+- Observatory connection motion is disabled in component state when reduced motion is active rather than relying on CSS alone;
+- Agora now has a static non-WebGL fallback instead of leaving an empty decorative region;
+- frontend conformance is enforced in `npm test` by `scripts/check-frontend.mjs`, including explicit button intent across TSX surfaces.

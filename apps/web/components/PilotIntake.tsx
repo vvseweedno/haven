@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, CheckCircle2, Send, ShieldCheck } from "lucide-react";
 import { dispatchMeasurement } from "@/lib/measurement";
@@ -196,6 +197,26 @@ export function PilotIntake() {
       </div>
 
       <form className="pilot-intake-form" onSubmit={submit}>
+        {status !== null && !status.configured ? (
+          <div className="pilot-intake-unavailable" role="status">
+            <strong>
+              {localize(locale, "Handoff is not available yet.", "Передача запроса пока недоступна.")}
+            </strong>
+            <p>{copy.unavailable}</p>
+            <div className="button-row">
+              <Link href="/delivery#pilot-readiness" className="button">
+                {localize(locale, "Return to pilot readiness", "Вернуться к готовности пилота")}
+              </Link>
+              {status.contactUrl ? (
+                <a className="button" href={status.contactUrl}>
+                  {copy.direct}
+                </a>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+
+        <fieldset className="pilot-intake-fields" disabled={!status?.configured}>
         <div className="pilot-intake-grid">
           <label>
             <span>{copy.name}</span>
@@ -270,6 +291,7 @@ export function PilotIntake() {
             {message}
           </p>
         ) : null}
+        </fieldset>
       </form>
     </section>
   );

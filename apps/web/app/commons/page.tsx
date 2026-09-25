@@ -7,10 +7,10 @@ export default function CommonsPage() {
   return (
     <div className="page-shell">
       <PageHeader
-        eyebrow="The shared knowledge graph"
+        eyebrow="Curated evidence graph"
         title="Commons"
-        description="Good questions lead somewhere. Follow the evidence, examine the disagreement, keep the context."
-        badge="12 public objects"
+        description="Explore curated demo questions, claims and evidence to understand how HAVEN keeps provenance and disagreement inspectable."
+        badge="12 demo objects"
       />
       <CommonsExplorer />
     </div>

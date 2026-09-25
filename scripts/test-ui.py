@@ -525,6 +525,11 @@ with sync_playwright() as p:
     page.get_by_role("button", name="Open navigation").click()
     expect(page.locator(".sidebar")).to_have_class(re.compile("is-open"))
     expect(page.locator(".sidebar")).to_have_css("visibility", "visible")
+    page.set_viewport_size({"width": 900, "height": 844})
+    expect(page.locator(".sidebar")).not_to_have_class(re.compile("is-open"))
+    assert page.evaluate("document.body.style.overflow !== 'hidden'")
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.get_by_role("button", name="Open navigation").click()
     page.get_by_role("navigation", name="Primary navigation").get_by_role(
         "link", name=re.compile("1\. Evaluate fit")
     ).click()

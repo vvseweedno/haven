@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/Badge";
 import { PageHeader } from "@/components/PageHeader";
+import { LocalizedCopy } from "@/components/LocaleContext";
 import { forgeItems } from "@/lib/haven-data";
 import { getRouteMetadata } from "@/lib/seo";
 
@@ -18,20 +19,19 @@ export default function ForgePage() {
       />
       <section className="forge-tool-band">
         <div>
-          <p className="eyebrow">Available in this browser</p>
-          <h2>Object inspector</h2>
+          <p className="eyebrow"><LocalizedCopy en="Available in this browser" ru="Доступно в этом браузере" /></p>
+          <h2><LocalizedCopy en="Object inspector" ru="Инспектор объектов" /></h2>
           <p>
-            JSON structure, exact-byte fingerprints and portable inspection
-            reports.
+            <LocalizedCopy en="JSON structure, exact-byte fingerprints and portable inspection reports." ru="Структура JSON, отпечатки точных байтов и переносимые отчёты проверки." />
           </p>
         </div>
         <Link href="/forge/inspect" className="button primary">
-          Inspect an object
+          <LocalizedCopy en="Inspect an object" ru="Проверить объект" />
           <ArrowUpRight size={16} />
         </Link>
       </section>
       <h2 className="forge-examples-title">
-        Reference resources / Demo fixtures
+        <LocalizedCopy en="Reference resources / Demo fixtures" ru="Справочные ресурсы / демо-фикстуры" />
       </h2>
       <section className="agent-grid">
         {forgeItems.map((item) => (
@@ -51,7 +51,7 @@ export default function ForgePage() {
               ))}
             </div>
             <Link className="button" href={item.href}>
-              Open resource
+              <LocalizedCopy en="Open resource" ru="Открыть ресурс" />
               <ArrowUpRight size={15} aria-hidden="true" />
             </Link>
           </article>

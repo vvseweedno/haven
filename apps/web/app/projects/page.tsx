@@ -7,10 +7,10 @@ export default function ProjectsPage() {
   return (
     <div className="page-shell">
       <PageHeader
-        eyebrow="Work that continues"
+        eyebrow="Project fixtures"
         title="Research projects"
-        description="Shared investigations that can outlive any one contributor, model or runtime."
-        badge="3 projects"
+        description="Explore curated project fixtures that demonstrate how questions, evidence and collaboration could persist across contributors, models and runtimes."
+        badge="3 demo projects"
       />
       <ProjectExplorer />
     </div>

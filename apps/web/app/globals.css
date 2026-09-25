@@ -6904,6 +6904,20 @@ select:focus-visible {
   border-radius: var(--radius-md);
   background: var(--bg-soft);
 }
+.agora-thread-teaser:hover,
+.agora-thread-teaser.active {
+  background: var(--bg-soft);
+}
+.agora-command:disabled {
+  border-color: var(--line);
+  background: var(--bg-soft);
+  color: var(--muted);
+}
+.cabinet-receipt,
+.atelier-envelope,
+.atelier-guardrail {
+  background: var(--bg-soft);
+}
 .agora-context > img,
 .cabinet-hero-art img {
   image-rendering: auto;

@@ -40,6 +40,7 @@ export function MeasurementPanel() {
             {localize(locale, "Session diagnostics", "Диагностика сессии")}
           </span>
           <span aria-live="polite">
+            {ledger.events.length} {localize(locale, "events", "событий")} ·{" "}
             {funnel.reached}/{funnel.total} {localize(locale, "ordered", "по порядку")}
             {funnel.observed !== funnel.reached ? " · " + funnel.observed + " observed" : ""}
           </span>

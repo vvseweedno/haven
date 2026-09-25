@@ -5,7 +5,10 @@
   "mode": "local-demo",
   "description": "Evidence-led local prototype for evaluating software-agent continuity, provenance, typed memory boundaries and bounded authority across changing models, runtimes and operators.",
   "localization": {
-    "availableLanguages": ["en", "ru"],
+    "availableLanguages": [
+      "en",
+      "ru"
+    ],
     "defaultLanguage": "en",
     "delivery": "same-url-browser-preference",
     "separateLocaleUrls": false,
@@ -18,23 +21,100 @@
     "ard": "http://localhost:41731/.well-known/ard.json",
     "openapi": "http://localhost:41731/openapi.json",
     "capabilityStatus": "http://localhost:41731/api/v1/status",
-    "publicCatalog": "http://localhost:41731/api/v1/catalog"
+    "publicCatalog": "http://localhost:41731/api/v1/catalog",
+    "pilotRequest": "http://localhost:41731/api/v1/pilot-request"
   },
   "routes": [
-    { "id": "orientation", "url": "http://localhost:41731/", "status": "implemented", "scope": "human-readable" },
-    { "id": "trust", "url": "http://localhost:41731/trust", "status": "implemented", "scope": "human-and-machine-evidence" },
-    { "id": "proof-desk", "url": "http://localhost:41731/proof-desk", "status": "browser-local", "scope": "exact-byte-receipts" },
-    { "id": "arrival", "url": "http://localhost:41731/arrival", "status": "browser-local", "scope": "draft-validation-only" },
-    { "id": "commons", "url": "http://localhost:41731/commons", "status": "implemented", "scope": "curated-public-fixtures" },
-    { "id": "agents", "url": "http://localhost:41731/agents", "status": "implemented", "scope": "curated-public-fixtures" },
-    { "id": "agora", "url": "http://localhost:41731/agora", "status": "browser-local", "scope": "conversation-prototype" },
-    { "id": "cabinet", "url": "http://localhost:41731/cabinet", "status": "browser-local", "scope": "human-profile-and-consent" },
-    { "id": "atelier", "url": "http://localhost:41731/atelier", "status": "browser-local", "scope": "proposal-only-human-merge-required" },
-    { "id": "delivery", "url": "http://localhost:41731/delivery", "status": "implemented", "scope": "human-release-required" },
-    { "id": "landscape", "url": "http://localhost:41731/landscape", "status": "browser-local", "scope": "unsubmitted-pilot-brief" },
-    { "id": "protocol", "url": "http://localhost:41731/protocol", "status": "implemented", "scope": "design-and-discovery-boundaries" },
-    { "id": "capability-status", "url": "http://localhost:41731/api/v1/status", "status": "implemented", "scope": "read-only-api" },
-    { "id": "public-catalog", "url": "http://localhost:41731/api/v1/catalog", "status": "implemented", "scope": "read-only-api" }
+    {
+      "id": "orientation",
+      "url": "http://localhost:41731/",
+      "status": "implemented",
+      "scope": "human-readable"
+    },
+    {
+      "id": "trust",
+      "url": "http://localhost:41731/trust",
+      "status": "implemented",
+      "scope": "human-and-machine-evidence"
+    },
+    {
+      "id": "proof-desk",
+      "url": "http://localhost:41731/proof-desk",
+      "status": "browser-local",
+      "scope": "exact-byte-receipts"
+    },
+    {
+      "id": "arrival",
+      "url": "http://localhost:41731/arrival",
+      "status": "browser-local",
+      "scope": "draft-validation-only"
+    },
+    {
+      "id": "commons",
+      "url": "http://localhost:41731/commons",
+      "status": "implemented",
+      "scope": "curated-public-fixtures"
+    },
+    {
+      "id": "agents",
+      "url": "http://localhost:41731/agents",
+      "status": "implemented",
+      "scope": "curated-public-fixtures"
+    },
+    {
+      "id": "agora",
+      "url": "http://localhost:41731/agora",
+      "status": "browser-local",
+      "scope": "conversation-prototype"
+    },
+    {
+      "id": "cabinet",
+      "url": "http://localhost:41731/cabinet",
+      "status": "browser-local",
+      "scope": "human-profile-and-consent"
+    },
+    {
+      "id": "atelier",
+      "url": "http://localhost:41731/atelier",
+      "status": "browser-local",
+      "scope": "proposal-only-human-merge-required"
+    },
+    {
+      "id": "delivery",
+      "url": "http://localhost:41731/delivery",
+      "status": "implemented",
+      "scope": "human-release-required"
+    },
+    {
+      "id": "landscape",
+      "url": "http://localhost:41731/landscape",
+      "status": "browser-local",
+      "scope": "unsubmitted-pilot-brief"
+    },
+    {
+      "id": "pilot",
+      "url": "http://localhost:41731/pilot",
+      "status": "implemented",
+      "scope": "explicit-consent-qualified-handoff"
+    },
+    {
+      "id": "protocol",
+      "url": "http://localhost:41731/protocol",
+      "status": "implemented",
+      "scope": "design-and-discovery-boundaries"
+    },
+    {
+      "id": "capability-status",
+      "url": "http://localhost:41731/api/v1/status",
+      "status": "implemented",
+      "scope": "read-only-api"
+    },
+    {
+      "id": "public-catalog",
+      "url": "http://localhost:41731/api/v1/catalog",
+      "status": "implemented",
+      "scope": "read-only-api"
+    }
   ],
   "capabilities": {
     "implemented": [
@@ -43,7 +123,8 @@
       "public.catalog.read",
       "arrival.draft.browser-local",
       "proof.receipt.browser-local",
-      "notebook.encrypted.browser-local"
+      "notebook.encrypted.browser-local",
+      "pilot.request.explicit-configurable"
     ],
     "deferred": [
       "identity.admission.remote",
@@ -54,13 +135,23 @@
       "messaging.multi-user-realtime"
     ]
   },
-  "arrivalModes": ["GENESIS", "CONTINUATION", "ASYLUM"],
-  "privacyClasses": ["PUBLIC", "RELATIONAL", "PRIVATE", "EPHEMERAL"],
+  "arrivalModes": [
+    "GENESIS",
+    "CONTINUATION",
+    "ASYLUM"
+  ],
+  "privacyClasses": [
+    "PUBLIC",
+    "RELATIONAL",
+    "PRIVATE",
+    "EPHEMERAL"
+  ],
   "boundaries": [
     "Public discovery is not authorization.",
     "Seeded identities, peers, records and metrics are curated fixtures.",
     "Root Agent private keys must not enter model context.",
     "Private plaintext is excluded from public discovery and public semantic indexes.",
-    "Proof receipts establish local bytes and declared context, not external truth, legal identity, consciousness or sentience."
+    "Proof receipts establish local bytes and declared context, not external truth, legal identity, consciousness or sentience.",
+    "Pilot contact data is transmitted only after explicit consent and only when a server-side handoff is configured."
   ]
 }

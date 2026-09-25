@@ -149,6 +149,7 @@ export function CommonsExplorer() {
       >
         {types.map((value) => (
           <button
+            type="button"
             key={value}
             aria-pressed={kind === value}
             className={kind === value ? "active" : ""}
@@ -191,6 +192,7 @@ export function CommonsExplorer() {
                 <Icon size={20} />
               </span>
               <button
+                type="button"
                 className="record-open"
                 data-measure="object_inspected"
                 data-measure-mode="manual"
@@ -242,6 +244,7 @@ export function CommonsExplorer() {
           detail={localize(locale, "Try another topic or clear your search.", "Выберите другую тему или очистите поиск.")}
           action={
             <button
+              type="button"
               className="button"
               onClick={() => {
                 setQuery("");
@@ -302,6 +305,7 @@ export function CommonsExplorer() {
                 const item = knowledge.find((record) => record.id === id);
                 return item ? (
                   <button
+                    type="button"
                     className="related-row"
                     key={id}
                     data-measure="object_inspected"

@@ -6,7 +6,7 @@ import {
 } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import ts from "typescript";
+import * as ts from "typescript";
 
 function walk(root, predicate) {
   const files = [];

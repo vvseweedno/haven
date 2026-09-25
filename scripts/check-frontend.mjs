@@ -208,6 +208,11 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Closed mobile navigation must be removed from keyboard/pointer reach.",
   );
   check(
+    shell.includes("aria-hidden={mobileViewport && !mobileOpen ? true : undefined}") &&
+      shell.includes("inert={mobileViewport && !mobileOpen ? true : undefined}"),
+    "Closed mobile navigation must be explicitly hidden and inert to assistive technology.",
+  );
+  check(
     errorBoundary.includes('className="button primary"') &&
       errorBoundary.includes("onClick={reset}") &&
       errorBoundary.includes('href="/"'),

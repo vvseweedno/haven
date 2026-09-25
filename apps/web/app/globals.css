@@ -4044,6 +4044,120 @@ textarea {
   padding: 34px 0;
   border-top: 1px solid var(--line);
 }
+
+.fit-summary {
+  padding: 34px 0;
+  border-top: 1px solid var(--line);
+}
+.fit-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+.fit-summary-card {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+}
+.fit-summary-card h3 {
+  font-size: 16px;
+}
+.fit-summary-card > div {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.fit-summary-card > div > span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font: 700 8px/1.2 var(--font-mono);
+  text-transform: uppercase;
+}
+.fit-summary-card > div:first-of-type > span {
+  color: var(--green);
+}
+.fit-summary-card > div:last-of-type > span {
+  color: var(--red);
+}
+.fit-summary-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.landscape-next-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.landscape-next-action > div {
+  max-width: 66ch;
+}
+.landscape-next-action strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.landscape-next-action p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.landscape-details {
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.landscape-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 78px;
+  padding: 0 4px;
+  cursor: pointer;
+  list-style: none;
+}
+.landscape-details > summary::-webkit-details-marker {
+  display: none;
+}
+.landscape-details > summary span {
+  display: grid;
+  gap: 4px;
+}
+.landscape-details > summary strong {
+  font-size: 14px;
+}
+.landscape-details > summary small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.landscape-details > summary svg {
+  color: var(--green);
+}
+.landscape-details[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+.landscape-details-body {
+  border-top: 0;
+}
+
+@media (max-width: 900px) {
+  .fit-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .landscape-next-action {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
 .maturity-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

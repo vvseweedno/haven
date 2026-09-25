@@ -10,11 +10,15 @@ import {
 } from "react";
 import { usePathname } from "next/navigation";
 import {
+  LEGACY_MEASUREMENT_ATTRIBUTION_KEY,
+  LEGACY_MEASUREMENT_STORAGE_KEY,
   MEASUREMENT_ATTRIBUTION_KEY,
   MEASUREMENT_STORAGE_KEY,
   MEASUREMENT_UPDATE_EVENT,
   MEASURE_EVENT,
   appendMeasurement,
+  appendRouteLifecycle,
+  createFrictionSnapshot,
   createFunnelSnapshot,
   createMeasurementExport,
   createMeasurementLedger,
@@ -22,6 +26,7 @@ import {
   parseMeasurementLedger,
   readAttribution,
   sanitizeMeasurementDetail,
+  type FrictionSnapshot,
   type FunnelSnapshot,
   type MeasurementLedger,
   type SessionAttribution,
@@ -31,6 +36,7 @@ type MeasurementContextValue = {
   ledger: MeasurementLedger;
   attribution: SessionAttribution;
   funnel: FunnelSnapshot;
+  friction: FrictionSnapshot;
   ready: boolean;
   exportMeasurement: () => void;
   resetMeasurement: () => void;
@@ -49,13 +55,15 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
   useEffect(() => {
     let storedLedger = createMeasurementLedger();
     let storedAttribution: SessionAttribution = {};
+
     try {
       storedLedger = parseMeasurementLedger(
-        window.localStorage.getItem(MEASUREMENT_STORAGE_KEY),
+        window.sessionStorage.getItem(MEASUREMENT_STORAGE_KEY),
       );
       storedAttribution = parseAttribution(
         window.sessionStorage.getItem(MEASUREMENT_ATTRIBUTION_KEY),
       );
+
       if (Object.keys(storedAttribution).length === 0) {
         storedAttribution = readAttribution(window.location.search);
         if (Object.keys(storedAttribution).length > 0) {
@@ -65,33 +73,33 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
           );
         }
       }
+
+      window.localStorage.removeItem(LEGACY_MEASUREMENT_STORAGE_KEY);
+      window.sessionStorage.removeItem(LEGACY_MEASUREMENT_ATTRIBUTION_KEY);
     } catch {
       storedAttribution = readAttribution(window.location.search);
     }
+
     setAttribution(storedAttribution);
-    setLedger(
-      appendMeasurement(storedLedger, { name: "route_view" }, pathname),
-    );
+    setLedger(storedLedger);
     setReady(true);
   }, []);
 
   useEffect(() => {
     if (!ready) return;
-    setLedger((current) =>
-      appendMeasurement(current, { name: "route_view" }, pathname),
-    );
+    setLedger((current) => appendRouteLifecycle(current, pathname));
   }, [pathname, ready]);
 
   useEffect(() => {
     if (!ready) return;
     try {
-      window.localStorage.setItem(
+      window.sessionStorage.setItem(
         MEASUREMENT_STORAGE_KEY,
         JSON.stringify(ledger),
       );
       window.dispatchEvent(new Event(MEASUREMENT_UPDATE_EVENT));
     } catch {
-      /* Measurement remains available in memory for this page. */
+      /* Measurement remains available in memory for this tab session. */
     }
   }, [ledger, ready]);
 
@@ -99,6 +107,7 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
     const record = (detail: unknown) => {
       setLedger((current) => appendMeasurement(current, detail, pathname));
     };
+
     const handleClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
@@ -111,10 +120,12 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
         outcome: measured.dataset.measureOutcome,
       });
     };
+
     const handleCustom = (event: Event) => {
       const detail = (event as CustomEvent<unknown>).detail;
       if (sanitizeMeasurementDetail(detail)) record(detail);
     };
+
     document.addEventListener("click", handleClick);
     window.addEventListener(MEASURE_EVENT, handleCustom);
     return () => {
@@ -122,15 +133,6 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
       window.removeEventListener(MEASURE_EVENT, handleCustom);
     };
   }, [pathname]);
-
-  useEffect(() => {
-    const sync = (event: StorageEvent) => {
-      if (event.key !== MEASUREMENT_STORAGE_KEY) return;
-      setLedger(parseMeasurementLedger(event.newValue));
-    };
-    window.addEventListener("storage", sync);
-    return () => window.removeEventListener("storage", sync);
-  }, []);
 
   const exportMeasurement = useCallback(() => {
     const payload = createMeasurementExport(ledger, attribution);
@@ -140,32 +142,30 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "haven-local-measurement.json";
+    anchor.download = "haven-session-measurement.json";
     anchor.click();
     URL.revokeObjectURL(url);
   }, [attribution, ledger]);
 
   const resetMeasurement = useCallback(() => {
-    const reset = appendMeasurement(
-      createMeasurementLedger(),
-      { name: "route_view" },
-      pathname,
-    );
-    setLedger(reset);
+    setLedger(createMeasurementLedger());
     setAttribution({});
     try {
-      window.localStorage.removeItem(MEASUREMENT_STORAGE_KEY);
+      window.sessionStorage.removeItem(MEASUREMENT_STORAGE_KEY);
       window.sessionStorage.removeItem(MEASUREMENT_ATTRIBUTION_KEY);
+      window.sessionStorage.removeItem(LEGACY_MEASUREMENT_ATTRIBUTION_KEY);
+      window.localStorage.removeItem(LEGACY_MEASUREMENT_STORAGE_KEY);
     } catch {
       /* In-memory state is reset even when storage is unavailable. */
     }
-  }, [pathname]);
+  }, []);
 
   const value = useMemo<MeasurementContextValue>(
     () => ({
       ledger,
       attribution,
       funnel: createFunnelSnapshot(ledger),
+      friction: createFrictionSnapshot(ledger),
       ready,
       exportMeasurement,
       resetMeasurement,

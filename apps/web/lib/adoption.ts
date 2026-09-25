@@ -201,41 +201,41 @@ export const evaluationCriteria: EvaluationCriterion[] = [
 
 export const evaluationPath: EvaluationStep[] = [
   {
-    stage: { en: "01 / Orient", ru: "01 / Ориентироваться" },
+    stage: { en: "01 / Fit", ru: "01 / Применимость" },
     owner: { en: "Sponsor", ru: "Заказчик" },
     decision: {
-      en: "Is agent continuity or provenance important enough to evaluate?",
-      ru: "Достаточно ли важна непрерывность агента или происхождение данных, чтобы начать оценку?",
+      en: "Does HAVEN address a continuity, provenance or authority problem that is worth evaluating?",
+      ru: "Решает ли HAVEN задачу непрерывности, происхождения или полномочий, которую стоит оценивать?",
     },
     evidence: {
-      en: "Review the working graph and the explicit prototype boundary.",
-      ru: "Изучите рабочий граф и явно обозначенную границу прототипа.",
+      en: "Use explicit fit and no-fit criteria before inspecting specialist architecture.",
+      ru: "Используйте явные критерии «подходит / не подходит» до изучения специальной архитектуры.",
     },
-    href: "/observatory",
+    href: "/landscape#fit-summary",
   },
   {
     stage: { en: "02 / Verify", ru: "02 / Проверить" },
     owner: { en: "Technical lead", ru: "Технический лидер" },
     decision: {
-      en: "Can the browser produce useful evidence without trusting product claims?",
-      ru: "Может ли браузер получить полезные доказательства без доверия заявлениям продукта?",
+      en: "Can the browser produce inspectable evidence without trusting product claims?",
+      ru: "Может ли браузер получить проверяемое доказательство без доверия заявлениям продукта?",
     },
     evidence: {
-      en: "Inspect one public object and export a local proof receipt.",
-      ru: "Проверьте один публичный объект и экспортируйте локальную proof receipt.",
+      en: "Inspect one public object and export a browser-local proof receipt.",
+      ru: "Проверьте один публичный объект и экспортируйте локальную proof-квитанцию.",
     },
-    href: "/proof-desk",
+    href: "/proof-desk#proof-workbench",
   },
   {
-    stage: { en: "03 / Bound", ru: "03 / Ограничить" },
+    stage: { en: "03 / Bound", ru: "03 / Границы" },
     owner: { en: "Buyer + security", ru: "Закупщик + безопасность" },
     decision: {
       en: "Are data classes, authority, integration limits and absent capabilities acceptable?",
       ru: "Приемлемы ли классы данных, полномочия, интеграционные пределы и отсутствующие возможности?",
     },
     evidence: {
-      en: "Use the trust ledger and machine-readable contracts; do not infer a live service.",
-      ru: "Используйте trust ledger и машиночитаемые контракты; не предполагайте наличие живого сервиса.",
+      en: "Use the Trust Center and machine-readable status; do not infer a live service from architecture pages.",
+      ru: "Используйте Trust Center и машиночитаемый статус; не делайте вывод о живом сервисе по архитектурным страницам.",
     },
     href: "/trust",
   },
@@ -247,23 +247,10 @@ export const evaluationPath: EvaluationStep[] = [
       ru: "Есть ли ограниченный design-partner пилот, который стоит обсуждать?",
     },
     evidence: {
-      en: "Complete the local checklist and export a pilot brief; nothing is submitted.",
-      ru: "Заполните локальный checklist и экспортируйте pilot brief; ничего не отправляется.",
+      en: "Complete the readiness checklist and export a local pilot brief before any contact handoff.",
+      ru: "Заполните checklist готовности и экспортируйте локальный pilot brief до любой передачи контакта.",
     },
-    href: "/delivery",
-  },
-  {
-    stage: { en: "05 / Contact", ru: "05 / Контакт" },
-    owner: { en: "Buyer + HAVEN operator", ru: "Заказчик + оператор HAVEN" },
-    decision: {
-      en: "Should this qualified pilot request enter a human sales conversation?",
-      ru: "Должен ли этот квалифицированный запрос на пилот перейти в человеческое обсуждение?",
-    },
-    evidence: {
-      en: "Submit only the contact and qualification data explicitly entered with consent.",
-      ru: "Отправляйте только явно введённые контактные и квалификационные данные с согласием.",
-    },
-    href: "/pilot",
+    href: "/delivery#pilot-readiness",
   },
 ];
 

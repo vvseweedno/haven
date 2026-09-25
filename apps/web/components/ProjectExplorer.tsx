@@ -71,6 +71,7 @@ export function ProjectExplorer() {
           return (
             <article className="project-card" key={project.id}>
               <button
+                type="button"
                 className={`project-card-art ${project.tone}`}
                 onClick={() => inspect(project)}
                 aria-label={`Inspect ${project.name}`}
@@ -94,6 +95,7 @@ export function ProjectExplorer() {
                   <SaveButton id={project.id} label={project.name} />
                 </div>
                 <button
+                  type="button"
                   className="project-open"
                   onClick={() => inspect(project)}
                 >
@@ -126,6 +128,7 @@ export function ProjectExplorer() {
                     ))}
                   </span>
                   <button
+                    type="button"
                     className="text-button"
                     onClick={() => inspect(project)}
                   >
@@ -144,6 +147,7 @@ export function ProjectExplorer() {
           detail="Try another search or project status."
           action={
             <button
+              type="button"
               className="button"
               onClick={() => {
                 setQuery("");

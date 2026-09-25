@@ -62,6 +62,32 @@ export const contentSeoOwners: LocaleCopy[] = [
   { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
 ];
 
+export const uxIaOwners: LocaleCopy[] = [
+  { en: "UX Researcher", ru: "UX Researcher" },
+  { en: "UX Architect", ru: "UX Architect" },
+  { en: "UX Designer", ru: "UX Designer" },
+  { en: "Interaction Designer", ru: "Interaction Designer" },
+  { en: "Service Designer", ru: "Service Designer" },
+  { en: "CX Strategist", ru: "CX Strategist" },
+  { en: "Customer Journey Architect", ru: "Customer Journey Architect" },
+  { en: "Information Architect", ru: "Information Architect" },
+  { en: "Navigation Designer", ru: "Navigation Designer" },
+  { en: "Taxonomy Specialist", ru: "Taxonomy Specialist" },
+  { en: "Behavioral Researcher", ru: "Behavioral Researcher" },
+  { en: "Review: Product Manager", ru: "Проверка: Product Manager" },
+  { en: "Review: Project / Delivery Manager", ru: "Проверка: Project / Delivery Manager" },
+  { en: "Review: UX Lead", ru: "Проверка: UX Lead" },
+  { en: "Review: Design Director", ru: "Проверка: Design Director" },
+  { en: "Review: Tech Lead", ru: "Проверка: Tech Lead" },
+  { en: "Review: SEO Lead", ru: "Проверка: SEO Lead" },
+  { en: "Review: Analytics Lead", ru: "Проверка: Analytics Lead" },
+  { en: "Review: QA Lead", ru: "Проверка: QA Lead" },
+  { en: "Review: Security", ru: "Проверка: Security" },
+  { en: "Review: Accessibility", ru: "Проверка: Accessibility" },
+  { en: "Review: Performance", ru: "Проверка: Performance" },
+  { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
+];
+
 export const experimentGates: ExperimentGate[] = [
   {
     id: "pre-register",
@@ -369,6 +395,27 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Ключевые публичные тексты, machine discovery, безопасность индексации, маркировка фикстур и RU/EN-паритет объясняющих поверхностей контролируются статическими проверками. Отдельных индексируемых locale-URL и поисковой статистики по аудитории пока нет.",
     },
     owners: contentSeoOwners,
+  },,
+  {
+    id: "ux-ia",
+    order: 13,
+    state: "active",
+    role: { en: "UX, CX and information architecture", ru: "UX, CX и информационная архитектура" },
+    responsibility: {
+      en: "Keep first contact, navigation, taxonomy, progressive disclosure and the customer journey centered on the user's next decision rather than the internal product ontology.",
+      ru: "Сохраняет первый контакт, навигацию, таксономию, progressive disclosure и путь клиента вокруг следующего решения пользователя, а не внутренней онтологии продукта.",
+    },
+    artifact: { en: "UX, CX and information architecture contract", ru: "Контракт UX, CX и информационной архитектуры" },
+    artifactHref: "/landscape",
+    gate: {
+      en: "The four-stage decision path, breadcrumbs, page-level next actions and deep reference areas must remain coherent on desktop, mobile and keyboard navigation.",
+      ru: "Четырёхэтапный путь решения, breadcrumbs, следующие действия страниц и глубокие справочные разделы должны оставаться согласованными на desktop, mobile и при клавиатурной навигации.",
+    },
+    currentTruth: {
+      en: "Primary navigation now mirrors fit → evidence → boundary → pilot; the homepage is orientation rather than a dashboard, diagnostics are opt-in, and evaluation context is scoped to the current tab. Population UX research remains unavailable.",
+      ru: "Основная навигация теперь повторяет применимость → доказательство → границы → пилот; главная страница служит ориентацией, а не dashboard, диагностика включается явно, а контекст оценки ограничен текущей вкладкой. Population UX research пока отсутствует.",
+    },
+    owners: uxIaOwners,
   },
 ];
 

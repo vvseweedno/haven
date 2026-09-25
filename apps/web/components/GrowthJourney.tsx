@@ -3,12 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import {
-  CTA_EXPERIMENT_ID,
-  assignCtaExperiment,
-  emitHavenMeasure,
-  type ExperimentVariant,
-} from "@/lib/experiments";
+import { emitHavenMeasure } from "@/lib/experiments";
 import {
   GROWTH_STORAGE_KEY,
   GROWTH_UPDATE_EVENT,
@@ -30,8 +25,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
   const [state, setState] = useState<GrowthJourneyState>(
     createGrowthJourneyState,
   );
-  const [experimentVariant, setExperimentVariant] =
-    useState<ExperimentVariant | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -44,7 +37,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     } catch {
       setState((current) => recordGrowthVisit(current, pathname));
     }
-    setExperimentVariant(assignCtaExperiment());
     setReady(true);
   }, []);
 
@@ -92,7 +84,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     [state],
   );
   const signalCount = state.observedSignals.length;
-  const variant = experimentVariant || "a";
 
   const selectAudience = (audience: string) => {
     const nextAudience = (audience || null) as AudienceContext | null;
@@ -100,8 +91,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     emitHavenMeasure({
       measure: "audience_context_selected",
       surface: "growth_journey",
-      experiment: CTA_EXPERIMENT_ID,
-      variant,
       audience: nextAudience || "exploring",
     });
   };
@@ -121,8 +110,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     emitHavenMeasure({
       measure: "growth_journey_reset",
       surface: "growth_journey",
-      experiment: CTA_EXPERIMENT_ID,
-      variant,
     });
   };
 
@@ -130,8 +117,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     emitHavenMeasure({
       measure: "next_best_action_click",
       surface: "growth_journey",
-      experiment: CTA_EXPERIMENT_ID,
-      variant,
       audience: state.audience || "exploring",
       target: recommendation.href,
     });
@@ -142,8 +127,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
       className="growth-journey"
       aria-labelledby="growth-journey-title"
       data-ready={ready ? "true" : "false"}
-      data-experiment={CTA_EXPERIMENT_ID}
-      data-variant={variant}
       data-measure="lifecycle_progress"
       data-measure-mode="manual"
     >
@@ -208,8 +191,8 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         <small>
           {localize(
             locale,
-            `Progress stays in this browser. This path is guidance, not a sales submission. CTA wording test ${variant.toUpperCase()}: no conclusion until enough real sessions are observed.`,
-            `Прогресс хранится в этом браузере. Этот путь — подсказка, а не отправка данных в продажи. Тест формулировки CTA ${variant.toUpperCase()}: выводов нет до достаточной реальной выборки.`,
+            "Progress guidance stays in this browser. Session measurement is local to this tab and is not population analytics or a sales submission.",
+            "Подсказки прогресса остаются в этом браузере. Измерение сессии локально для этой вкладки и не является аналитикой всей аудитории или отправкой в продажи.",
           )}
         </small>
         <button type="button" onClick={resetJourney}>

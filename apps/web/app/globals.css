@@ -417,29 +417,6 @@ textarea {
   font-size: 23px;
   font-weight: 650;
 }
-.haven-mark {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  position: relative;
-  color: inherit;
-}
-.haven-mark i {
-  display: block;
-  width: 5px;
-  height: 23px;
-  background: currentColor;
-  transform: skewY(-21deg);
-  border-radius: 1px;
-}
-.haven-mark i:nth-child(2) {
-  height: 12px;
-}
-.haven-mark i:nth-child(3) {
-  height: 23px;
-}
 .workspace-label {
   display: flex;
   align-items: center;

@@ -46,6 +46,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   const requiredFiles = [
     "README.md",
     "docs/content-seo.md",
+    "docs/ux-ia.md",
     "apps/web/public/llms.txt",
     "apps/web/public/agents.txt",
     "apps/web/public/agents.json",
@@ -70,6 +71,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
 
   const readme = read("README.md");
   const contentContract = read("docs/content-seo.md");
+  const uxIaContract = read("docs/ux-ia.md");
   const llms = read("apps/web/public/llms.txt");
   const agentsText = read("apps/web/public/agents.txt");
   const agentsRaw = read("apps/web/public/agents.json");
@@ -82,6 +84,13 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   const havenData = read("apps/web/lib/haven-data.ts");
   const seoSource = read("apps/web/lib/seo.ts");
   const publicApi = read("apps/web/lib/server/public-api.ts");
+  const navigationSource = read("apps/web/lib/navigation.ts");
+  const appShellSource = read("apps/web/components/AppShell.tsx");
+  const growthJourneySource = read("apps/web/components/GrowthJourney.tsx");
+  const heroSource = read("apps/web/components/ExperienceHero.tsx");
+  const dashboardSource = read("apps/web/components/Dashboard.tsx");
+  const pageHeaderSource = read("apps/web/components/PageHeader.tsx");
+  const measurementPanelSource = read("apps/web/components/MeasurementPanel.tsx");
   const agents = jsonByPath.get("apps/web/public/agents.json");
   const openapi = jsonByPath.get("apps/web/public/openapi.json");
   const ard = jsonByPath.get("apps/web/public/.well-known/ard.json");
@@ -329,6 +338,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "docs/cro-analytics.md",
     "docs/product-delivery.md",
     "docs/content-seo.md",
+    "docs/ux-ia.md",
   ];
   for (const document of requiredDocs) {
     check(existsSync(join(root, document)), `Missing required product document: ${document}`);
@@ -392,6 +402,94 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   ];
   for (const role of requiredRoles) {
     check(contentContract.includes(role), `Content ownership does not name ${role}.`);
+  }
+
+  const primaryNavSection =
+    navigationSource.split("export const primaryNav")[1]?.split("export const navGroups")[0] ?? "";
+  const primaryDecisionRoutes = ["/landscape", "/proof-desk", "/trust", "/delivery"];
+  for (const route of primaryDecisionRoutes) {
+    check(
+      primaryNavSection.includes(`href: "${route}"`),
+      `Primary navigation is missing the decision-stage route ${route}.`,
+    );
+  }
+  check(
+    (primaryNavSection.match(/href:/g) ?? []).length === 4,
+    "Primary navigation must contain exactly four decision-stage links.",
+  );
+  check(
+    navigationSource.includes('label: { en: "Evidence & research"') &&
+      navigationSource.includes('label: { en: "Architecture & governance"'),
+    "Deep routes must remain grouped as reference areas rather than primary navigation.",
+  );
+  check(
+    dashboardSource.includes("decision-overview-grid") &&
+      dashboardSource.includes('href: "/observatory"'),
+    "Homepage must expose the four-step orientation path while keeping Observatory optional.",
+  );
+  check(
+    pageHeaderSource.includes('"/proof-desk":') &&
+      pageHeaderSource.includes('href: "/trust"') &&
+      pageHeaderSource.includes('"/trust":') &&
+      pageHeaderSource.includes('href: "/delivery#pilot-readiness"'),
+    "Page-level next actions must preserve evidence -> boundary -> pilot order.",
+  );
+  check(
+    growthJourneySource.includes("window.sessionStorage") &&
+      heroSource.includes("window.sessionStorage"),
+    "Evaluation context and journey guidance must be scoped to the current tab.",
+  );
+  check(
+    measurementPanelSource.includes('params.get("diagnostics") === "1"'),
+    "Internal session diagnostics must be opt-in rather than part of the default customer journey.",
+  );
+  check(
+    appShellSource.includes('href="/delivery"') &&
+      appShellSource.includes('"Review pilot readiness"'),
+    "Persistent sidebar action must point to pilot readiness.",
+  );
+
+  const requiredUxSections = [
+    "## Primary user journey",
+    "## Information architecture",
+    "## Homepage contract",
+    "## Navigation behavior",
+    "## Progressive disclosure",
+    "## Taxonomy rules",
+    "## Ownership and supervisory review",
+    "## Release checklist",
+  ];
+  for (const section of requiredUxSections) {
+    check(uxIaContract.includes(section), `docs/ux-ia.md is missing ${section}.`);
+  }
+
+  const requiredUxRoles = [
+    "UX Researcher",
+    "UX Architect",
+    "UX Designer",
+    "Interaction Designer",
+    "Service Designer",
+    "CX Strategist",
+    "Customer Journey Architect",
+    "Information Architect",
+    "Navigation Designer",
+    "Taxonomy Specialist",
+    "Behavioral Researcher",
+    "Product Manager",
+    "Project / Delivery Manager",
+    "UX Lead",
+    "Design Director",
+    "Tech Lead",
+    "SEO Lead",
+    "Analytics Lead",
+    "QA Lead",
+    "Security",
+    "Accessibility",
+    "Performance",
+    "Content Strategy",
+  ];
+  for (const role of requiredUxRoles) {
+    check(uxIaContract.includes(role), `UX/IA ownership does not name ${role}.`);
   }
 
   return finish();

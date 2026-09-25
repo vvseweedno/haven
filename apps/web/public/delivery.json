@@ -2,8 +2,11 @@
   "schema": "haven-delivery-room/1",
   "url": "http://localhost:41731/delivery",
   "mode": "local-product-delivery-contract",
-  "writeBoundary": "browser-local-only",
-  "languages": ["en", "ru"],
+  "writeBoundary": "browser-local-by-default; remote pilot handoff requires explicit consent and server configuration",
+  "languages": [
+    "en",
+    "ru"
+  ],
   "releasePolicy": {
     "agentProposal": "allowed",
     "agentPublish": "not-allowed",
@@ -21,7 +24,8 @@
     "operations-observability",
     "governance-release",
     "growth-learning",
-    "cro-analytics-experimentation"
+    "cro-analytics-experimentation",
+    "content-seo-communication"
   ],
   "businessCouncil": [
     "ceo-sponsor",
@@ -64,5 +68,40 @@
   "strategyDocument": "docs/business-strategy.md",
   "marketingGrowthDocument": "docs/marketing-growth.md",
   "croAnalyticsDocument": "docs/cro-analytics.md",
-  "documentation": "http://localhost:41731/docs/product-delivery.md"
+  "documentation": "repository:docs/product-delivery.md",
+  "remoteWrite": {
+    "endpoint": "http://localhost:41731/api/v1/pilot-request",
+    "purpose": "qualified-pilot-request",
+    "implicit": false,
+    "consentRequired": true,
+    "configuredByEnvironment": true
+  },
+  "contentSeoCouncil": [
+    "content-strategist",
+    "content-designer",
+    "ux-writer",
+    "copywriter",
+    "editor",
+    "seo-strategist",
+    "technical-seo",
+    "semantic-seo",
+    "local-seo",
+    "seo-content-strategist",
+    "schema-specialist",
+    "localization-specialist"
+  ],
+  "reviewLeads": [
+    "product-manager",
+    "project-delivery-manager",
+    "ux-lead",
+    "design-director",
+    "tech-lead",
+    "seo-lead",
+    "analytics-lead",
+    "qa-lead",
+    "security",
+    "accessibility",
+    "performance",
+    "content-strategy"
+  ]
 }

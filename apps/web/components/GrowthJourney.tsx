@@ -154,22 +154,22 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         <span aria-live="polite">
           {localize(
             locale,
-            `${signalCount}/4 decision steps observed`,
-            `Пройдено шагов: ${signalCount}/4`,
+            `${signalCount}/5 decision steps observed`,
+            `Пройдено шагов: ${signalCount}/5`,
           )}
         </span>
       </div>
       <progress
         className="growth-journey-progress"
         value={signalCount}
-        max={4}
+        max={5}
         title={funnelSignals
           .map((signal) => `${state.observedSignals.includes(signal.id) ? "✓" : "○"} ${signal.label[locale]}`)
           .join(" · ")}
         aria-label={localize(
           locale,
-          `${signalCount} of 4 decision steps observed`,
-          `Пройдено шагов решения: ${signalCount} из 4`,
+          `${signalCount} of 5 decision steps observed`,
+          `Пройдено шагов решения: ${signalCount} из 5`,
         )}
       />
       <label className="growth-journey-context">

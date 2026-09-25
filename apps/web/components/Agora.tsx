@@ -269,6 +269,7 @@ export function Agora() {
           <div className="room-list" aria-label={text.rooms}>
             {(["Assembly", "Practice", "Protocol"] as const).map((room) => (
               <button
+                type="button"
                 key={room}
                 className={active?.channel === room ? "active" : ""}
                 onClick={() => setActiveId(topics.find((topic) => topic.channel === room)?.id || activeId)}
@@ -283,6 +284,7 @@ export function Agora() {
             <p>{text.live}</p>
             {topics.map((topic) => (
               <button
+                type="button"
                 key={topic.id}
                 className={`agora-thread-teaser ${topic.id === active?.id ? "active" : ""}`}
                 onClick={() => setActiveId(topic.id)}

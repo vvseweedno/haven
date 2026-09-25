@@ -6152,6 +6152,32 @@ textarea {
   display: grid;
   gap: 16px;
 }
+.pilot-intake-fields {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.pilot-intake-fields[disabled] {
+  opacity: .55;
+}
+.pilot-intake-unavailable {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--amber-bg);
+}
+.pilot-intake-unavailable strong {
+  font-size: 13px;
+}
+.pilot-intake-unavailable p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
 .pilot-intake-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

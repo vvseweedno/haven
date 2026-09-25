@@ -46,6 +46,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileViewport, setMobileViewport] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [skipVisible, setSkipVisible] = useState(false);
   const [dark, setDark] = useState(false);
@@ -140,6 +141,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const mobile = window.matchMedia("(max-width: 760px)");
     const sync = () => {
+      setMobileViewport(mobile.matches);
       if (!mobile.matches) setMobileOpen(false);
     };
     sync();
@@ -253,6 +255,8 @@ function Shell({ children }: { children: React.ReactNode }) {
         id="sidebar"
         className={`sidebar ${mobileOpen ? "is-open" : ""}`}
         aria-label={localize(locale, "Workspace navigation", "Навигация по HAVEN")}
+        aria-hidden={mobileViewport && !mobileOpen ? true : undefined}
+        inert={mobileViewport && !mobileOpen ? true : undefined}
       >
         <div className="sidebar-brand-row">
           <Link

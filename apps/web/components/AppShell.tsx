@@ -138,6 +138,16 @@ function Shell({ children }: { children: React.ReactNode }) {
     };
   }, []);
   useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 760px)");
+    const sync = () => {
+      if (!mobile.matches) setMobileOpen(false);
+    };
+    sync();
+    mobile.addEventListener("change", sync);
+    return () => mobile.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
     if (!mobileOpen) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";

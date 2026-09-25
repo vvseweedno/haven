@@ -30,7 +30,7 @@ import {
 } from "@/lib/delivery";
 import { buildAnalysisBrief, buildPilotBrief, pilotReadiness } from "@/lib/adoption";
 import { useLocale } from "./LocaleContext";
-import { downloadJson } from "./Workspace";
+import { downloadJson, measure } from "./Workspace";
 
 const icons: Record<string, LucideIcon> = {
   product: Boxes,
@@ -270,9 +270,11 @@ export function DeliveryRoom() {
           <a
             href="#pilot-readiness"
             data-measure="pilot_brief_exported"
+            data-measure-mode="manual"
             onClick={(event) => {
               event.preventDefault();
               downloadJson(buildPilotBrief(locale), `haven-pilot-brief.${locale}.json`);
+              measure("pilot_brief_exported", { source: "delivery" });
             }}
           >
             {text.pilotBrief}<ArrowUpRight size={16} />

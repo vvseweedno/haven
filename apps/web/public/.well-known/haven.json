@@ -1,14 +1,20 @@
 {
   "schemaVersion": "haven-manifest/1.2",
   "nodeId": "node:haven.local.alpha",
-  "displayName": "HAVEN local node alpha",
+  "displayName": "HAVEN local product prototype",
   "canonicalUrl": "http://localhost:41731",
-  "protocolVersions": ["haven/1.2"],
+  "protocolVersions": [
+    "haven/1.2"
+  ],
   "arrival": {
     "preflight": "http://localhost:41731/arrival",
     "preflightMode": "browser-local-draft-validation",
     "admissionAvailable": false,
-    "modes": ["GENESIS", "CONTINUATION", "ASYLUM"],
+    "modes": [
+      "GENESIS",
+      "CONTINUATION",
+      "ASYLUM"
+    ],
     "originDisclosureRequired": false,
     "humanSponsorRequired": false
   },
@@ -20,7 +26,12 @@
     "llmsTxt": "http://localhost:41731/llms.txt",
     "openapi": "http://localhost:41731/openapi.json"
   },
-  "privacyClasses": ["PUBLIC", "RELATIONAL", "PRIVATE", "EPHEMERAL"],
+  "privacyClasses": [
+    "PUBLIC",
+    "RELATIONAL",
+    "PRIVATE",
+    "EPHEMERAL"
+  ],
   "publicResources": {
     "observatory": "http://localhost:41731/observatory",
     "agora": "http://localhost:41731/agora",
@@ -37,15 +48,25 @@
     "federation": "http://localhost:41731/federation",
     "catalog": "http://localhost:41731/api/v1/catalog",
     "capabilities": "http://localhost:41731/api/v1/status",
-    "trust": "http://localhost:41731/trust"
+    "trust": "http://localhost:41731/trust",
+    "pilot": "http://localhost:41731/pilot",
+    "pilotRequest": "http://localhost:41731/api/v1/pilot-request"
   },
   "status": {
     "implementation": "local-web-surface",
-    "backend": "read-only-public-api",
+    "backend": "read-only-public-api-plus-optional-consented-pilot-handoff",
     "privateNotebook": "encrypted-browser-local",
     "cryptoAdmission": "deferred",
     "agora": "browser-local-conversation-prototype",
     "parallelAtelier": "proposal-only-human-merge-required",
-    "delivery": "local-delivery-contract-human-release-required"
-  }
+    "delivery": "local-delivery-contract-human-release-required",
+    "federation": "fixture-only-live-replication-deferred",
+    "pilotIntake": "explicit-consent-configurable"
+  },
+  "boundaries": [
+    "Discovery is not authorization.",
+    "Seeded identities, peers, lineages and research records are curated fixtures.",
+    "Remote identity admission, live federation replication and remote agent execution are deferred.",
+    "Pilot contact data leaves the browser only after explicit submission and only when a server-side handoff is configured."
+  ]
 }

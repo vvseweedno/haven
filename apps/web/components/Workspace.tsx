@@ -291,7 +291,7 @@ export function Modal({
       }}
     >
       <div className="modal-heading">
-        <strong id={titleId}>{visibleTitle}</strong>
+        <h2 id={titleId}>{visibleTitle}</h2>
         <button
           type="button"
           className="icon-button"

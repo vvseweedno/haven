@@ -543,6 +543,7 @@ export default function PrivateNotebook() {
                   )
                   .map((n) => (
                     <button
+                      type="button"
                       key={n.id}
                       className={`note-row ${draft?.id === n.id ? "selected" : ""}`}
                       disabled={busy}

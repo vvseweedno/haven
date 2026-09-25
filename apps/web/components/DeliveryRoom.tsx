@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   Code2,
   FileDown,
+  FileText,
   Gauge,
   Send,
   MousePointer2,
@@ -44,6 +45,7 @@ const icons: Record<string, LucideIcon> = {
   governance: Scale,
   growth: Activity,
   cro: Gauge,
+  "content-seo": FileText,
 };
 
 const states: Record<DeliveryState, { en: string; ru: string }> = {

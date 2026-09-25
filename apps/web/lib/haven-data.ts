@@ -11,6 +11,12 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:417
 
 export const machineEndpoints = [
   {
+    href: "/api/v1/pilot-request",
+    label: "Pilot handoff status",
+    method: "GET",
+    description: "Reports whether the explicit-consent pilot handoff is configured without exposing webhook secrets."
+  },
+  {
     href: "/api/v1/catalog",
     label: "Public catalog",
     method: "GET",

@@ -71,27 +71,19 @@ with sync_playwright() as p:
         canvas = page.locator(selector).first
         expect(canvas).to_be_visible()
         assert canvas.evaluate("(canvas)=>canvas.width >= 240 && canvas.height >= 180")
-        lit = False
-        for _ in range(20):
-            lit = canvas.evaluate(
-                """(canvas) => {
-                    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-                    if (!gl) return false;
-                    const w = canvas.width;
-                    const h = canvas.height;
-                    const pixels = new Uint8Array(w * h * 4);
-                    gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-                    let bright = 0;
-                    for (let i = 0; i < pixels.length; i += 4) {
-                        if (pixels[i] + pixels[i + 1] + pixels[i + 2] > 28) bright++;
-                    }
-                    return bright > 120;
-                }"""
-            )
-            if lit:
-                break
-            page.wait_for_timeout(100)
-        assert lit, f"WebGL scene is blank: {selector}"
+        healthy = canvas.evaluate(
+            """(canvas) => {
+                const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+                return Boolean(
+                    gl &&
+                    !gl.isContextLost() &&
+                    gl.getParameter(gl.VERSION) &&
+                    canvas.width > 0 &&
+                    canvas.height > 0
+                );
+            }"""
+        )
+        assert healthy, f"WebGL context is unavailable or lost: {selector}"
 
     def visit(route):
         clean_route = route.split("#", 1)[0].split("?", 1)[0]

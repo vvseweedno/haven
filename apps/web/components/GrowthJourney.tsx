@@ -15,8 +15,6 @@ import {
   parseGrowthJourneyState,
   recordGrowthSignal,
   recordGrowthVisit,
-  setGrowthAudience,
-  type AudienceContext,
   type GrowthJourneyState,
 } from "@/lib/growth";
 import { localize, useLocale } from "./LocaleContext";
@@ -31,7 +29,7 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
   useEffect(() => {
     try {
       const stored = parseGrowthJourneyState(
-        window.localStorage.getItem(GROWTH_STORAGE_KEY) ||
+        window.sessionStorage.getItem(GROWTH_STORAGE_KEY) ||
           window.localStorage.getItem(LEGACY_GROWTH_STORAGE_KEY),
       );
       setState(recordGrowthVisit(stored, pathname));
@@ -49,7 +47,7 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
   useEffect(() => {
     if (!ready) return;
     try {
-      window.localStorage.setItem(GROWTH_STORAGE_KEY, JSON.stringify(state));
+      window.sessionStorage.setItem(GROWTH_STORAGE_KEY, JSON.stringify(state));
       window.localStorage.removeItem(LEGACY_GROWTH_STORAGE_KEY);
     } catch {
       /* The journey remains available for the current session. */
@@ -61,16 +59,12 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
       setState(
         recordGrowthVisit(
           parseGrowthJourneyState(
-            window.localStorage.getItem(GROWTH_STORAGE_KEY) ||
+            window.sessionStorage.getItem(GROWTH_STORAGE_KEY) ||
               window.localStorage.getItem(LEGACY_GROWTH_STORAGE_KEY),
           ),
           pathname,
         ),
       );
-    };
-    const syncJourney = (event: StorageEvent) => {
-      if (event.key !== GROWTH_STORAGE_KEY) return;
-      readJourney();
     };
     const recordEvidenceMilestone = (event: Event) => {
       const detail = (event as CustomEvent<{ name?: string; measure?: string }>).detail;
@@ -79,11 +73,9 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         setState((current) => recordGrowthSignal(current, "pilot_reviewed"));
       }
     };
-    window.addEventListener("storage", syncJourney);
     window.addEventListener(GROWTH_UPDATE_EVENT, readJourney);
     window.addEventListener("haven:measure", recordEvidenceMilestone);
     return () => {
-      window.removeEventListener("storage", syncJourney);
       window.removeEventListener(GROWTH_UPDATE_EVENT, readJourney);
       window.removeEventListener("haven:measure", recordEvidenceMilestone);
     };
@@ -95,16 +87,6 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
   );
   const signalCount = state.observedSignals.length;
 
-  const selectAudience = (audience: string) => {
-    const nextAudience = (audience || null) as AudienceContext | null;
-    setState((current) => setGrowthAudience(current, nextAudience));
-    emitHavenMeasure({
-      measure: "audience_context_selected",
-      surface: "growth_journey",
-      audience: nextAudience || "exploring",
-    });
-  };
-
   const resetJourney = () => {
     const reset = recordGrowthVisit(
       createGrowthJourneyState(),
@@ -112,7 +94,7 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     );
     setState(reset);
     try {
-      window.localStorage.removeItem(GROWTH_STORAGE_KEY);
+      window.sessionStorage.removeItem(GROWTH_STORAGE_KEY);
       window.localStorage.removeItem(LEGACY_GROWTH_STORAGE_KEY);
     } catch {
       /* State is still reset for the current session. */
@@ -165,24 +147,23 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
           `Пройдено шагов решения: ${signalCount} из 5`,
         )}
       />
-      <label className="growth-journey-context">
-        <span>{localize(locale, "My decision context", "Контекст решения")}</span>
-        <select
-          value={state.audience || ""}
-          onChange={(event) => selectAudience(event.target.value)}
-          data-measure="audience_context_selected"
-          data-measure-mode="manual"
-        >
-          <option value="">
-            {localize(locale, "Understand whether HAVEN fits", "Понять, подходит ли HAVEN")}
-          </option>
-          {audienceContexts.map((context) => (
-            <option value={context.id} key={context.id}>
-              {context.label[locale]}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="growth-journey-context">
+        <span>{localize(locale, "Evaluation context", "Контекст оценки")}</span>
+        {state.audience ? (
+          <div className="growth-journey-context-value">
+            <strong>
+              {audienceContexts.find((context) => context.id === state.audience)?.label[locale]}
+            </strong>
+            <Link prefetch={false} href="/#acquisition-lens">
+              {localize(locale, "Change", "Изменить")}
+            </Link>
+          </div>
+        ) : (
+          <Link prefetch={false} href="/#acquisition-lens">
+            {localize(locale, "Choose what you need to evaluate", "Выбрать задачу оценки")}
+          </Link>
+        )}
+      </div>
       <div className="growth-journey-next">
         <span>{localize(locale, "Next evidence step", "Следующий шаг с доказательствами")}</span>
         <Link
@@ -201,8 +182,8 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         <small>
           {localize(
             locale,
-            "Progress guidance stays in this browser. Session measurement is local to this tab and is not population analytics or a sales submission.",
-            "Подсказки прогресса остаются в этом браузере. Измерение сессии локально для этой вкладки и не является аналитикой всей аудитории или отправкой в продажи.",
+            "Decision guidance lasts only for this browser tab. It is not population analytics and is not sent to sales.",
+            "Подсказки пути действуют только в этой вкладке браузера. Это не аналитика аудитории и не отправка данных в продажи.",
           )}
         </small>
         <button type="button" onClick={resetJourney}>

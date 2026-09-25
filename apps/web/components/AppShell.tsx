@@ -417,14 +417,6 @@ function Shell({ children }: { children: React.ReactNode }) {
             >
               {dark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <span
-              className="observer-avatar"
-              role="img"
-              title={localize(locale, "Public observer", "Публичный наблюдатель")}
-              aria-label={localize(locale, "Public observer", "Публичный наблюдатель")}
-            >
-              O
-            </span>
           </div>
         </header>
         <nav

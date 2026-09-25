@@ -24,6 +24,31 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const contactUrl = publicPilotContactUrl();
+  const declaredLength = Number(request.headers.get("content-length") || "0");
+  if (Number.isFinite(declaredLength) && declaredLength > 20_000) {
+    return Response.json(
+      { ok: false, code: "payload_too_large", contactUrl },
+      { status: 413, headers: jsonHeaders },
+    );
+  }
+
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("host");
+  if (origin && host) {
+    try {
+      if (new URL(origin).host !== host) {
+        return Response.json(
+          { ok: false, code: "origin_rejected", contactUrl },
+          { status: 403, headers: jsonHeaders },
+        );
+      }
+    } catch {
+      return Response.json(
+        { ok: false, code: "origin_rejected", contactUrl },
+        { status: 403, headers: jsonHeaders },
+      );
+    }
+  }
 
   let body: unknown;
   try {

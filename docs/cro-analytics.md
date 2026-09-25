@@ -22,9 +22,10 @@ This contract turns the existing product journey into an inspectable measurement
 | Orient | `evaluation_path_viewed` | `orientation_opened` | Local sessions that rendered the qualified evaluation path | No orientation route opened in that session |
 | Verify | `proof_desk_opened` | `proof_receipt_exported` | Sessions entering Proof Desk from an instrumented evaluation CTA | No receipt exported in that session |
 | Bound | `trust_boundary_opened` | `boundary_evidence_reviewed` | Sessions opening Trust from the evaluation path | No machine-readable boundary evidence reached |
-| Prepare | `pilot_readiness_viewed` | `analysis_brief_exported` | Sessions rendering pilot readiness | No analysis brief exported in that session |
+| Prepare | `pilot_readiness_viewed` | `pilot_brief_exported` | Sessions rendering pilot readiness | No qualified pilot brief exported in that session |
+| Contact | `pilot_request_opened` | `pilot_request_submitted` | Sessions opening the qualified handoff after readiness review | No explicit consented request accepted |
 
-These stages are decision evidence, not a revenue funnel. A future sales funnel must begin only after consented contact capture and CRM integration exist.
+The first four stages are decision evidence, not leads. The Contact stage is the boundary to a sales funnel: it counts only an accepted explicit submission through the configured server-side handoff.
 
 ## Event contract
 
@@ -49,7 +50,7 @@ During execution, validate exposure logging, assignment persistence, sample-rati
 
 After execution, publish the numerator, denominator, exclusions, uncertainty interval and practical effect against the predeclared threshold. Statistical significance alone does not authorize release. Underpowered, corrupted or incomplete experiments remain `no conclusion`.
 
-The current local build can record exposure and outcome events inside one browser session, but it has no eligible cross-session sample or population dataset. Its valid experiment status is `no conclusion`.
+The current build can record exposure and outcome events inside one browser session. It can also register an accepted pilot-request outcome locally after explicit submission, but it still has no eligible cross-session population dataset. Its valid experiment status remains `no conclusion`.
 
 ## Roles and accountability
 

@@ -163,6 +163,7 @@ export const journeyStages: JourneyStage[] = [
     icon: ClipboardCheck,
     routes: [
       "/delivery",
+      "/pilot",
       "/atelier",
       "/forge",
       "/worlds/continuity",

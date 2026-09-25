@@ -14,11 +14,11 @@ export const productMetrics = [
     detailRu: "от исходного объекта до экспортируемой локальной квитанции",
   },
   {
-    label: "Remote writes",
-    labelRu: "Удалённые записи",
+    label: "Implicit remote writes",
+    labelRu: "Неявные удалённые записи",
     value: "00",
-    detail: "no CRM lead, admission or backend mutation is created",
-    detailRu: "не создаются CRM-лид, admission или изменения бэкенда",
+    detail: "remote handoff occurs only after an explicit consented pilot submission",
+    detailRu: "удалённая передача происходит только после явной отправки пилота с согласием",
   },
   {
     label: "Current maturity",

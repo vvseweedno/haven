@@ -47,7 +47,7 @@ Negative ICP: teams seeking a production runtime, turnkey multi-user collaborati
 2. Inspect: show the real local graph, public objects and implementation boundary.
 3. Evaluate: complete a local verification and export a receipt.
 4. Qualify: compare fit, risk, integration surface and pilot readiness.
-5. Pilot: produce a local pilot brief for a human conversation; no automatic submission exists.
+5. Pilot: produce a local pilot brief, then optionally make an explicit consent-based pilot request through the configured server-side handoff.
 6. Return: resume from browser-local progress without external tracking.
 
 The current activation event is a completed local evaluation with an exported or saved proof artifact. Route visits alone are not activation.
@@ -65,7 +65,7 @@ Paid acquisition is premature until a repeatable qualified-pilot definition and 
 
 ## CRM and lifecycle contract
 
-The current build has no CRM backend. It may remember the selected audience, visited evaluation stages and saved local artifacts in the browser. It must not imply that a sales team received anything.
+The current build includes a minimal, configurable pilot-intake bridge rather than a hidden CRM tracker. Browser-local evaluation remains local. A sales/CRM handoff happens only when the visitor opens the qualified pilot form, enters contact and qualification data, gives explicit consent and submits it. The server forwards that payload only when `HAVEN_PILOT_WEBHOOK_URL` is configured; otherwise submission stays disabled and the site may expose a configured public contact URL.
 
 A future consented CRM record may contain:
 
@@ -101,13 +101,16 @@ Local, privacy-preserving measures:
 - evaluation stages visited in this browser;
 - public objects saved locally;
 - proof receipt generated and exported;
-- pilot readiness checklist completed and brief exported.
+- pilot readiness checklist completed and brief exported;
+- qualified pilot handoff opened;
+- explicit pilot request accepted by the configured handoff endpoint.
 
 Future aggregate funnel, only after consented analytics exists:
 
 - qualified evaluation starts;
 - evaluation-to-receipt completion;
 - receipt-to-qualified-pilot conversion;
+- qualified-pilot-to-consented-contact conversion;
 - pilot activation and time to first trusted continuity cycle;
 - retained deployments and expansion by validated use case;
 - disqualification reasons and trust-related objections.
@@ -160,3 +163,23 @@ Changes now live on the audit branch:
 - local privacy constraints remain intact: no contact record, CRM event or behavioral profile is created.
 
 The next demand-generation step should be distribution of deep links to the relevant evaluation surface, not paid traffic to a generic homepage.
+
+
+## Marketing, sales and growth audit — full correction 2026-09-25
+
+The second pass closed the largest commercial gap left by the earlier product-positioning work: a qualified evaluator had no explicit way to become a real sales conversation.
+
+Implemented across the existing product journey:
+
+- the lifecycle is now five observable steps: context/evidence/boundary/proof/pilot readiness, followed by a separate consented contact event in the measurement funnel;
+- Delivery no longer ends at a downloadable file; it offers a qualified pilot handoff only after readiness review;
+- a dedicated `/pilot` route collects the minimum useful B2B qualification data: person, work email, organization, role, primary failure mode, real workflow, pilot goal and optional data boundary;
+- the form never silently captures browsing history, local notes or proof contents;
+- session attribution is attached only when the person explicitly submits the form;
+- the server validates lengths, email, consent, origin and payload size, uses a honeypot, and forwards only to a configured HTTPS webhook;
+- the public site exposes no webhook secret and does not invent a CRM record when the integration is unavailable;
+- a public fallback contact can be configured separately;
+- local measurement now distinguishes qualification from actual contact, so exported briefs are not misreported as sales leads;
+- homepage and product metrics were corrected so they no longer claim that a CRM lead can never be created; they now state that no implicit remote write occurs.
+
+The commercial conversion definition is therefore explicit: **a lead exists only after an accepted, consented pilot submission**. A page view, CTA click, exported brief or locally selected persona is not a lead.

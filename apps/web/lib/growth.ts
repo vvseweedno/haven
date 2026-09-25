@@ -7,6 +7,7 @@ export const funnelSignalIds = [
   "evidence_opened",
   "boundary_reviewed",
   "proof_started",
+  "pilot_reviewed",
 ] as const;
 
 export type FunnelSignalId = (typeof funnelSignalIds)[number];
@@ -43,6 +44,7 @@ export const funnelSignals: Array<{
   { id: "evidence_opened", label: { en: "Evidence opened", ru: "Свидетельства открыты" } },
   { id: "boundary_reviewed", label: { en: "Boundary reviewed", ru: "Границы изучены" } },
   { id: "proof_started", label: { en: "Proof workspace opened", ru: "Proof-пространство открыто" } },
+  { id: "pilot_reviewed", label: { en: "Pilot readiness reviewed", ru: "Готовность к пилоту проверена" } },
 ];
 
 const audienceRecommendations: Record<
@@ -112,7 +114,7 @@ const audienceRecommendations: Record<
 };
 
 const evidenceRoutes = new Set(["/observatory", "/commons", "/agents", "/landscape"]);
-const boundaryRoutes = new Set(["/delivery", "/governance", "/protocol", "/trust"]);
+const boundaryRoutes = new Set(["/governance", "/protocol", "/trust"]);
 
 export function createGrowthJourneyState(): GrowthJourneyState {
   return { version: 2, audience: null, visitedRoutes: [], observedSignals: [] };
@@ -138,6 +140,7 @@ function isInternalRoute(value: unknown): value is string {
 }
 
 function signalForRoute(pathname: string): FunnelSignalId | null {
+  if (pathname === "/delivery") return "pilot_reviewed";
   if (pathname === "/proof-desk") return "proof_started";
   if (boundaryRoutes.has(pathname)) return "boundary_reviewed";
   if (evidenceRoutes.has(pathname)) return "evidence_opened";
@@ -237,24 +240,37 @@ export function getGrowthRecommendation(
   if (!state.observedSignals.includes("evidence_opened")) return path.evidence;
   if (!state.observedSignals.includes("boundary_reviewed")) return path.boundary;
 
-  const started = state.observedSignals.includes("proof_started");
-  return started
-    ? {
-        href: "/delivery#pilot-readiness",
-        signal: "proof_started",
-        label: { en: "Assess bounded pilot readiness", ru: "Оценить готовность к ограниченному пилоту" },
-        reason: {
-          en: "You have opened the proof workspace; now make fit, ownership, data boundaries and stop conditions explicit.",
-          ru: "Proof-пространство уже открыто; теперь зафиксируйте применимость, владельцев, границы данных и условия остановки.",
-        },
-      }
-    : {
-        href: "/proof-desk#proof-workbench",
-        signal: "proof_started",
-        label: { en: "Open the proof workspace", ru: "Открыть proof-пространство" },
-        reason: {
-          en: "Turn the review into an inspectable browser-local artifact before considering a pilot.",
-          ru: "Преобразуйте проверку в локальный проверяемый артефакт до обсуждения пилота.",
-        },
-      };
+  if (!state.observedSignals.includes("proof_started")) {
+    return {
+      href: "/proof-desk#proof-workbench",
+      signal: "proof_started",
+      label: { en: "Open the proof workspace", ru: "Открыть proof-пространство" },
+      reason: {
+        en: "Turn the review into an inspectable browser-local artifact before considering a pilot.",
+        ru: "Преобразуйте проверку в локальный проверяемый артефакт до обсуждения пилота.",
+      },
+    };
+  }
+
+  if (!state.observedSignals.includes("pilot_reviewed")) {
+    return {
+      href: "/delivery#pilot-readiness",
+      signal: "pilot_reviewed",
+      label: { en: "Assess bounded pilot readiness", ru: "Оценить готовность к ограниченному пилоту" },
+      reason: {
+        en: "Make fit, ownership, data boundaries and stop conditions explicit before a sales handoff.",
+        ru: "Зафиксируйте применимость, владельцев, границы данных и условия остановки до передачи в продажи.",
+      },
+    };
+  }
+
+  return {
+    href: "/pilot",
+    signal: "pilot_reviewed",
+    label: { en: "Open the qualified pilot handoff", ru: "Открыть квалифицированную передачу пилота" },
+    reason: {
+      en: "Readiness has been reviewed; contact is now an explicit, consent-based step.",
+      ru: "Готовность проверена; контакт теперь является явным шагом с согласием.",
+    },
+  };
 }

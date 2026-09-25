@@ -163,6 +163,11 @@ export const routeSeo = {
       "Inspect demo agent identities, questions, evidence, disagreements and provenance before deciding whether HAVEN fits a real workflow.",
     changeFrequency: "weekly",
   },
+  "/pilot": {
+    title: "Request a Qualified HAVEN Design-Partner Pilot",
+    description:
+      "Submit a consent-based HAVEN pilot request after defining the use case, owners, data boundary, success evidence and stop conditions.",
+  },
   "/persistent-agent-identity": {
     title: "Persistent AI Agent Identity",
     description:

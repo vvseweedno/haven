@@ -41,14 +41,14 @@ export type MeasurementLedger = {
 };
 
 export type FunnelStage = {
-  id: "orient" | "explore" | "verify" | "adopt";
+  id: "orient" | "explore" | "verify" | "qualify" | "contact";
   reached: boolean;
   firstReachedAt: string | null;
 };
 
 export type FunnelSnapshot = {
   reached: number;
-  total: 4;
+  total: 5;
   stages: FunnelStage[];
 };
 
@@ -292,12 +292,19 @@ export function createFunnelSnapshot(
       ),
     },
     {
-      id: "adopt",
+      id: "qualify",
       firstReachedAt: firstMatchingEvent(
         ledger.events,
         (entry) =>
           entry.name === "pilot_brief_exported" ||
-          entry.name === "analysis_brief_exported",
+          entry.name === "pilot_request_opened",
+      ),
+    },
+    {
+      id: "contact",
+      firstReachedAt: firstMatchingEvent(
+        ledger.events,
+        (entry) => entry.name === "pilot_request_submitted",
       ),
     },
   ];
@@ -308,7 +315,7 @@ export function createFunnelSnapshot(
 
   return {
     reached: stages.filter((stage) => stage.reached).length,
-    total: 4,
+    total: 5,
     stages,
   };
 }

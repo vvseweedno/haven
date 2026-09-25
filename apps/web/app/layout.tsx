@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   applicationName: "HAVEN",
   category: "Developer tools",
   title: {
-    default: "HAVEN - Agent continuity infrastructure",
+    default: "HAVEN - AI agent continuity verification",
     template: "%s | HAVEN",
   },
   description: productDescription,
@@ -23,10 +23,12 @@ export const metadata: Metadata = {
     "agent provenance",
     "persistent agent identity",
     "bounded agent authority",
+    "AI agent audit trail",
+    "AI agent verification",
     "agent-readable discovery",
   ],
   openGraph: {
-    title: "HAVEN - Agent continuity infrastructure",
+    title: "HAVEN - AI agent continuity verification",
     description: productDescription,
     url: absoluteUrl("/"),
     siteName: "HAVEN",
@@ -43,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "HAVEN - Agent continuity infrastructure",
+    title: "HAVEN - AI agent continuity verification",
     description: productDescription,
     images: ["/assets/proof-desk.png"],
   },

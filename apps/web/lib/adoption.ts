@@ -24,7 +24,7 @@ export type ReadinessCheck = {
 };
 
 export type FunnelStage = {
-  id: "orient" | "verify" | "bound" | "prepare";
+  id: "orient" | "verify" | "bound" | "prepare" | "contact";
   label: AdoptionCopy;
   ctaEvent: string;
   entryEvent: string;
@@ -94,16 +94,35 @@ export const funnelStages: FunnelStage[] = [
     label: { en: "Prepare", ru: "Подготовка" },
     ctaEvent: "pilot_readiness_viewed",
     entryEvent: "pilot_readiness_viewed",
-    completionEvent: "analysis_brief_exported",
+    completionEvent: "pilot_brief_exported",
     denominator: {
       en: "Local sessions that rendered the pilot-readiness checklist.",
       ru: "Локальные сессии, в которых показан checklist готовности к пилоту.",
     },
     dropOff: {
-      en: "Readiness viewed but no analysis brief exported in that session.",
-      ru: "Готовность просмотрена, но analysis brief не экспортирован в этой сессии.",
+      en: "Readiness viewed but no qualified pilot brief exported in that session.",
+      ru: "Готовность просмотрена, но квалифицированный pilot brief не экспортирован в этой сессии.",
     },
-    evidence: { en: "Local analysis brief", ru: "Локальный analysis brief" },
+    evidence: { en: "Qualified local pilot brief", ru: "Квалифицированный локальный pilot brief" },
+  },
+  {
+    id: "contact",
+    label: { en: "Contact", ru: "Контакт" },
+    ctaEvent: "pilot_request_opened",
+    entryEvent: "pilot_request_opened",
+    completionEvent: "pilot_request_submitted",
+    denominator: {
+      en: "Sessions that opened the qualified pilot handoff after reviewing readiness.",
+      ru: "Сессии, открывшие квалифицированную передачу пилота после проверки готовности.",
+    },
+    dropOff: {
+      en: "Pilot handoff opened but no explicit consented submission was accepted.",
+      ru: "Передача пилота открыта, но явная согласованная отправка не была принята.",
+    },
+    evidence: {
+      en: "Accepted consent-based pilot request",
+      ru: "Принятый запрос на пилот с явным согласием",
+    },
   },
 ];
 
@@ -230,6 +249,19 @@ export const evaluationPath: EvaluationStep[] = [
       ru: "Заполните локальный checklist и экспортируйте pilot brief; ничего не отправляется.",
     },
     href: "/delivery",
+  },
+  {
+    stage: { en: "05 / Contact", ru: "05 / Контакт" },
+    owner: { en: "Buyer + HAVEN operator", ru: "Заказчик + оператор HAVEN" },
+    decision: {
+      en: "Should this qualified pilot request enter a human sales conversation?",
+      ru: "Должен ли этот квалифицированный запрос на пилот перейти в человеческое обсуждение?",
+    },
+    evidence: {
+      en: "Submit only the contact and qualification data explicitly entered with consent.",
+      ru: "Отправляйте только явно введённые контактные и квалификационные данные с согласием.",
+    },
+    href: "/pilot",
   },
 ];
 

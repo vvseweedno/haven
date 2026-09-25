@@ -8,7 +8,8 @@ const stageLabels = {
   orient: { en: "Orient", ru: "Ориентация" },
   explore: { en: "Explore", ru: "Исследование" },
   verify: { en: "Verify", ru: "Проверка" },
-  adopt: { en: "Adopt", ru: "Внедрение" },
+  qualify: { en: "Qualify", ru: "Квалификация" },
+  contact: { en: "Contact", ru: "Контакт" },
 } as const;
 
 export function MeasurementPanel() {

@@ -160,7 +160,9 @@ function Shell({ children }: { children: React.ReactNode }) {
   const activeLabel: NavLabel =
     pathname === "/"
       ? { en: "Evaluate fit", ru: "Оценить применимость" }
-      : [
+      : pathname === "/pilot"
+        ? { en: "Pilot request", ru: "Запрос на пилот" }
+        : [
           ...primaryNav,
           ...navGroups.flatMap((group) => group.items),
         ].find(

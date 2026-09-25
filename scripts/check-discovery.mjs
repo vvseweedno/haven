@@ -26,6 +26,7 @@ const requiredPages = [
   "app/atelier/page.tsx",
   "app/delivery/page.tsx",
   "app/landscape/page.tsx",
+  "app/pilot/page.tsx",
   "app/proof-desk/page.tsx",
   "app/agents/page.tsx",
   "app/agents/[id]/page.tsx",
@@ -109,6 +110,11 @@ if (
   !llms.includes("http://localhost:41731/delivery") ||
   manifest.publicResources?.deliveryContract !== "http://localhost:41731/delivery.json" ||
   manifest.status?.delivery !== "local-delivery-contract-human-release-required" ||
+  !sitemapIncludes("/pilot") ||
+  !llms.includes("http://localhost:41731/pilot") ||
+  manifest.publicResources?.pilot !== "http://localhost:41731/pilot" ||
+  manifest.publicResources?.pilotRequest !== "http://localhost:41731/api/v1/pilot-request" ||
+  manifest.status?.pilotIntake !== "explicit-consent-configurable" ||
   manifest.publicResources?.parallelAtelierManifest !== "http://localhost:41731/parallel-atelier.json" ||
   manifest.status?.parallelAtelier !== "proposal-only-human-merge-required"
 ) {

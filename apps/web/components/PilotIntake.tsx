@@ -105,7 +105,8 @@ export function PilotIntake() {
     setMessage("");
     dispatchMeasurement({ name: "pilot_request_started", context: "pilot_intake" });
 
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = {
       locale,
       fullName: form.get("fullName"),
@@ -143,7 +144,7 @@ export function PilotIntake() {
       setMessage(
         data.requestId ? `${copy.success} ${data.requestId}` : copy.success,
       );
-      event.currentTarget.reset();
+      formElement.reset();
       dispatchMeasurement({
         name: "pilot_request_submitted",
         context: "pilot_intake",

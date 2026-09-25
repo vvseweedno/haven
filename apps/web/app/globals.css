@@ -7033,6 +7033,13 @@ select:focus-visible {
 }
 
 @media (max-width: 760px) {
+  .sidebar:not(.is-open) {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .sidebar.is-open {
+    visibility: visible;
+  }
   .page-shell {
     padding: 22px 16px 44px;
   }

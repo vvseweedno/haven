@@ -424,7 +424,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   );
   check(
     dashboardSource.includes("decision-overview-grid") &&
-      dashboardSource.includes('href: "/observatory"'),
+      dashboardSource.includes('href="/observatory"'),
     "Homepage must expose the four-step orientation path while keeping Observatory optional.",
   );
   check(

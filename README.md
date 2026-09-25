@@ -92,10 +92,11 @@ See [the content and SEO contract](docs/content-seo.md) for the keyword/entity m
 npm test
 node scripts/check-content-seo.mjs
 node scripts/check-ui-brand.mjs
+node scripts/check-frontend.mjs
 npm run build
 ```
 
-`npm test` runs security tests, content/SEO checks, UI/brand conformance, discovery checks and TypeScript validation. The UI audit verifies the canonical brand mark, shared visual tokens, theme behavior, reduced motion and bounded WebGL rendering alongside the factual content and API contracts.
+`npm test` runs security tests, content/SEO checks, UI/brand conformance, frontend/browser-interface conformance, discovery checks and TypeScript validation. The frontend audit verifies route/bundle separation, task-first lazy search, dialog focus restoration, explicit control semantics, route recovery, responsive/accessibility contracts and bounded client behavior alongside the visual and factual product contracts.
 
 With the local production server running, the browser suites are:
 
@@ -120,6 +121,7 @@ Screenshots are written to `.artifacts/ui/` and `.artifacts/security/`. Set `HAV
 - `docs/content-seo.md` - content, SEO, localization and communication contract.
 - `docs/ux-ia.md` - UX, CX, navigation and information-architecture contract.
 - `docs/ui-brand.md` - UI, brand, design-system, motion, imagery and WebGL contract.
-- `scripts` - security, discovery, content, UI-brand and browser verification.
+- `docs/frontend-interface.md` - frontend architecture, browser-state, responsive, accessibility and interface-release contract.
+- `scripts` - security, discovery, content, UI-brand, frontend and browser verification.
 
 See [SECURITY.md](SECURITY.md) before using browser-local storage. The notebook is not an agent identity, credential store or backend memory service, and it must not be the only copy of valuable information.

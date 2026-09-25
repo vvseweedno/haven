@@ -478,7 +478,11 @@ export function PageHeader({
             </strong>{" "}
             {translated(locale, contract.boundary)}
           </span>
-          <a href={evidence.href}>
+          <a
+            href={evidence.href}
+            data-measure={pathname === "/trust" ? "boundary_evidence_reviewed" : undefined}
+            data-measure-context={pathname === "/trust" ? "trust_header" : undefined}
+          >
             {localize(locale, "Evidence source", "Источник данных")}: {translated(locale, evidence)}
           </a>
         </p>

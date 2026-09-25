@@ -6,6 +6,7 @@ import {
 } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import ts from "typescript";
 
 function walk(root, predicate) {
   const files = [];
@@ -159,20 +160,46 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   for (const file of tsxFiles) {
     const source = readFileSync(file, "utf8");
     const display = relative(root, file).replaceAll("\\", "/");
+    const sourceFile = ts.createSourceFile(
+      display,
+      source,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX,
+    );
 
-    for (const match of source.matchAll(/<button\b[\s\S]*?>/g)) {
-      check(
-        /\btype\s*=/.test(match[0]),
-        `${display} contains a button without an explicit type.`,
-      );
-    }
-
-    for (const match of source.matchAll(/<a\b[\s\S]*?target\s*=\s*["']_blank["'][\s\S]*?>/g)) {
-      check(
-        /\brel\s*=\s*["'][^"']*(?:noopener|noreferrer)[^"']*["']/.test(match[0]),
-        `${display} opens a new tab without noopener/noreferrer.`,
-      );
-    }
+    const inspectJsx = (node) => {
+      if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+        const tag = node.tagName.getText(sourceFile);
+        const attributes = node.attributes.properties.filter(ts.isJsxAttribute);
+        if (tag === "button") {
+          check(
+            attributes.some((attribute) => attribute.name.text === "type"),
+            `${display} contains a button without an explicit type.`,
+          );
+        }
+        if (tag === "a") {
+          const target = attributes.find((attribute) => attribute.name.text === "target");
+          const rel = attributes.find((attribute) => attribute.name.text === "rel");
+          const targetValue =
+            target?.initializer && ts.isStringLiteral(target.initializer)
+              ? target.initializer.text
+              : "";
+          const relValue =
+            rel?.initializer && ts.isStringLiteral(rel.initializer)
+              ? rel.initializer.text
+              : "";
+          if (targetValue === "_blank") {
+            check(
+              /(?:^|\s)(?:noopener|noreferrer)(?:\s|$)/.test(relValue),
+              `${display} opens a new tab without noopener/noreferrer.`,
+            );
+          }
+        }
+      }
+      ts.forEachChild(node, inspectJsx);
+    };
+    inspectJsx(sourceFile);
 
     if (!display.endsWith("app/layout.tsx")) {
       check(

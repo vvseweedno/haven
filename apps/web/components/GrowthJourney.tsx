@@ -85,7 +85,10 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     () => getGrowthRecommendation(state),
     [state],
   );
-  const signalCount = state.observedSignals.length;
+  const stageSignals = ["evidence_opened", "proof_started", "boundary_reviewed", "pilot_reviewed"] as const;
+  const completedStages = stageSignals.filter((signal) =>
+    state.observedSignals.includes(signal),
+  ).length;
 
   const resetJourney = () => {
     const reset = recordGrowthVisit(
@@ -129,22 +132,23 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         <span aria-live="polite">
           {localize(
             locale,
-            `${signalCount}/5 decision steps observed`,
-            `Пройдено шагов: ${signalCount}/5`,
+            `${completedStages}/4 decision stages completed`,
+            `Завершено этапов: ${completedStages}/4`,
           )}
         </span>
       </div>
       <progress
         className="growth-journey-progress"
-        value={signalCount}
-        max={5}
+        value={completedStages}
+        max={4}
         title={funnelSignals
+          .filter((signal) => stageSignals.includes(signal.id as (typeof stageSignals)[number]))
           .map((signal) => `${state.observedSignals.includes(signal.id) ? "✓" : "○"} ${signal.label[locale]}`)
           .join(" · ")}
         aria-label={localize(
           locale,
-          `${signalCount} of 5 decision steps observed`,
-          `Пройдено шагов решения: ${signalCount} из 5`,
+          `${completedStages} of 4 decision stages completed`,
+          `Завершено этапов решения: ${completedStages} из 4`,
         )}
       />
       <div className="growth-journey-context">

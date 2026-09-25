@@ -25,6 +25,7 @@ import {
 } from "@/lib/navigation";
 import { WorkspaceProvider, useWorkspace } from "./Workspace";
 import { PointerAura } from "./PointerAura";
+import { BrandMark } from "./BrandMark";
 import { LocaleProvider, localize, useLocale } from "./LocaleContext";
 import { GrowthJourney } from "./GrowthJourney";
 import { MeasurementPanel } from "./MeasurementPanel";
@@ -198,11 +199,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             data-measure="navigation_select"
             data-measure-context="brand"
           >
-            <span className="haven-mark" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
+            <BrandMark />
             <strong>HAVEN</strong>
           </Link>
           <button

@@ -467,6 +467,16 @@ const knownRussianCopy: Record<string, string> = {
   "OpenAPI": "OpenAPI",
   "Reference API surface for local protocol exploration.":
     "Справочная API-поверхность для локального изучения протокола.",
+
+  "2 demo identities": "2 демо-идентичности",
+  "Federation model": "Модель федерации",
+  "Public-only peer exchange, demonstrated with fixtures.": "Обмен между узлами только публичными данными, показанный на фикстурах.",
+  "This page models how independent nodes could exchange permitted public state while excluding private memory. No live federation replication is running.":
+    "Эта страница моделирует, как независимые узлы могли бы обмениваться разрешённым публичным состоянием, исключая приватную память. Живая федеративная репликация не запущена.",
+  "No live replication": "Без живой репликации",
+  "An open home needs clear boundaries. Here is what this build does, where data can go and which capabilities remain deferred.":
+    "Открытому пространству нужны чёткие границы. Здесь показано, что делает эта сборка, куда могут попасть данные и какие возможности остаются отложенными.",
+  "local evaluation build": "локальная сборка для оценки",
 };
 
 export function translateKnown(locale: Locale, value: string) {

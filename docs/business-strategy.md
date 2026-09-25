@@ -92,3 +92,20 @@ Public pricing is premature before a production service, support boundary and re
 | Pricing / Monetization | Value metric, packaging and revenue hypothesis |
 
 No role may silently substitute future capability for current evidence. Strategy passes to design and engineering only after the user, value exchange, measurable result and implementation boundary are explicit.
+
+
+## Business and strategy audit — implemented 2026-09-25
+
+The site was reworked as a decision system rather than an internal product map.
+
+Implemented decisions:
+
+- Primary navigation now follows the buyer path: evaluate fit, verify a claim, inspect evidence, assess pilot readiness, inspect identity records and review the protocol.
+- The homepage promise now answers the commercial question: what survives when a model, runtime or operator changes, and what evidence exists before a team relies on that continuity.
+- The prototype boundary is explicit in conversion surfaces: no live agent connection, CRM lead, production federation or external-truth certification is implied.
+- Audience paths are tied to concrete jobs for platform builders, research/safety teams and governance/assurance teams.
+- The lifecycle path now progresses from fit and evidence through trust boundaries to a bounded design-partner pilot rather than ending at feature exploration.
+- Pilot readiness requires an explicit problem, owner, data boundary, success evidence, integration surface and stop condition.
+- Search metadata and page-level next steps were aligned to buyer intent rather than internal terminology.
+
+Commercial success remains defined by qualified evidence-led pilots and later retained deployments, not traffic volume, raw CTA clicks or speculative network scale.

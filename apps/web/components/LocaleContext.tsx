@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export type Locale = "en" | "ru";
 export type LocalizedText = { en: string; ru: string };
@@ -13,36 +13,51 @@ type LocaleValue = {
 const LocaleContext = createContext<LocaleValue | null>(null);
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = useState<Locale>("en");
-  const [ready, setReady] = useState(false);
+  const [locale, setLocaleState] = useState<Locale>("en");
 
   useEffect(() => {
-    let next: Locale = "en";
-    try {
-      const saved = localStorage.getItem("haven-locale");
-      if (saved === "ru" || saved === "en") next = saved;
-      else if (navigator.languages.some((language) => language.toLowerCase().startsWith("ru"))) {
-        next = "ru";
+    const resolveLocale = (): Locale => {
+      try {
+        const saved = localStorage.getItem("haven-locale");
+        if (saved === "ru" || saved === "en") return saved;
+      } catch {
+        /* Fall through to browser language detection. */
       }
-    } catch {
-      /* English remains the safe local default when storage is unavailable. */
-    }
-    document.documentElement.lang = next;
-    setLocale(next);
-    setReady(true);
+      return navigator.languages.some((language) =>
+        language.toLowerCase().startsWith("ru"),
+      )
+        ? "ru"
+        : "en";
+    };
+
+    const apply = (nextLocale: Locale) => {
+      document.documentElement.lang = nextLocale;
+      setLocaleState(nextLocale);
+    };
+
+    apply(resolveLocale());
+
+    const syncStoredLocale = (event: StorageEvent) => {
+      if (event.key !== "haven-locale") return;
+      if (event.newValue === "en" || event.newValue === "ru") {
+        apply(event.newValue);
+      }
+    };
+    window.addEventListener("storage", syncStoredLocale);
+    return () => window.removeEventListener("storage", syncStoredLocale);
   }, []);
 
-  useEffect(() => {
-    if (!ready) return;
-    document.documentElement.lang = locale;
+  const setLocale = useCallback((nextLocale: Locale) => {
+    document.documentElement.lang = nextLocale;
+    setLocaleState(nextLocale);
     try {
-      localStorage.setItem("haven-locale", locale);
+      localStorage.setItem("haven-locale", nextLocale);
     } catch {
-      /* A locale can still be changed for the current page session. */
+      /* The explicit locale still applies to this tab. */
     }
-  }, [locale, ready]);
+  }, []);
 
-  const value = useMemo(() => ({ locale, setLocale }), [locale]);
+  const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }
 

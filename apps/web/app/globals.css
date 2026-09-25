@@ -4,29 +4,43 @@
 @import "@xyflow/react/dist/style.css";
 
 :root {
-  --bg: #f7f7f1;
-  --bg-raised: #fffefa;
-  --bg-soft: #edf1e9;
-  --ink: #101413;
-  --muted: #607066;
-  --line: #d0d9d0;
-  --line-strong: #8fa094;
-  --green: #5f7900;
-  --blue: #0b8f8a;
-  --red: #d9503c;
-  --amber: #808300;
-  --violet: #0b8f8a;
-  --coral-bg: #ffe4dd;
-  --lavender-bg: #d8f5f1;
-  --mint-bg: #eef9ca;
-  --amber-bg: #f0f4c7;
-  --sidebar: #101413;
-  --sidebar-text: #e2ebe2;
-  --graph-grid: #dbe4dc;
+  --bg: #f4f5ef;
+  --bg-raised: #fbfcf7;
+  --bg-soft: #e9ede6;
+  --ink: #111613;
+  --muted: #5a675f;
+  --line: #d3dcd3;
+  --line-strong: #8c9b91;
+  --green: #4f6800;
+  --blue: #0b7f7a;
+  --red: #c94e39;
+  --amber: #6d7000;
+  --violet: #0b7f7a;
+  --coral-bg: #ffe4dc;
+  --lavender-bg: #d9f2ef;
+  --mint-bg: #edf7c9;
+  --amber-bg: #f0f1c8;
+  --sidebar: #0d1210;
+  --sidebar-text: #e8eee9;
+  --graph-grid: #d9e1da;
   --map-edge: #20d7d0;
-  --shadow: 0 16px 56px #1014131f;
-  --radius: 8px;
-  --sidebar-width: 218px;
+  --shadow: 0 18px 56px #11161318;
+  --shadow-sm: 0 4px 16px #1116130d;
+  --shadow-md: 0 18px 48px #11161314;
+  --shadow-lg: 0 32px 90px #11161321;
+  --radius-xs: 4px;
+  --radius-sm: 7px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius: var(--radius-md);
+  --sidebar-width: 232px;
+  --content-max: 1480px;
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-slow: 420ms;
+  --ease-standard: cubic-bezier(.2, .8, .2, 1);
+  --focus-ring: #5f7900;
   --font-body: "Manrope Variable", "Segoe UI", sans-serif;
   --font-display: "Space Grotesk Variable", "Manrope Variable", sans-serif;
   --font-mono: "IBM Plex Mono", Consolas, monospace;
@@ -37,25 +51,31 @@
   --paper: #f7f7f1;
 }
 :root[data-theme="dark"] {
-  --bg: #101413;
-  --bg-raised: #161b18;
-  --bg-soft: #202823;
-  --ink: #f7f7f1;
-  --muted: #aab9ae;
-  --line: #324037;
-  --line-strong: #607067;
+  --bg: #0d1210;
+  --bg-raised: #141a16;
+  --bg-soft: #1d2620;
+  --ink: #f3f6f1;
+  --muted: #a4b2a8;
+  --line: #2f3b34;
+  --line-strong: #64736a;
   --green: #d8ff3d;
   --blue: #20d7d0;
-  --red: #ff7055;
+  --red: #ff775c;
   --amber: #d8ff3d;
   --violet: #20d7d0;
-  --coral-bg: #402925;
-  --lavender-bg: #123d3a;
-  --mint-bg: #26341d;
-  --amber-bg: #303519;
-  --sidebar: #090c0b;
-  --graph-grid: #304038;
+  --coral-bg: #3f2822;
+  --lavender-bg: #123936;
+  --mint-bg: #263219;
+  --amber-bg: #303417;
+  --sidebar: #080b09;
+  --sidebar-text: #edf2ee;
+  --graph-grid: #2d3932;
   --map-edge: #20d7d0;
+  --shadow: 0 22px 72px #00000052;
+  --shadow-sm: 0 6px 18px #0000002b;
+  --shadow-md: 0 22px 56px #00000038;
+  --shadow-lg: 0 38px 100px #00000052;
+  --focus-ring: #d8ff3d;
   color-scheme: dark;
 }
 * {
@@ -69,10 +89,14 @@ html {
 body {
   margin: 0;
   background-color: var(--bg);
-  background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 0.7px, transparent 0.8px);
-  background-size: 9px 9px;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 3.5%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
   color: var(--ink);
-  font: 14px/1.6 var(--font-body);
+  font: 14px/1.65 var(--font-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 a {
   color: inherit;
@@ -113,12 +137,14 @@ img {
   display: block;
 }
 button,
-a {
+a,
+summary {
   transition:
-    background 0.16s,
-    color 0.16s,
-    border-color 0.16s,
-    box-shadow 0.16s;
+    background var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard),
+    transform var(--motion-fast) var(--ease-standard);
 }
 h1,
 h2,
@@ -131,8 +157,9 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 650;
-  line-height: 1.3;
+  font-weight: 640;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   overflow-wrap: anywhere;
 }
 h1 {
@@ -152,8 +179,8 @@ p {
   color: #20392a;
 }
 :focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 4px;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 input:focus-visible,
 select:focus-visible {

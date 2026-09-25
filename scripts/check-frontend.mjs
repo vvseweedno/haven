@@ -147,8 +147,15 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   );
   check(
     search.includes("const wantsCatalog = query.trim().length > 0") &&
-      search.includes("if (!wantsCatalog || catalogLoaded) return"),
+      search.includes("if (!wantsCatalog)") &&
+      search.includes("if (catalogLoaded) return"),
     "Search must not fetch the catalog before a real query.",
+  );
+  check(
+    search.includes('setError("")') &&
+      search.includes("setLoading(false)") &&
+      search.includes("wantsCatalog && error"),
+    "Search must recover to the task-first state when the query is cleared.",
   );
   check(
     search.includes('import Link from "next/link"') &&
@@ -164,8 +171,9 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   );
   check(
     workspace.includes("useId()") &&
-      workspace.includes("aria-labelledby={titleId}"),
-    "Shared dialogs must use a programmatically labelled title.",
+      workspace.includes("aria-labelledby={titleId}") &&
+      workspace.includes("<h2 id={titleId}>"),
+    "Shared dialogs must use a programmatically labelled semantic heading.",
   );
   check(
     shell.includes('explicitTheme.current = nextTheme') &&

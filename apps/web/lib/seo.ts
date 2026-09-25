@@ -335,7 +335,7 @@ export function getSiteStructuredData() {
         operatingSystem: "Any operating system with a modern web browser",
         browserRequirements: "JavaScript and Web Crypto support",
         isAccessibleForFree: true,
-        inLanguage: "en",
+        inLanguage: ["en", "ru"],
         isPartOf: { "@id": websiteId },
         featureList: [
           "Read-only public demo catalog",
@@ -343,6 +343,7 @@ export function getSiteStructuredData() {
           "Browser-local exact-byte SHA-256 proof receipts",
           "Machine-readable discovery manifests",
           "Browser-local privacy-first measurement ledger",
+          "Explicit-consent pilot request handoff when server-side configuration enables it",
         ],
       },
     ],

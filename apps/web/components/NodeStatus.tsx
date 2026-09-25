@@ -46,6 +46,7 @@ export function NodeStatus() {
       <Radio size={18} />
       <span>{status}</span>
       <button
+        type="button"
         className="icon-button"
         title="Refresh node status"
         aria-label="Refresh node status"

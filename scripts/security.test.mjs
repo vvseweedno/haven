@@ -25,6 +25,7 @@ import {
   recordGrowthVisit,
 } from "../apps/web/lib/growth.ts";
 import { buildAnalysisBrief, buildPilotBrief } from "../apps/web/lib/adoption.ts";
+import { sanitizePilotRequest } from "../apps/web/lib/pilot-intake.ts";
 import {
   MAX_MEASUREMENT_EVENTS,
   appendMeasurement,
@@ -118,8 +119,10 @@ test("measurement attribution is allowlisted and funnel requires outcomes", () =
   ledger = appendMeasurement(ledger, { name: "route_view" }, "/proof-desk");
   assert.equal(createFunnelSnapshot(ledger).reached, 2);
   ledger = appendMeasurement(ledger, { name: "proof_receipt_created" }, "/proof-desk");
-  ledger = appendMeasurement(ledger, { name: "analysis_brief_exported" }, "/delivery");
+  ledger = appendMeasurement(ledger, { name: "pilot_brief_exported" }, "/delivery");
   assert.equal(createFunnelSnapshot(ledger).reached, 4);
+  ledger = appendMeasurement(ledger, { name: "pilot_request_submitted" }, "/pilot");
+  assert.equal(createFunnelSnapshot(ledger).reached, 5);
   const exported = createMeasurementExport(ledger, { utm_source: "research_lab" });
   assert.equal(exported.privacy.networkTransmission, false);
   assert.equal(exported.privacy.identifiers, false);
@@ -131,6 +134,47 @@ test("analysis brief cannot manufacture visitors, uplift or a winner", () => {
   assert.equal(brief.experiment.requiredSampleSize, null);
   assert.ok(brief.funnel.every((stage) => stage.eligibleSessions === null));
   assert.match(brief.boundary, /no telemetry/i);
+});
+
+
+
+test("pilot intake requires explicit consent and sanitizes submitted qualification data", () => {
+  const rejected = sanitizePilotRequest({
+    fullName: "A",
+    workEmail: "not-an-email",
+    organization: "",
+    role: "",
+    failureMode: "continuity",
+    workflow: "short",
+    pilotGoal: "short",
+    consent: false,
+  });
+  assert.equal(rejected.ok, false);
+
+  const accepted = sanitizePilotRequest({
+    locale: "en",
+    fullName: "  Ada <Admin>  ",
+    workEmail: "ADA@EXAMPLE.COM",
+    organization: "Research Lab",
+    role: "Safety Lead",
+    failureMode: "authority",
+    workflow: "We need to preserve reviewable agent authority across runtime replacements.",
+    pilotGoal: "A reviewer can trace each delegated action to its evidence and authority boundary.",
+    dataBoundary: "Private notes must remain local.",
+    consent: true,
+    attribution: {
+      utm_source: "Research_Lab",
+      utm_campaign: "Pilot_2026",
+      email: "secret@example.com",
+    },
+  });
+  assert.equal(accepted.ok, true);
+  assert.equal(accepted.value.workEmail, "ada@example.com");
+  assert.equal(accepted.value.fullName, "Ada Admin");
+  assert.deepEqual(accepted.value.attribution, {
+    utm_source: "research_lab",
+    utm_campaign: "pilot_2026",
+  });
 });
 
 test("vault encrypts all note fields and uses a nonextractable key", async () => {

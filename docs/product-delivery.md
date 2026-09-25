@@ -7,7 +7,7 @@ HAVEN is developed as a human and agent participation surface, not as a visual d
 ## Ordered chain of responsibility
 
 1. Product systems: frames the human problem, public value, non-goals and consent boundary.
-2. Art direction: maintains the three-signal visual language: Sol chartreuse, Tide cyan and Signal coral, including 1-bit dither, CRM and data-mosh expression.
+2. Art direction: maintains the scientific continuity language: Sol chartreuse, Tide cyan and Signal coral on neutral instrument surfaces, with archival/dither/data-mosh treatments used selectively rather than as a blanket aesthetic.
 3. Experience and localization: owns navigation, accessible controls, participation journey and the Russian-English content plan.
 4. Frontend and WebGL: builds resilient product interactions, GPU fallbacks and reduced-motion behavior.
 5. Protocol, backend and data: specifies discovery, object envelopes, capability limits and data durability before remote mutation.

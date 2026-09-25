@@ -91,6 +91,12 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
     void load();
     return () => controller.abort();
   }, [catalogLoaded, retry, wantsCatalog]);
+  useEffect(() => {
+    if (wantsCatalog) return;
+    setLoading(false);
+    setError("");
+  }, [wantsCatalog]);
+
   const results = useMemo(() => {
     const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     if (!words.length) return catalog;

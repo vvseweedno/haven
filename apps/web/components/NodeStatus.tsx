@@ -72,14 +72,11 @@ export function NodeStatus() {
   );
 
   return (
-    <div
-      className="node-health"
-      role="status"
-      aria-live="polite"
-      aria-busy={busy}
-    >
+    <div className="node-health" aria-busy={busy}>
       <Radio size={18} aria-hidden="true" />
-      <span>{statusText}</span>
+      <span role="status" aria-live="polite">
+        {statusText}
+      </span>
       <button
         type="button"
         className="icon-button"

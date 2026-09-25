@@ -162,5 +162,30 @@
     "performance",
     "content-strategy"
   ],
-  "uiBrandDocument": "docs/ui-brand.md"
+  "uiBrandDocument": "docs/ui-brand.md",
+  "frontendCouncil": [
+    "frontend-architect",
+    "frontend-developer",
+    "javascript-typescript-engineer",
+    "react-vue-nextjs-developer",
+    "css-specialist",
+    "responsive-developer",
+    "animation-developer",
+    "accessibility-frontend-engineer"
+  ],
+  "frontendReviewLeads": [
+    "product-manager",
+    "project-delivery-manager",
+    "ux-lead",
+    "design-director",
+    "tech-lead",
+    "seo-lead",
+    "analytics-lead",
+    "qa-lead",
+    "security",
+    "accessibility",
+    "performance",
+    "content-strategy"
+  ],
+  "frontendDocument": "docs/frontend-interface.md"
 }

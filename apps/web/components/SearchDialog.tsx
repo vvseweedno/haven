@@ -223,7 +223,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             </div>
           ))
         )}
-        {!loading && !error && !results.length && (
+        {!loading && !error && !!query.trim() && !results.length && (
           <div className="empty-state">
             <h3>
               {localize(locale, "No matches for", "Нет результатов для")} &quot;{query}&quot;

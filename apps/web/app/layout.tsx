@@ -6,6 +6,7 @@ import {
   canonicalSiteUrl,
   getSiteStructuredData,
   productDescription,
+  searchIndexingEnabled,
 } from "@/lib/seo";
 import "./globals.css";
 
@@ -50,8 +51,9 @@ export const metadata: Metadata = {
     images: ["/assets/proof-desk.png"],
   },
   robots: {
-    index: true,
-    follow: true,
+    index: searchIndexingEnabled,
+    follow: searchIndexingEnabled,
+    noarchive: !searchIndexingEnabled,
   },
 };
 

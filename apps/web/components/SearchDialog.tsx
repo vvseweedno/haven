@@ -60,7 +60,12 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
   }, []);
   const wantsCatalog = query.trim().length > 0;
   useEffect(() => {
-    if (!wantsCatalog || catalogLoaded) return;
+    if (!wantsCatalog) {
+      setError("");
+      setLoading(false);
+      return;
+    }
+    if (catalogLoaded) return;
     const controller = new AbortController();
     setLoading(true);
     setError("");
@@ -149,13 +154,13 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
         <p className="eyebrow">
           {loading
             ? localize(locale, "Loading public catalog...", "Загрузка публичного каталога...")
-            : error
+            : wantsCatalog && error
               ? localize(locale, "Catalog unavailable", "Каталог недоступен")
               : query
                 ? `${total} ${pluralize(locale, total, { en: ["result", "results"], ru: ["результат", "результата", "результатов"] })}`
                 : localize(locale, "Start with a task", "Начните с задачи")}
         </p>
-        {error ? (
+        {wantsCatalog && error ? (
           <div className="empty-state">
             <p role="alert">
               {error === "busy"
@@ -229,7 +234,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             </div>
           ))
         )}
-        {!loading && !error && !!query.trim() && !results.length && (
+        {!loading && !error && wantsCatalog && catalogLoaded && !results.length && (
           <div className="empty-state">
             <h3>
               {localize(locale, "No matches for", "Нет результатов для")} &quot;{query}&quot;

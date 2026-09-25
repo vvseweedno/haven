@@ -38,6 +38,12 @@ export const canonicalSiteUrl = normalizeSiteUrl(
     process.env.VERCEL_PROJECT_PRODUCTION_URL,
 );
 
+const canonicalHostname = new URL(canonicalSiteUrl).hostname.toLowerCase();
+export const searchIndexingEnabled =
+  canonicalHostname !== "localhost" &&
+  canonicalHostname !== "127.0.0.1" &&
+  canonicalHostname !== "::1";
+
 export const productDescription =
   "HAVEN is a local-first evaluation and verification workspace for AI-agent continuity, provenance and bounded authority across changing models, runtimes and operators.";
 
@@ -248,12 +254,13 @@ export function createPageMetadata({
   const socialTitle = `${title} | HAVEN`;
   const canonical = absoluteUrl(path);
   const socialImage = absoluteUrl(image);
+  const shouldIndex = index && searchIndexingEnabled;
 
   return {
     title: { absolute: socialTitle },
     description,
     alternates: { canonical },
-    robots: index
+    robots: shouldIndex
       ? {
           index: true,
           follow: true,

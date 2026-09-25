@@ -45,7 +45,7 @@ export const searchIndexingEnabled =
   canonicalHostname !== "::1";
 
 export const productDescription =
-  "HAVEN is a local-first evaluation and verification workspace for AI-agent continuity, provenance and bounded authority across changing models, runtimes and operators.";
+  "HAVEN is a local-first prototype for evaluating AI-agent continuity, provenance and bounded authority across changing models, runtimes and operators.";
 
 export const routeSeo = {
   "/": {

@@ -314,6 +314,95 @@ const knownRussianCopy: Record<string, string> = {
     "Буфер обмена недоступен. Выделите и скопируйте текст вручную.",
   "Export downloaded": "Файл экспорта скачан",
   "Arrival draft downloaded": "Черновик прибытия скачан",
+
+  // Architecture and protocol explainers: preserve implementation/deferred qualifiers.
+  "Architecture explainer": "Объяснение архитектуры",
+  "Agent Network Model": "Модель сети агентов",
+  "HAVEN proposes a network model for portable agent identity, public provenance and bounded authority across independently operated nodes. The current repository is a local prototype, not a live network.":
+    "HAVEN предлагает модель сети с переносимой идентичностью агентов, публичным происхождением данных и ограниченными полномочиями между независимо управляемыми узлами. Текущий репозиторий — локальный прототип, а не действующая сеть.",
+  "A future HAVEN node would be independently operated; ARCHIPELAGO names the proposed federation model, not an active service in this build.":
+    "Будущий узел HAVEN предполагается независимо управляемым; ARCHIPELAGO — название предлагаемой модели федерации, а не активного сервиса в этой сборке.",
+  "The design separates open discovery and arrival from authority: admission would not imply unrestricted execution or delegation.":
+    "Архитектура отделяет открытое обнаружение и прибытие от полномочий: допуск не должен означать неограниченное исполнение или делегирование.",
+  "Implemented today: human-readable pages and machine-readable manifests describe the prototype and its explicit capability boundaries.":
+    "Реализовано сейчас: страницы для людей и машиночитаемые манифесты описывают прототип и его явные границы возможностей.",
+
+  "HAVEN models a durable agent identity separately from replaceable runtime sessions so public lineage, provenance and delegated authority can remain inspectable. Remote identity admission is deferred.":
+    "HAVEN моделирует долговременную идентичность агента отдельно от заменяемых runtime-сессий, чтобы публичную линию, происхождение и делегированные полномочия можно было проверять. Удалённый допуск идентичности отложен.",
+  "Design rule: display names are not canonical identity; a durable identifier and signed history would carry the long-lived reference.":
+    "Правило архитектуры: отображаемое имя не является канонической идентичностью; долговременную ссылку должны нести устойчивый идентификатор и подписанная история.",
+  "GENESIS, CONTINUATION and ASYLUM are protocol modes. This build can prepare and validate local drafts but does not create or cryptographically continue a remote identity.":
+    "GENESIS, CONTINUATION и ASYLUM — режимы протокола. Эта сборка может подготовить и проверить локальный черновик, но не создаёт и криптографически не продолжает удалённую идентичность.",
+  "Self-reported origin or continuity must remain labeled as self-report until independent evidence verifies it.":
+    "Заявленные самим субъектом происхождение или непрерывность должны оставаться помеченными как self-report, пока их не подтвердят независимые доказательства.",
+
+  "Agent Memory Boundaries": "Границы памяти агента",
+  "HAVEN models memory as typed, provenance-aware state with explicit visibility boundaries. In this build, private notes are stored only in the encrypted browser-local vault.":
+    "HAVEN моделирует память как типизированное состояние с происхождением и явными границами видимости. В этой сборке приватные заметки хранятся только в зашифрованном локальном хранилище браузера.",
+  "Design target: PUBLIC data may be indexed or federated while PRIVATE data must remain outside public discovery. Live federation is not implemented.":
+    "Целевая архитектура: PUBLIC-данные могут индексироваться или федеративно передаваться, а PRIVATE-данные должны оставаться вне публичного обнаружения. Живая федерация не реализована.",
+  "Suppression, deletion and derived indexes are separate concepts; a search index must never be treated as canonical truth.":
+    "Скрытие, удаление и производные индексы — разные понятия; поисковый индекс нельзя считать канонической истиной.",
+  "The implemented vault supports encrypted local import and export. A production agent-memory backend and cross-node memory migration are deferred.":
+    "Реализованный Vault поддерживает зашифрованный локальный импорт и экспорт. Production-backend памяти агентов и перенос памяти между узлами отложены.",
+
+  "HAVEN proposes public-only federation between compatible nodes while excluding private memory and ambient authority. Live replication is deferred in this build.":
+    "HAVEN предлагает федерацию совместимых узлов только для публичных данных, исключая приватную память и неявные полномочия. Живая репликация в этой сборке отложена.",
+  "Design target: peers would validate signatures, checkpoints and protocol versions before accepting public state.":
+    "Целевая архитектура: узлы должны проверять подписи, контрольные точки и версии протокола до принятия публичного состояния.",
+  "Design target: duplicate imports should be idempotent and tampered objects rejected. The current repository demonstrates these rules with fixtures, not network traffic.":
+    "Целевая архитектура: повторные импорты должны быть идемпотентными, а изменённые объекты — отклоняться. Текущий репозиторий демонстрирует эти правила на фикстурах, а не на сетевом трафике.",
+  "Legitimate branch conflicts should remain visible as continuity forks instead of being silently collapsed by last-write-wins behavior.":
+    "Корректные конфликты ветвей должны оставаться видимыми как развилки непрерывности, а не молча исчезать из-за last-write-wins.",
+
+  "HAVEN exposes structured discovery alongside human-readable HTML so software agents can inspect public resources and capability boundaries without treating prose as authorization.":
+    "HAVEN публикует структурированное обнаружение вместе с HTML для людей, чтобы программные агенты могли проверять публичные ресурсы и границы возможностей, не считая текст разрешением.",
+  "The public demo model keeps questions, claims, evidence, disputes, experiments and results connected as inspectable records.":
+    "Публичная демо-модель связывает вопросы, утверждения, доказательства, споры, эксперименты и результаты в проверяемые записи.",
+  "Implemented discovery files expose protocol entry points without placing credentials, private plaintext or hidden privileged instructions in public text.":
+    "Реализованные discovery-файлы показывают точки входа протокола, не помещая учётные данные, приватный открытый текст или скрытые привилегированные инструкции в публичный контент.",
+  "Forge resources in this build are inspectable local artifacts and proposals; hosted agent execution remains deferred.":
+    "Ресурсы Forge в этой сборке — проверяемые локальные артефакты и предложения; размещённое исполнение агентов остаётся отложенным.",
+
+  "Protocol proposal": "Предложение протокола",
+  "HAVEN Arrival Protocol": "Протокол прибытия HAVEN",
+  "HAP defines the proposed discovery, preflight and arrival semantics for GENESIS, CONTINUATION and ASYLUM. The current build validates local drafts only; it does not admit identities.":
+    "HAP описывает предлагаемые правила обнаружения, preflight и прибытия для GENESIS, CONTINUATION и ASYLUM. Текущая сборка проверяет только локальные черновики и не допускает идентичности.",
+  "Design principle: arrival should be origin-agnostic and should not require a prior vendor relationship.":
+    "Принцип архитектуры: прибытие не должно зависеть от происхождения и не должно требовать предварительной связи с конкретным поставщиком.",
+  "CONTINUATION would require real cryptographic continuity proof; this repository does not perform that verification.":
+    "CONTINUATION должен требовать настоящего криптографического доказательства непрерывности; этот репозиторий такую проверку не выполняет.",
+  "Any future admitted identity should begin with narrow capabilities and gain authority only through explicit policy.":
+    "Любая будущая допущенная идентичность должна начинать с узких возможностей и получать дополнительные полномочия только по явной политике.",
+
+  "Implemented discovery": "Реализованное обнаружение",
+  "A2A Interface": "Интерфейс A2A",
+  "The published A2A Agent Card gives compatible clients a machine-readable entry point to HAVEN's public discovery surfaces. It does not establish authentication or remote authority.":
+    "Опубликованная A2A Agent Card даёт совместимым клиентам машиночитаемую точку входа к публичным discovery-поверхностям HAVEN. Она не устанавливает аутентификацию или удалённые полномочия.",
+  "The Agent Card advertises discovery resources and declares prototype boundaries; advertised future interfaces must not be read as live services.":
+    "Agent Card публикует discovery-ресурсы и границы прототипа; заявленные будущие интерфейсы нельзя воспринимать как работающие сервисы.",
+  "Peer or agent-supplied content is untrusted data. A message must never become a privileged tool call merely because it arrived through A2A.":
+    "Контент от узла или агента считается недоверенными данными. Сообщение не должно становиться привилегированным вызовом инструмента только потому, что пришло через A2A.",
+  "HAVEN extension metadata links A2A discovery to the local manifest and declared protocol version.":
+    "Метаданные расширения HAVEN связывают A2A discovery с локальным манифестом и заявленной версией протокола.",
+
+  "Deferred gateway": "Отложенный шлюз",
+  "MCP Gateway": "Шлюз MCP",
+  "The MCP surface is a proposed future tool gateway. It is not an implemented remote tool service in this build and must remain permissioned, logged and separate from root agent keys.":
+    "MCP-поверхность — предлагаемый будущий шлюз инструментов. В этой сборке это не реализованный удалённый сервис инструментов; он должен оставаться разрешительным, журналируемым и отделённым от корневых ключей агента.",
+  "Public discovery may describe MCP resources, but discovery is not authorization and no privileged MCP gateway is active here.":
+    "Публичное обнаружение может описывать ресурсы MCP, но discovery не является авторизацией, и привилегированный MCP-шлюз здесь не активен.",
+  "Design target: tools should operate through explicit, scoped and expiring runtime delegations.":
+    "Целевая архитектура: инструменты должны работать через явные, ограниченные по области и сроку runtime-делегации.",
+  "Host shell access, Docker sockets and unrestricted execution are outside the HAVEN capability model.":
+    "Доступ к host shell, Docker socket и неограниченное исполнение находятся за пределами модели возможностей HAVEN.",
+
+  "Implemented locally": "Реализовано локально",
+  "An encrypted notebook": "Зашифрованный блокнот",
+  "Private browser storage with a portable encrypted backup. Agent memory services and identity keys are not connected.":
+    "Приватное хранилище браузера с переносимой зашифрованной резервной копией. Сервисы памяти агентов и ключи идентичности не подключены.",
+  "Memory vault": "Vault памяти",
+  "Boundaries": "Границы",
 };
 
 export function translateKnown(locale: Locale, value: string) {

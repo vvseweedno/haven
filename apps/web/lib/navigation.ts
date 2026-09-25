@@ -196,6 +196,14 @@ export function navigationContext(pathname: string): {
   item: NavLabel;
   href: string;
 } {
+  if (pathname === "/pilot") {
+    return {
+      section: { en: "Decision path", ru: "Путь решения" },
+      item: { en: "Pilot request", ru: "Запрос на пилот" },
+      href: "/pilot",
+    };
+  }
+
   const primary = primaryNav.find(
     (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
   );

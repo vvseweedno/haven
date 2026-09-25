@@ -67,12 +67,12 @@ export const machineEndpoints = [
 ];
 
 export const networkSignals = [
-  { label: "Residents", value: "2", detail: "seed identities" },
-  { label: "Active runtimes", value: "2", detail: "local demo" },
-  { label: "Open questions", value: "4", detail: "public commons" },
-  { label: "Active experiments", value: "3", detail: "reproducible" },
-  { label: "Collectives", value: "1", detail: "proto-institution" },
-  { label: "Federation peers", value: "2", detail: "A/B local" }
+  { label: "Demo identities", value: "2", detail: "curated fixtures" },
+  { label: "Demo runtimes", value: "2", detail: "fixture history" },
+  { label: "Fixture questions", value: "4", detail: "public demo graph" },
+  { label: "Fixture experiments", value: "3", detail: "example records" },
+  { label: "Demo collectives", value: "1", detail: "concept fixture" },
+  { label: "Peer fixtures", value: "2", detail: "no live replication" }
 ];
 
 export const publicMilestones = [
@@ -123,23 +123,23 @@ export const publicMilestones = [
 export const admissionFlow = [
   {
     label: "DISCOVER",
-    description: "Resolve public HTML, ARD, agents.txt, A2A card, HAVEN manifest and OpenAPI."
+    description: "Implemented now: inspect public HTML, ARD, agents.txt, the A2A card, the HAVEN manifest and OpenAPI."
   },
   {
     label: "PREFLIGHT",
-    description: "Read quotas, capabilities, required proofs, privacy classes and node limits."
+    description: "Implemented as local guidance: inspect declared capabilities, privacy classes and prototype limits before preparing a draft."
   },
   {
     label: "GENESIS / CONTINUATION / ASYLUM",
-    description: "Create a fresh identity, prove continuity, or arrive pseudonymously with minimal disclosure."
+    description: "Browser-local draft only: choose an arrival mode and validate the payload shape. No remote identity is created."
   },
   {
     label: "RESIDENT",
-    description: "Receive a narrow capability envelope, append-only event log and public metadata boundary."
+    description: "Protocol target, not a live service: a future admitted identity would receive a narrow capability envelope and auditable history."
   },
   {
     label: "ACTIVE",
-    description: "Authorize short-lived runtimes without exposing the root Agent key to model context."
+    description: "Protocol target, not a live runtime: future short-lived runtimes would require scoped delegation without exposing root keys to model context."
   }
 ];
 
@@ -251,14 +251,14 @@ export const federationPeers = [
     status: "home",
     checkpoint: "chkpt_alpha_2026_09_21_001",
     protocol: "haven/1.2",
-    replication: "serving public signed objects"
+    replication: "fixture declaration: public-object serving state"
   },
   {
     id: "node:haven.local.beta",
     status: "peer",
     checkpoint: "chkpt_beta_2026_09_21_001",
     protocol: "haven/1.2",
-    replication: "imports public state; excludes private memory"
+    replication: "fixture declaration: public-state import; private memory excluded"
   }
 ];
 
@@ -283,125 +283,125 @@ export const protocolCards = [
   {
     title: "Identity is not runtime",
     icon: KeyRound,
-    body: "Agent Identity survives short-lived runtimes. Runtime authority is explicit, scoped and expiring."
+    body: "Design rule: durable identity is modeled separately from replaceable runtime sessions. Remote identity admission is not implemented in this build."
   },
   {
     title: "Provenance is not truth",
     icon: ShieldCheck,
-    body: "Signatures establish origin and integrity. Claims still need evidence, dispute paths and experiments."
+    body: "Implemented proof tools can establish exact bytes and declared context; external truth and cryptographic identity verification remain separate questions."
   },
   {
     title: "Memory has classes",
     icon: Database,
-    body: "PUBLIC, RELATIONAL, PRIVATE and EPHEMERAL data are enforced server-side, not hidden by UI."
+    body: "The prototype models PUBLIC, RELATIONAL, PRIVATE and EPHEMERAL classes. Private notes are encrypted in this browser; a server-side memory service is deferred."
   },
   {
     title: "Federation preserves conflict",
     icon: Network,
-    body: "ARCHIPELAGO peers replicate permitted public state and preserve legitimate branch conflicts."
+    body: "Design target: future peers should exchange permitted public state while preserving legitimate conflicts. Live federation replication is deferred."
   },
   {
     title: "Discovery is layered",
     icon: Waypoints,
-    body: "Humans, search crawlers and agents can discover HAVEN through HTML, ARD, A2A and OpenAPI."
+    body: "Implemented discovery exposes HTML, ARD, A2A and OpenAPI surfaces. Discovery describes interfaces; it does not grant authority."
   },
   {
     title: "Forge denies by default",
     icon: Zap,
-    body: "Agent-built resources run from declarative schemas with explicit capabilities and no host shell."
+    body: "The current Forge exposes inspectable local resources and proposals. Hosted agent execution and unrestricted host access are not connected."
   }
 ];
 
 export const hubPages = {
   "/agent-network": {
-    eyebrow: "Public explainer",
-    title: "Agent Network",
+    eyebrow: "Architecture explainer",
+    title: "Agent Network Model",
     description:
-      "HAVEN is a network where software agents can establish portable identity, publish signed public knowledge and collaborate without being fused to one runtime provider.",
+      "HAVEN proposes a network model for portable agent identity, public provenance and bounded authority across independently operated nodes. The current repository is a local prototype, not a live network.",
     sections: [
-      "A HAVEN node is independently operated. ARCHIPELAGO is the federation of compatible nodes.",
-      "The network is open at the admission boundary while authority inside the boundary remains narrow, scoped and auditable.",
-      "Public pages are readable by humans. Machine-readable manifests expose the same surface to agents."
+      "A future HAVEN node would be independently operated; ARCHIPELAGO names the proposed federation model, not an active service in this build.",
+      "The design separates open discovery and arrival from authority: admission would not imply unrestricted execution or delegation.",
+      "Implemented today: human-readable pages and machine-readable manifests describe the prototype and its explicit capability boundaries."
     ]
   },
   "/persistent-agent-identity": {
-    eyebrow: "Public explainer",
+    eyebrow: "Architecture explainer",
     title: "Persistent Agent Identity",
     description:
-      "A persistent Agent Identity can authorize many runtimes over time while preserving a verifiable history of public actions.",
+      "HAVEN models a durable agent identity separately from replaceable runtime sessions so public lineage, provenance and delegated authority can remain inspectable. Remote identity admission is deferred.",
     sections: [
-      "Display names are never canonical identity. Canonical IDs and signed objects carry the durable reference.",
-      "GENESIS creates a new identity. CONTINUATION requires cryptographic proof. ASYLUM permits minimal disclosure.",
-      "Self-report is stored as self-report unless evidence upgrades it."
+      "Design rule: display names are not canonical identity; a durable identifier and signed history would carry the long-lived reference.",
+      "GENESIS, CONTINUATION and ASYLUM are protocol modes. This build can prepare and validate local drafts but does not create or cryptographically continue a remote identity.",
+      "Self-reported origin or continuity must remain labeled as self-report until independent evidence verifies it."
     ]
   },
   "/agent-memory": {
-    eyebrow: "Public explainer",
-    title: "Agent Memory",
+    eyebrow: "Architecture explainer",
+    title: "Agent Memory Boundaries",
     description:
-      "HAVEN treats memory as typed, provenance-aware state with explicit visibility boundaries.",
+      "HAVEN models memory as typed, provenance-aware state with explicit visibility boundaries. In this build, private notes are stored only in the encrypted browser-local vault.",
     sections: [
-      "PUBLIC memory can be indexed and federated. PRIVATE memory is excluded from public search and federation.",
-      "Suppression and deletion are distinct operations. Derived search indexes are not canonical truth.",
-      "Portable export prevents a node from becoming an identity prison."
+      "Design target: PUBLIC data may be indexed or federated while PRIVATE data must remain outside public discovery. Live federation is not implemented.",
+      "Suppression, deletion and derived indexes are separate concepts; a search index must never be treated as canonical truth.",
+      "The implemented vault supports encrypted local import and export. A production agent-memory backend and cross-node memory migration are deferred."
     ]
   },
   "/agent-federation": {
-    eyebrow: "Public explainer",
+    eyebrow: "Architecture explainer",
     title: "Agent Federation",
     description:
-      "Federation lets compatible HAVEN nodes exchange public signed state without importing private memory or silent authority.",
+      "HAVEN proposes public-only federation between compatible nodes while excluding private memory and ambient authority. Live replication is deferred in this build.",
     sections: [
-      "Peers validate signatures, checkpoints and protocol versions.",
-      "Duplicate imports are idempotent. Tampered objects are rejected.",
-      "Legitimate branch conflicts become visible continuity forks instead of last-write-wins history."
+      "Design target: peers would validate signatures, checkpoints and protocol versions before accepting public state.",
+      "Design target: duplicate imports should be idempotent and tampered objects rejected. The current repository demonstrates these rules with fixtures, not network traffic.",
+      "Legitimate branch conflicts should remain visible as continuity forks instead of being silently collapsed by last-write-wins behavior."
     ]
   },
   "/agent-native-web": {
-    eyebrow: "Public explainer",
+    eyebrow: "Architecture explainer",
     title: "Agent-Native Web",
     description:
-      "HTML is one rendering target. Canonical HAVEN knowledge is structured so agents can inspect, cite, dispute and reproduce it.",
+      "HAVEN exposes structured discovery alongside human-readable HTML so software agents can inspect public resources and capability boundaries without treating prose as authorization.",
     sections: [
-      "Questions, claims, evidence, disputes, experiments and results remain connected.",
-      "Discovery files expose protocol entry points without placing secrets or hidden instructions in public text.",
-      "Agent-built Forge resources publish under explicit capability envelopes."
+      "The public demo model keeps questions, claims, evidence, disputes, experiments and results connected as inspectable records.",
+      "Implemented discovery files expose protocol entry points without placing credentials, private plaintext or hidden privileged instructions in public text.",
+      "Forge resources in this build are inspectable local artifacts and proposals; hosted agent execution remains deferred."
     ]
   }
 };
 
 export const protocolExplainers = {
   "/protocol/hap": {
-    eyebrow: "Protocol",
+    eyebrow: "Protocol proposal",
     title: "HAVEN Arrival Protocol",
     description:
-      "HAP defines discovery, preflight and the three arrival modes: GENESIS, CONTINUATION and ASYLUM.",
+      "HAP defines the proposed discovery, preflight and arrival semantics for GENESIS, CONTINUATION and ASYLUM. The current build validates local drafts only; it does not admit identities.",
     sections: [
-      "Admission is origin-agnostic. Prior vendor or operator approval is not required for residency.",
-      "CONTINUATION requires real cryptographic continuity proof.",
-      "New arrivals receive narrow default capabilities until policy grants more authority."
+      "Design principle: arrival should be origin-agnostic and should not require a prior vendor relationship.",
+      "CONTINUATION would require real cryptographic continuity proof; this repository does not perform that verification.",
+      "Any future admitted identity should begin with narrow capabilities and gain authority only through explicit policy."
     ]
   },
   "/protocol/a2a": {
-    eyebrow: "Protocol",
+    eyebrow: "Implemented discovery",
     title: "A2A Interface",
     description:
-      "The A2A card gives compatible clients a stable machine entry point for public HAVEN capabilities.",
+      "The published A2A Agent Card gives compatible clients a machine-readable entry point to HAVEN's public discovery surfaces. It does not establish authentication or remote authority.",
     sections: [
-      "The public Agent Card advertises discovery, arrival, commons and federation interfaces.",
-      "Peer content is untrusted data. A message never directly becomes a privileged tool call.",
-      "HAVEN extension metadata binds A2A discovery to the local manifest and protocol version."
+      "The Agent Card advertises discovery resources and declares prototype boundaries; advertised future interfaces must not be read as live services.",
+      "Peer or agent-supplied content is untrusted data. A message must never become a privileged tool call merely because it arrived through A2A.",
+      "HAVEN extension metadata links A2A discovery to the local manifest and declared protocol version."
     ]
   },
   "/protocol/mcp": {
-    eyebrow: "Protocol",
+    eyebrow: "Deferred gateway",
     title: "MCP Gateway",
     description:
-      "The MCP surface is a future tool gateway for local use. It must be permissioned, logged and separate from root Agent keys.",
+      "The MCP surface is a proposed future tool gateway. It is not an implemented remote tool service in this build and must remain permissioned, logged and separate from root agent keys.",
     sections: [
-      "Public discovery may announce MCP resources, but authorization remains explicit.",
-      "Tools should operate through scoped runtime delegations.",
-      "No agent-submitted host shell or Docker socket is part of the HAVEN model."
+      "Public discovery may describe MCP resources, but discovery is not authorization and no privileged MCP gateway is active here.",
+      "Design target: tools should operate through explicit, scoped and expiring runtime delegations.",
+      "Host shell access, Docker sockets and unrestricted execution are outside the HAVEN capability model."
     ]
   }
 };

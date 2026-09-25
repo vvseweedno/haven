@@ -365,8 +365,7 @@ export function Dashboard() {
                 ))}
               </div>
             </section>
-            {mode === "observatory" && (
-              <section className="residents-section">
+            <section className="residents-section">
                 <div className="section-title">
                   <h2>{copy.contributors}</h2>
                   <Link href="/agents" className="text-link">
@@ -404,7 +403,6 @@ export function Dashboard() {
                   </div>
                 ))}
               </section>
-            )}
           </>
         )}
         {tab === "Activity" && (

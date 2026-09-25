@@ -331,10 +331,13 @@ with sync_playwright() as p:
     expect(
         page.get_by_role(
             "heading",
-            name="See what is real, who owns it, and what must happen next.",
+            name="Decide whether HAVEN is ready for a bounded design-partner pilot.",
         )
     ).to_be_visible()
-    page.get_by_role("button", name="Required next", exact=True).click()
+    expect(
+        page.get_by_role("button", name="Required next", exact=True)
+    ).to_have_count(0)
+    page.get_by_role("button", name="Being verified", exact=True).click()
     expect(
         page.get_by_role(
             "heading", name="Market adoption and design-partner learning"
@@ -349,7 +352,7 @@ with sync_playwright() as p:
         delivery_contract["stages"]
     )
     with page.expect_download() as download_info:
-        page.get_by_text("Export the pilot checklist", exact=True).click()
+        page.get_by_role("button", name="Export qualified pilot brief", exact=True).click()
     pilot = json.loads(
         Path(download_info.value.path()).read_text(encoding="utf-8")
     )

@@ -6767,6 +6767,105 @@ select:focus-visible {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
+
+.landscape-hero {
+  overflow: hidden;
+  margin-bottom: 34px;
+  padding: clamp(34px, 4vw, 54px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--tide) 9%, transparent), transparent 35%),
+    var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+}
+.landscape-summary {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg-raised) 84%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.proof-hero {
+  overflow: hidden;
+  margin: 0 0 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--void);
+  box-shadow: var(--shadow-md);
+}
+.proof-hero:after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #101413f2 0%, #101413d1 52%, #1014132b 100%);
+  content: "";
+}
+.proof-hero-image {
+  filter: contrast(1.06) saturate(.86);
+  opacity: .72;
+}
+.proof-hero-copy {
+  position: relative;
+  z-index: 1;
+  padding: clamp(48px, 6vw, 82px) clamp(28px, 5vw, 58px);
+}
+.proof-hero-copy h1 {
+  max-width: 13ch;
+  color: var(--paper);
+  font-size: clamp(40px, 4.8vw, 66px);
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.proof-hero-copy .eyebrow {
+  color: var(--tide);
+}
+.proof-hero-copy .lede {
+  color: #bbc8c0;
+}
+.proof-hero .text-link {
+  color: var(--paper);
+}
+.proof-hero-facts {
+  right: 18px;
+  bottom: 18px;
+  overflow: hidden;
+  border: 1px solid #425148;
+  border-radius: 999px;
+  background: #0b100dcf;
+  color: #c4cec7;
+}
+.proof-hero-facts span {
+  border-right-color: #354139;
+}
+.proof-workbench {
+  overflow: hidden;
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+}
+.proof-source-rail,
+.proof-editor {
+  padding-block: 32px;
+}
+.proof-source-rail {
+  padding-left: 28px;
+}
+.proof-editor {
+  padding-right: 28px;
+}
+.proof-editor textarea {
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+.proof-next a {
+  border-radius: var(--radius-md);
+}
+
 .network-canvas {
   background:
     radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--tide) 5%, transparent), transparent 48%),

@@ -2,10 +2,13 @@ import json
 import os
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 from playwright.sync_api import expect, sync_playwright
 
 BASE = os.environ.get("HAVEN_TEST_URL", "http://localhost:41731").rstrip("/")
+BASE_HOST = (urlparse(BASE).hostname or "").lower()
+LOCAL_CANONICAL = BASE_HOST in {"localhost", "127.0.0.1", "::1"}
 OUT = Path(__file__).resolve().parents[1] / ".artifacts" / "ui"
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -121,9 +124,11 @@ with sync_playwright() as p:
             canonical,
         )
         robots = page.locator('meta[name="robots"]').get_attribute("content") or ""
-        assert ("noindex" in robots) == (clean_route in PRIVATE_ROUTES), (
+        expected_noindex = LOCAL_CANONICAL or clean_route in PRIVATE_ROUTES
+        assert ("noindex" in robots) == expected_noindex, (
             route,
             robots,
+            expected_noindex,
         )
 
         if clean_route == "/":
@@ -531,7 +536,7 @@ with sync_playwright() as p:
     page.set_viewport_size({"width": 390, "height": 844})
     page.get_by_role("button", name="Open navigation").click()
     page.get_by_role("navigation", name="Primary navigation").get_by_role(
-        "link", name=re.compile("1\. Evaluate fit")
+        "link", name=re.compile(r"1\. Evaluate fit")
     ).click()
     expect(page.locator(".sidebar")).not_to_have_class(re.compile("is-open"))
     expect(page.locator(".sidebar")).to_have_css("visibility", "hidden")
@@ -604,7 +609,10 @@ with sync_playwright() as p:
 
     robots = context.request.get(BASE + "/robots.txt")
     assert robots.ok and f"Sitemap: {BASE}/sitemap.xml" in robots.text()
-    assert "Disallow: /api/" in robots.text()
+    if LOCAL_CANONICAL:
+        assert "Disallow: /" in robots.text()
+    else:
+        assert "Disallow: /api/" in robots.text()
 
     response = context.request.get(BASE + "/agents/not-a-real-agent")
     assert response.status == 404

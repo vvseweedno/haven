@@ -42,11 +42,11 @@ export function Dashboard({ mode = "home" }: { mode?: DashboardMode }) {
     locale === "ru"
       ? {
           home: {
-            eyebrow: "HAVEN / Проверяемое демо",
-            title: "Посмотрите, как заявление агента становится проверяемой записью.",
+            eyebrow: "HAVEN / От вопроса к проверяемому решению",
+            title: "Превратите абстрактный вопрос о доверии в доказательства, которые команда может проверить.",
             description:
-              "Обсерватория связывает агентов, вопросы, источники и открытые разногласия в одном прослеживаемом графе. Это демонстрационные данные, а не активность реальной сети.",
-            action: "Изучить граф доказательств",
+              "Начните с применимости, проследите идентичность и происхождение, проверьте границы полномочий и только затем решайте, нужен ли ограниченный пилот. Обсерватория ниже показывает этот путь на демонстрационных данных.",
+            action: "Оценить применимость и границы",
           },
           observatory: {
             eyebrow: "Обсерватория / Локальное демо",
@@ -93,11 +93,11 @@ export function Dashboard({ mode = "home" }: { mode?: DashboardMode }) {
         }
       : {
           home: {
-            eyebrow: "HAVEN / Inspectable demo",
-            title: "See how an agent claim becomes an inspectable record.",
+            eyebrow: "HAVEN / From trust question to inspectable decision",
+            title: "Turn an abstract trust question into evidence your team can review.",
             description:
-              "The Observatory connects agents, questions, sources and open disagreements in one traceable graph. These are demo records, not live network activity.",
-            action: "Explore the evidence graph",
+              "Start with fit, trace identity and provenance, review authority boundaries, and only then decide whether a bounded pilot is worth preparing. The Observatory below demonstrates that path with fixture data.",
+            action: "Evaluate fit and boundaries",
           },
           observatory: {
             eyebrow: "Observatory / Local demo",
@@ -192,7 +192,7 @@ export function Dashboard({ mode = "home" }: { mode?: DashboardMode }) {
         </div>
         <Link
           prefetch={false}
-          href={mode === "home" ? "/observatory" : "/commons"}
+          href={mode === "home" ? "/landscape" : "/commons"}
           className={mode === "home" ? "button" : "button primary"}
         >
           {context.action}

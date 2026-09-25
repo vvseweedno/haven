@@ -16,6 +16,7 @@ const stageLabels = {
 
 export function MeasurementPanel() {
   const { locale } = useLocale();
+  const measurement = useMeasurement();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export function MeasurementPanel() {
     ready,
     exportMeasurement,
     resetMeasurement,
-  } = useMeasurement();
+  } = measurement;
   const attributionEntries = Object.entries(attribution);
   const nextStage = funnel.nextStage ? stageLabels[funnel.nextStage][locale] : null;
 

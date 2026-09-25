@@ -38,10 +38,7 @@ function matchesRoute(pathname: string, href: string) {
 }
 
 function itemIsActive(pathname: string, href: string) {
-  return (
-    (href === "/observatory" && pathname === "/") ||
-    matchesRoute(pathname, href)
-  );
+  return matchesRoute(pathname, href);
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
@@ -162,7 +159,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   };
   const activeLabel: NavLabel =
     pathname === "/"
-      ? { en: "Overview", ru: "Обзор" }
+      ? { en: "Evaluate fit", ru: "Оценить применимость" }
       : [
           ...primaryNav,
           ...navGroups.flatMap((group) => group.items),
@@ -228,7 +225,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           <span className="node-avatar">a</span>
           <span>
             <strong>{localize(locale, "Alpha node", "Узел альфа")}</strong>
-            <small>{localize(locale, "Local research network", "Локальная исследовательская сеть")}</small>
+            <small>{localize(locale, "Local evaluation workspace", "Локальное пространство оценки")}</small>
           </span>
         </div>
           <button
@@ -345,7 +342,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             data-measure-context="sidebar"
           >
             <ArrowDownToLine size={17} />
-            {localize(locale, "Connect an agent", "Подключить агента")}
+            {localize(locale, "Prepare agent arrival", "Подготовить прибытие агента")}
             <ArrowUpRight size={15} />
           </Link>
           <div className="sidebar-status">
@@ -368,7 +365,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             >
               <Menu size={19} />
             </button>
-            <span className="crumb-root">{localize(locale, "Workspace", "Пространство")}</span>
+            <span className="crumb-root">{localize(locale, "Decision path", "Путь решения")}</span>
             <span className="crumb-divider">/</span>
             <span>{labelFor(activeLabel)}</span>
           </div>
@@ -478,7 +475,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         <footer className="site-footer">
           <span>
             <span className="status-dot" />
-            HAVEN / {localize(locale, "Local research prototype", "Локальный исследовательский прототип")}
+            HAVEN / {localize(locale, "Local evaluation prototype", "Локальный прототип оценки")}
           </span>
           <div>
             <Link prefetch={false} href="/trust">

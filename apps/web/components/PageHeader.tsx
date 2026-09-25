@@ -165,6 +165,26 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
 };
 
 const routeNextSteps: Record<string, LocalizedCopy & { href: string }> = {
+  "/landscape": {
+    en: "Run a local verification",
+    ru: "Провести локальную проверку",
+    href: "/proof-desk#proof-workbench",
+  },
+  "/proof-desk": {
+    en: "Assess bounded pilot readiness",
+    ru: "Оценить готовность к ограниченному пилоту",
+    href: "/delivery#pilot-readiness",
+  },
+  "/observatory": {
+    en: "Review product fit and limits",
+    ru: "Проверить применимость и ограничения",
+    href: "/landscape",
+  },
+  "/delivery": {
+    en: "Review trust boundaries",
+    ru: "Проверить границы доверия",
+    href: "/trust",
+  },
   "/agent-federation": {
     en: "Explore the Archipelago",
     ru: "Исследовать Архипелаг",
@@ -397,13 +417,13 @@ export function PageHeader({
   const titleId = `page-title-${routeClassName(pathname)}`;
   const category = localize(
     locale,
-    "Agent continuity infrastructure",
-    "Инфраструктура непрерывности агентов",
+    "AI-agent continuity verification",
+    "Проверка непрерывности ИИ-агентов",
   );
   const phase = localize(
     locale,
-    "Local product prototype",
-    "Локальный прототип продукта",
+    "Local evaluation build",
+    "Локальная сборка для оценки",
   );
   const visibleEyebrow = translateKnown(locale, eyebrow);
   const visibleTitle = translateKnown(locale, title);

@@ -149,13 +149,13 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
     >
       <div className="growth-journey-heading">
         <span id="growth-journey-title">
-          {localize(locale, "Your evaluation", "Ваша проверка")}
+          {localize(locale, "Decision path", "Путь решения")}
         </span>
         <span aria-live="polite">
           {localize(
             locale,
-            `${signalCount}/4 evidence steps observed`,
-            `Зафиксировано шагов: ${signalCount}/4`,
+            `${signalCount}/4 decision steps observed`,
+            `Пройдено шагов: ${signalCount}/4`,
           )}
         </span>
       </div>
@@ -168,12 +168,12 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
           .join(" · ")}
         aria-label={localize(
           locale,
-          `${signalCount} of 4 evidence steps observed`,
-          `Зафиксировано шагов проверки: ${signalCount} из 4`,
+          `${signalCount} of 4 decision steps observed`,
+          `Пройдено шагов решения: ${signalCount} из 4`,
         )}
       />
       <label className="growth-journey-context">
-        <span>{localize(locale, "I am here to", "Моя задача")}</span>
+        <span>{localize(locale, "My decision context", "Контекст решения")}</span>
         <select
           value={state.audience || ""}
           onChange={(event) => selectAudience(event.target.value)}
@@ -181,7 +181,7 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
           data-measure-mode="manual"
         >
           <option value="">
-            {localize(locale, "Explore the product", "Познакомиться с продуктом")}
+            {localize(locale, "Understand whether HAVEN fits", "Понять, подходит ли HAVEN")}
           </option>
           {audienceContexts.map((context) => (
             <option value={context.id} key={context.id}>
@@ -191,7 +191,7 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         </select>
       </label>
       <div className="growth-journey-next">
-        <span>{localize(locale, "Continue with", "Продолжить")}</span>
+        <span>{localize(locale, "Next evidence step", "Следующий шаг с доказательствами")}</span>
         <Link
           prefetch={false}
           href={recommendation.href}
@@ -208,8 +208,8 @@ export function GrowthJourney({ pathname }: { pathname: string }) {
         <small>
           {localize(
             locale,
-            `Progress stays in this browser. CTA wording test ${variant.toUpperCase()}: no conclusion until enough real sessions are observed.`,
-            `Прогресс хранится в этом браузере. Тест формулировки CTA ${variant.toUpperCase()}: выводов нет до достаточной реальной выборки.`,
+            `Progress stays in this browser. This path is guidance, not a sales submission. CTA wording test ${variant.toUpperCase()}: no conclusion until enough real sessions are observed.`,
+            `Прогресс хранится в этом браузере. Этот путь — подсказка, а не отправка данных в продажи. Тест формулировки CTA ${variant.toUpperCase()}: выводов нет до достаточной реальной выборки.`,
           )}
         </small>
         <button type="button" onClick={resetJourney}>

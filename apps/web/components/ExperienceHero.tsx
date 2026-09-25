@@ -138,20 +138,20 @@ export function ExperienceHero() {
         <div className="hero-copy">
           <p className="eyebrow">
             {text(
-              "HAVEN / Verify AI identity, history and authority locally",
-              "HAVEN / Локальная проверка идентичности, истории и полномочий ИИ",
+              "HAVEN / Evidence for durable AI-agent continuity",
+              "HAVEN / Доказательства непрерывности ИИ-агентов",
             )}
           </p>
           <h1 id="experience-title">
             {text(
-              "Check an AI agent's history before you trust its next action.",
-              "Проверьте историю ИИ-агента, прежде чем доверять его следующему действию.",
+              "Know what survives when an AI agent changes model, runtime or operator.",
+              "Поймите, что сохраняется при смене модели, среды или оператора ИИ-агента.",
             )}
           </h1>
           <p className="lede">
             {text(
-              "HAVEN is a local verification workspace for people assessing long-lived AI agents. Inspect identity claims, source records and authority limits across model or runtime changes, then export a receipt from your browser. HAVEN does not connect an agent or certify its claims.",
-              "HAVEN - локальная среда для тех, кто оценивает долгоживущих ИИ-агентов. Проверьте заявления об идентичности, записи об источниках и границы полномочий при смене модели или среды, затем экспортируйте квитанцию из браузера. HAVEN не подключает агента и не подтверждает истинность его заявлений.",
+              "HAVEN helps agent-platform, research and governance teams inspect identity, provenance and authority across changes, create a local proof receipt, and decide whether a bounded pilot is worth preparing. This build is an evaluation prototype: it does not connect an agent, create a CRM lead or certify external truth.",
+              "HAVEN помогает разработчикам agent-платформ, исследовательским и governance-командам проверять идентичность, происхождение и полномочия при изменениях, создавать локальную proof-квитанцию и решать, стоит ли готовить ограниченный пилот. Эта сборка — прототип для оценки: она не подключает агента, не создаёт CRM-лид и не подтверждает внешнюю истину.",
             )}
           </p>
           <div
@@ -212,7 +212,7 @@ export function ExperienceHero() {
                   data-measure-mode="manual"
                   onClick={() => measureCta("secondary", "/proof-desk")}
                 >
-                  {text("Create a local proof receipt", "Создать локальную квитанцию проверки")}
+                  {text("Create an inspectable proof receipt", "Создать проверяемую proof-квитанцию")}
                   <Fingerprint size={15} />
                 </Link>
               </>

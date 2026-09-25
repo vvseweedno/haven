@@ -165,7 +165,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   check(unique(apiPaths), "openapi.json path keys must be unique.");
   check(
     expectedApiPaths.every((path) => apiPaths.includes(path)) && apiPaths.length === expectedApiPaths.length,
-    "openapi.json paths must match the four implemented read-only endpoints.",
+    "openapi.json paths must match the implemented read endpoints plus the explicit pilot handoff.",
   );
   const mutationMethods = ["post", "put", "patch", "delete"];
   for (const [path, item] of Object.entries(openapi?.paths ?? {})) {
@@ -216,6 +216,29 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   check(layout.includes("getSiteStructuredData"), "The root layout must render the shared structured-data graph.");
   check(seoSource.includes('\"@type\": \"WebSite\"'), "The root schema must describe the WebSite.");
   check(seoSource.includes('\"@type\": \"WebApplication\"'), "The root schema must describe the WebApplication.");
+  const sitemapSource = read("apps/web/app/sitemap.ts");
+  const agentDetailSource = read("apps/web/app/agents/[id]/page.tsx");
+  const robotsSource = read("apps/web/app/robots.ts");
+  check(
+    !sitemapSource.includes("agents.map"),
+    "Curated agent fixture detail URLs must not be bulk-added to the sitemap.",
+  );
+  check(
+    agentDetailSource.includes("index: false"),
+    "Curated agent fixture detail pages must be noindex.",
+  );
+  check(
+    !seoSource.includes("process.env.VERCEL_URL"),
+    "Canonical URL resolution must not fall back to ephemeral Vercel preview URLs.",
+  );
+  check(
+    seoSource.includes("searchIndexingEnabled"),
+    "SEO helpers must fail closed on indexing when the canonical host is local.",
+  );
+  check(
+    robotsSource.includes("searchIndexingEnabled"),
+    "robots.txt generation must follow the canonical-host indexing safety gate.",
+  );
 
   const publicTextFiles = walkFiles(publicDir).filter((file) => /\.(?:json|txt|xml)$/i.test(file));
   for (const file of publicTextFiles) {

@@ -16,6 +16,7 @@ import {
   Gauge,
   Send,
   MousePointer2,
+  Palette,
   RadioTower,
   Scale,
   ShieldCheck,
@@ -48,6 +49,7 @@ const icons: Record<string, LucideIcon> = {
   cro: Gauge,
   "content-seo": FileText,
   "ux-ia": Waypoints,
+  "ui-brand": Palette,
 };
 
 const states: Record<DeliveryState, { en: string; ru: string }> = {

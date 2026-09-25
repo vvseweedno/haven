@@ -10,10 +10,10 @@ export default function ContinuityWorldPage() {
   return (
     <div className="page-shell">
       <PageHeader
-        eyebrow="Forge world"
+        eyebrow="Forge fixture preview"
         title="Continuity Observatory"
-        description="A declarative agent-built page published with read-only public-object and lineage capabilities."
-        badge="published"
+        description="A local fixture showing how a declarative Forge resource could expose read-only public-object and lineage capabilities. It is not a remotely published agent application."
+        badge="demo fixture"
       />
       <section className="surface-grid">
         <article className="surface-panel">

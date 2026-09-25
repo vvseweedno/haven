@@ -22,6 +22,7 @@ import {
   createGrowthJourneyState,
   getGrowthRecommendation,
   parseGrowthJourneyState,
+  recordGrowthSignal,
   recordGrowthVisit,
 } from "../apps/web/lib/growth.ts";
 import { buildAnalysisBrief, buildPilotBrief } from "../apps/web/lib/adoption.ts";
@@ -72,6 +73,12 @@ test("growth journey keeps only bounded local route and audience state", () => {
   );
   assert.deepEqual(visited.visitedRoutes, ["/observatory"]);
   assert.equal(getGrowthRecommendation(visited).signal, "context_selected");
+
+  let qualified = createGrowthJourneyState();
+  qualified = recordGrowthVisit(qualified, "/delivery");
+  assert.ok(!qualified.observedSignals.includes("pilot_reviewed"));
+  qualified = recordGrowthSignal(qualified, "pilot_reviewed");
+  assert.ok(qualified.observedSignals.includes("pilot_reviewed"));
 });
 
 test("pilot brief is an unsubmitted local evaluation artifact", () => {

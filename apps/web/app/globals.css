@@ -5782,8 +5782,28 @@ textarea {
 .delivery-footer-band .signal-kicker { color: var(--void); }
 .delivery-footer-band p:last-child { max-width: 70ch; margin-top: 12px; font-size: 13px; line-height: 1.7; }
 .delivery-actions { display: grid; border-top: 1px solid color-mix(in srgb, var(--void) 42%, transparent); }
-.delivery-actions a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, var(--void) 42%, transparent); font: 700 10px/1.4 var(--font-mono); text-transform: uppercase; }
-.delivery-actions a:hover { color: color-mix(in srgb, var(--void) 72%, var(--signal)); }
+.delivery-actions a,
+.delivery-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 42px;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--void) 42%, transparent);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: 700 10px/1.4 var(--font-mono);
+  text-align: left;
+  text-transform: uppercase;
+}
+.delivery-actions a:hover,
+.delivery-actions button:hover {
+  color: color-mix(in srgb, var(--void) 72%, var(--signal));
+}
 
 @media (max-width: 1180px) {
   .delivery-role { grid-template-columns: 38px 42px minmax(205px, .83fr) minmax(0, 1.17fr); }

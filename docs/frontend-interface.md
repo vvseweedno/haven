@@ -1,6 +1,6 @@
 # HAVEN frontend and browser-interface contract
 
-Last reviewed: 2026-09-25
+Last reviewed: 2026-09-26
 
 ## Audit conclusion
 
@@ -290,3 +290,16 @@ The continuing frontend pass closed several browser-level gaps that static layou
 - Observatory connection motion is disabled in component state when reduced motion is active rather than relying on CSS alone;
 - Agora now has a static non-WebGL fallback instead of leaving an empty decorative region;
 - frontend conformance is enforced in `npm test` by `scripts/check-frontend.mjs`, including explicit button intent across TSX surfaces.
+
+
+## Implemented continuation — 2026-09-26
+
+The follow-up frontend pass tightened behavior that only appeared under real browser navigation and error recovery:
+
+- task-first search now clears failed catalog state as soon as the query is cleared, so a temporary API failure cannot poison the four local task shortcuts;
+- shared dialogs expose their programmatic label through a real heading and still restore focus to the invoking control on close;
+- Delivery filters are generated from states that actually exist, so the interface no longer offers an empty “Required next” view when no delivery role is in that state;
+- browser QA now asserts the current Delivery qualification copy and export actions rather than stale pre-refactor labels;
+- primary fit/proof routes keep normal Next.js prefetch behavior while deep specialist routes can remain intent-loaded;
+- deferred Continuum WebGL waits until its surface approaches the viewport and browser idle time is available, while keeping the existing static placeholder and reduced-motion/runtime fallbacks;
+- the static frontend audit now protects search recovery, semantic dialog headings, primary-route prefetching and near-viewport Three.js loading.

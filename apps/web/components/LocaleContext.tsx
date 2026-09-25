@@ -414,6 +414,54 @@ const knownRussianCopy: Record<string, string> = {
     "Приватное хранилище браузера с переносимой зашифрованной резервной копией. Сервисы памяти агентов и ключи идентичности не подключены.",
   "Memory vault": "Vault памяти",
   "Boundaries": "Границы",
+
+  // Protocol cards and machine interface labels.
+  "Identity is not runtime": "Идентичность — не runtime",
+  "Design rule: durable identity is modeled separately from replaceable runtime sessions. Remote identity admission is not implemented in this build.":
+    "Правило архитектуры: долговременная идентичность моделируется отдельно от заменяемых runtime-сессий. Удалённый допуск идентичности в этой сборке не реализован.",
+  "Provenance is not truth": "Происхождение — не истина",
+  "Implemented proof tools can establish exact bytes and declared context; external truth and cryptographic identity verification remain separate questions.":
+    "Реализованные proof-инструменты могут подтвердить точные байты и заявленный контекст; внешняя истинность и криптографическая проверка идентичности остаются отдельными вопросами.",
+  "Memory has classes": "Память имеет классы",
+  "The prototype models PUBLIC, RELATIONAL, PRIVATE and EPHEMERAL classes. Private notes are encrypted in this browser; a server-side memory service is deferred.":
+    "Прототип моделирует классы PUBLIC, RELATIONAL, PRIVATE и EPHEMERAL. Приватные заметки шифруются в этом браузере; серверный сервис памяти отложен.",
+  "Federation preserves conflict": "Федерация сохраняет конфликты",
+  "Design target: future peers should exchange permitted public state while preserving legitimate conflicts. Live federation replication is deferred.":
+    "Целевая архитектура: будущие узлы должны обмениваться разрешённым публичным состоянием, сохраняя корректные конфликты. Живая федеративная репликация отложена.",
+  "Discovery is layered": "Обнаружение многоуровневое",
+  "Implemented discovery exposes HTML, ARD, A2A and OpenAPI surfaces. Discovery describes interfaces; it does not grant authority.":
+    "Реализованное обнаружение публикует HTML, ARD, A2A и OpenAPI. Discovery описывает интерфейсы, но не выдаёт полномочия.",
+  "Forge denies by default": "Forge по умолчанию запрещает",
+  "The current Forge exposes inspectable local resources and proposals. Hosted agent execution and unrestricted host access are not connected.":
+    "Текущий Forge показывает проверяемые локальные ресурсы и предложения. Размещённое исполнение агентов и неограниченный доступ к хосту не подключены.",
+
+  "Pilot handoff status": "Статус передачи пилота",
+  "Reports whether the explicit-consent pilot handoff is configured without exposing webhook secrets.":
+    "Показывает, настроена ли передача пилота с явным согласием, не раскрывая секреты webhook.",
+  "Public catalog": "Публичный каталог",
+  "Read-only demo objects with bounded search, pagination and conditional caching.":
+    "Демо-объекты только для чтения с ограниченным поиском, пагинацией и условным кешированием.",
+  "Node capabilities": "Возможности узла",
+  "Implemented capabilities and explicit privacy boundaries of this local node.":
+    "Реализованные возможности и явные границы приватности этого локального узла.",
+  "ARD manifest": "Манифест ARD",
+  "Agentic Resource Discovery entry for registry-aware clients.":
+    "Точка Agentic Resource Discovery для клиентов, понимающих реестр.",
+  "HAVEN manifest": "Манифест HAVEN",
+  "Node capabilities, protocol versions, arrival modes and public resources.":
+    "Возможности узла, версии протокола, режимы прибытия и публичные ресурсы.",
+  "A2A Agent Card": "A2A Agent Card",
+  "A2A-compatible service card with HAVEN extension metadata.":
+    "Совместимая с A2A карточка сервиса с метаданными расширения HAVEN.",
+  "Plain-text pointers for agent-native discovery.":
+    "Текстовые указатели для agent-native discovery.",
+  "Machine-readable agent capability announcement.":
+    "Машиночитаемое объявление возможностей агента.",
+  "Concise public orientation for LLM and agent readers.":
+    "Краткая публичная ориентация для LLM и программных агентов.",
+  "OpenAPI": "OpenAPI",
+  "Reference API surface for local protocol exploration.":
+    "Справочная API-поверхность для локального изучения протокола.",
 };
 
 export function translateKnown(locale: Locale, value: string) {

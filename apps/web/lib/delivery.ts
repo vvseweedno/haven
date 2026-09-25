@@ -68,8 +68,8 @@ export const experimentGates: ExperimentGate[] = [
     state: "blocked",
     title: { en: "No evidence, no winner", ru: "Нет данных — нет победителя" },
     rule: {
-      en: "This build records browser-local exposure and outcomes, but has no eligible population dataset. The only valid current result is no conclusion.",
-      ru: "Сборка фиксирует показы и исходы локально в браузере, но не имеет валидной выборки. Единственный допустимый результат — нет вывода.",
+      en: "Random assignment is disabled in normal use. The control is default and query overrides are QA-only; there is no eligible population dataset, so the only valid current result is no conclusion.",
+      ru: "Случайное распределение в обычном режиме отключено. По умолчанию используется контроль, query-переопределения — только для QA; валидной выборки нет, поэтому единственный допустимый результат — нет вывода.",
     },
   },
 ];
@@ -270,7 +270,7 @@ export const deliveryRoles: DeliveryRole[] = [
   {
     id: "growth",
     order: 10,
-    state: "next",
+    state: "active",
     role: { en: "Market adoption and design-partner learning", ru: "Рыночное принятие и design-partner обучение" },
     responsibility: {
       en: "Qualify fit, make buyer and technical evidence explicit, and turn evaluation learning into accountable product decisions without surveillance.",
@@ -283,8 +283,8 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Ограниченный сценарий, ответственные владельцы, граница данных, доказательство успеха и условия остановки явны до продолжения обсуждения пилота.",
     },
     currentTruth: {
-      en: "A local evaluation path and exportable draft exist. No form submission, CRM, pipeline, market validation, customer or agreed pilot exists.",
-      ru: "Есть локальный путь оценки и экспортируемый черновик. Нет отправки формы, CRM, pipeline, рыночной валидации, клиента или согласованного пилота.",
+      en: "The evaluation path, qualified pilot form and configurable consent-based handoff exist. No implicit CRM tracking, market validation, proven customer pipeline or agreed pilot exists.",
+      ru: "Путь оценки, квалифицированная форма пилота и настраиваемая передача с согласием реализованы. Нет скрытого CRM-трекинга, рыночной валидации, доказанного pipeline клиентов или согласованного пилота.",
     },
     owners: [
       { en: "CMO", ru: "CMO" },
@@ -304,7 +304,7 @@ export const deliveryRoles: DeliveryRole[] = [
   {
     id: "cro",
     order: 11,
-    state: "next",
+    state: "active",
     role: { en: "CRO, analytics and experimentation", ru: "CRO, аналитика и эксперименты" },
     responsibility: {
       en: "Define observable funnel behavior, trustworthy denominators, attribution boundaries and experiment decisions without manufacturing certainty.",
@@ -317,8 +317,8 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Каждое утверждение о конверсии указывает событие, eligible denominator, период и исключения; эксперимент не может объявить победителя до предварительно заданного decision gate.",
     },
     currentTruth: {
-      en: "The measurement contract, bounded local ledger, session assignment and blank analysis export exist. Consented population collection and an eligible experiment sample do not.",
-      ru: "Контракт измерений, ограниченный локальный журнал, распределение в сессии и пустой экспорт анализа существуют. Согласованный сбор по выборке и валидная выборка эксперимента отсутствуют.",
+      en: "Session-scoped measurement, explicit funnel completions, first-touch attribution, friction diagnostics and a QA-only experiment manifest are implemented. Consented population analytics and an eligible randomized sample do not exist.",
+      ru: "Сессионные измерения, явные завершения воронки, first-touch атрибуция, диагностика трения и QA-only манифест эксперимента реализованы. Согласованной аналитики по аудитории и валидной рандомизированной выборки нет.",
     },
     owners: croOwners,
   },
@@ -347,6 +347,6 @@ export const deliveryGates = [
     id: "release",
     state: "active" as const,
     title: { en: "Human pilot decision", ru: "Решение человека о пилоте" },
-    detail: { en: "A local brief informs discussion; it never submits or commits either side.", ru: "Локальный brief помогает обсуждению, но ничего не отправляет и никого не обязывает." },
+    detail: { en: "A local brief remains local; a separate qualified form can submit only with explicit consent and a configured handoff, without committing either side.", ru: "Локальный brief остаётся локальным; отдельная квалифицированная форма отправляет данные только с явным согласием и настроенным handoff, не создавая обязательств сторон." },
   },
 ];

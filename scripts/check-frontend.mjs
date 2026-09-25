@@ -95,6 +95,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/app/loading.tsx",
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
+    "apps/web/components/ExperienceHero.tsx",
+    "apps/web/components/DeferredContinuumScene.tsx",
     "apps/web/components/AppShell.tsx",
     "apps/web/components/SearchDialog.tsx",
     "apps/web/components/Workspace.tsx",
@@ -110,6 +112,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const homeRoute = read("apps/web/app/page.tsx");
   const observatoryRoute = read("apps/web/app/observatory/page.tsx");
   const home = read("apps/web/components/HomeDashboard.tsx");
+  const hero = read("apps/web/components/ExperienceHero.tsx");
+  const deferredScene = read("apps/web/components/DeferredContinuumScene.tsx");
   const shell = read("apps/web/components/AppShell.tsx");
   const search = read("apps/web/components/SearchDialog.tsx");
   const workspace = read("apps/web/components/Workspace.tsx");
@@ -135,6 +139,18 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       !home.includes("@xyflow/react") &&
       !home.includes("@/lib/observatory"),
     "HomeDashboard must not pull Observatory/React Flow code into first contact.",
+  );
+  check(
+    hero.includes('href="/landscape"') &&
+      !hero.includes('prefetch={false}\n                  href="/landscape"') &&
+      hero.includes('href="/proof-desk#proof-workbench"'),
+    "Expected primary decision routes should retain normal Next.js prefetch behavior.",
+  );
+  check(
+    deferredScene.includes("IntersectionObserver") &&
+      deferredScene.includes("requestIdleCallback") &&
+      deferredScene.includes('rootMargin: "240px 0px"'),
+    "Decorative Three.js should be deferred until the scene is near the viewport and the browser is idle.",
   );
   check(
     observatoryRoute.includes('import { Dashboard }') &&

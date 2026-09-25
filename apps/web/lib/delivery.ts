@@ -88,6 +88,33 @@ export const uxIaOwners: LocaleCopy[] = [
   { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
 ];
 
+export const uiBrandOwners: LocaleCopy[] = [
+  { en: "Product Designer", ru: "Product Designer" },
+  { en: "UI Designer", ru: "UI Designer" },
+  { en: "Visual Designer", ru: "Visual Designer" },
+  { en: "Brand Designer", ru: "Brand Designer" },
+  { en: "Art Director", ru: "Art Director" },
+  { en: "Creative Director", ru: "Creative Director" },
+  { en: "Design System Designer", ru: "Design System Designer" },
+  { en: "Motion Designer", ru: "Motion Designer" },
+  { en: "3D Artist", ru: "3D Artist" },
+  { en: "Creative Developer", ru: "Creative Developer" },
+  { en: "WebGL / Three.js Developer", ru: "WebGL / Three.js Developer" },
+  { en: "AI Image Designer", ru: "AI Image Designer" },
+  { en: "Review: Product Manager", ru: "Проверка: Product Manager" },
+  { en: "Review: Project / Delivery Manager", ru: "Проверка: Project / Delivery Manager" },
+  { en: "Review: UX Lead", ru: "Проверка: UX Lead" },
+  { en: "Review: Design Director", ru: "Проверка: Design Director" },
+  { en: "Review: Tech Lead", ru: "Проверка: Tech Lead" },
+  { en: "Review: SEO Lead", ru: "Проверка: SEO Lead" },
+  { en: "Review: Analytics Lead", ru: "Проверка: Analytics Lead" },
+  { en: "Review: QA Lead", ru: "Проверка: QA Lead" },
+  { en: "Review: Security", ru: "Проверка: Security" },
+  { en: "Review: Accessibility", ru: "Проверка: Accessibility" },
+  { en: "Review: Performance", ru: "Проверка: Performance" },
+  { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
+];
+
 export const experimentGates: ExperimentGate[] = [
   {
     id: "pre-register",
@@ -416,6 +443,27 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Основная навигация теперь повторяет применимость → доказательство → границы → пилот; главная страница служит ориентацией, а не dashboard, диагностика включается явно, а контекст оценки ограничен текущей вкладкой. Population UX research пока отсутствует.",
     },
     owners: uxIaOwners,
+  },
+  {
+    id: "ui-brand",
+    order: 14,
+    state: "active",
+    role: { en: "UI, brand and visual experience", ru: "UI, бренд и визуальный опыт" },
+    responsibility: {
+      en: "Maintain a coherent scientific visual language across global chrome, product surfaces, motion, imagery and WebGL without overstating product capability.",
+      ru: "Поддерживает единый научный визуальный язык в глобальном интерфейсе, продуктовых поверхностях, motion, изображениях и WebGL без преувеличения возможностей продукта.",
+    },
+    artifact: { en: "UI, brand and visual experience contract", ru: "Контракт UI, бренда и визуального опыта" },
+    artifactHref: "/",
+    gate: {
+      en: "Shared tokens, canonical BrandMark, responsive component grammar, reduced motion, bounded GPU work and theme parity must remain verifiable before release.",
+      ru: "Общие токены, канонический BrandMark, адаптивная грамматика компонентов, reduced motion, ограниченная GPU-нагрузка и паритет тем должны оставаться проверяемыми до релиза.",
+    },
+    currentTruth: {
+      en: "The interface now shares one color, type, shape, depth and motion system; specialist routes inherit the same brand, WebGL pauses offscreen and system theme preference is honored before a manual choice.",
+      ru: "Интерфейс теперь использует единую систему цвета, типографики, формы, глубины и motion; специализированные маршруты наследуют тот же бренд, WebGL останавливается вне экрана, а системная тема учитывается до ручного выбора.",
+    },
+    owners: uiBrandOwners,
   },
 ];
 

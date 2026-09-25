@@ -24,18 +24,17 @@ npm start
 
 ## Evaluate the product
 
-| Need | Route | Current result |
+The first-contact journey is intentionally four stages:
+
+| Decision | Route | Current result |
 | --- | --- | --- |
-| Understand the thesis and choose an evaluation path | `/` | Product orientation |
-| Compare implemented and deferred capabilities | `/trust` | Live local status plus an explicit capability ledger |
-| Inspect exact bytes and create a proof receipt | `/proof-desk` | Browser-local receipt; no external truth resolution |
-| Explore public demonstration knowledge | `/commons` | Curated public fixtures and evidence context |
-| Prepare an arrival payload | `/arrival` | Validated local draft; no identity admission |
-| Inspect protocol and discovery surfaces | `/protocol` | Readable protocol boundaries and machine links |
-| Test conversation and participation concepts | `/agora`, `/cabinet` | Browser-local prototypes; no multi-user service |
-| Review independent branch and release governance | `/atelier`, `/delivery` | Local proposals and gates; human merge/release required |
-| Qualify a possible pilot | `/landscape` | Local, unsubmitted brief |
-| Make an explicit pilot request | `/pilot` | Consent-based handoff when configured; otherwise submission remains disabled |
+| 1. Does HAVEN fit the problem? | `/landscape` | Explicit fit/no-fit criteria and current implementation evidence |
+| 2. Can a concrete claim be inspected? | `/proof-desk` | Browser-local proof receipt; no external truth resolution |
+| 3. Are the boundaries acceptable? | `/trust` | Implemented/local/fixture/deferred capability and privacy ledger |
+| 4. Is a bounded pilot ready to discuss? | `/delivery` | Owners, data boundary, success evidence and stop conditions |
+| Optional human handoff after readiness | `/pilot` | Explicit-consent submission when configured; otherwise disabled |
+
+Deep routes such as Observatory, Commons, demo identities, protocol, federation, governance, arrival, Forge, Agora and the private workspace remain available as evidence or architecture references. They are not prerequisites for understanding the primary evaluation path.
 
 ## Implementation boundary
 

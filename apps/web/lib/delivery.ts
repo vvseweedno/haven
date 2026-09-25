@@ -35,6 +35,33 @@ export const croOwners: LocaleCopy[] = [
   { en: "Behavioral Analyst", ru: "Behavioral Analyst" },
 ];
 
+export const contentSeoOwners: LocaleCopy[] = [
+  { en: "Content Strategist", ru: "Content Strategist" },
+  { en: "Content Designer", ru: "Content Designer" },
+  { en: "UX Writer", ru: "UX Writer" },
+  { en: "Copywriter", ru: "Copywriter" },
+  { en: "Editor", ru: "Editor" },
+  { en: "SEO Strategist", ru: "SEO Strategist" },
+  { en: "Technical SEO", ru: "Technical SEO" },
+  { en: "Semantic SEO", ru: "Semantic SEO" },
+  { en: "Local SEO", ru: "Local SEO" },
+  { en: "SEO Content Strategist", ru: "SEO Content Strategist" },
+  { en: "Schema Specialist", ru: "Schema Specialist" },
+  { en: "Localization Specialist", ru: "Localization Specialist" },
+  { en: "Review: Product Manager", ru: "Проверка: Product Manager" },
+  { en: "Review: Project / Delivery Manager", ru: "Проверка: Project / Delivery Manager" },
+  { en: "Review: UX Lead", ru: "Проверка: UX Lead" },
+  { en: "Review: Design Director", ru: "Проверка: Design Director" },
+  { en: "Review: Tech Lead", ru: "Проверка: Tech Lead" },
+  { en: "Review: SEO Lead", ru: "Проверка: SEO Lead" },
+  { en: "Review: Analytics Lead", ru: "Проверка: Analytics Lead" },
+  { en: "Review: QA Lead", ru: "Проверка: QA Lead" },
+  { en: "Review: Security", ru: "Проверка: Security" },
+  { en: "Review: Accessibility", ru: "Проверка: Accessibility" },
+  { en: "Review: Performance", ru: "Проверка: Performance" },
+  { en: "Review: Content Strategy", ru: "Проверка: Content Strategy" },
+];
+
 export const experimentGates: ExperimentGate[] = [
   {
     id: "pre-register",
@@ -321,6 +348,27 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Сессионные измерения, явные завершения воронки, first-touch атрибуция, диагностика трения и QA-only манифест эксперимента реализованы. Согласованной аналитики по аудитории и валидной рандомизированной выборки нет.",
     },
     owners: croOwners,
+  },,
+  {
+    id: "content-seo",
+    order: 12,
+    state: "active",
+    role: { en: "Content, SEO and communication", ru: "Контент, SEO и коммуникация" },
+    responsibility: {
+      en: "Keep every human and machine-facing surface understandable, discoverable, localized and aligned with implemented product truth.",
+      ru: "Обеспечивает понятность, поисковую видимость, локализацию и соответствие реальному состоянию продукта на всех человеческих и машиночитаемых поверхностях.",
+    },
+    artifact: { en: "Content, SEO and communication contract", ru: "Контракт контента, SEO и коммуникации" },
+    artifactHref: "/protocol",
+    gate: {
+      en: "Metadata, schema, visible copy, discovery manifests, OpenAPI and localization must agree on capability status before release.",
+      ru: "Metadata, schema, видимые тексты, discovery-манифесты, OpenAPI и локализация должны одинаково описывать статус возможностей до релиза.",
+    },
+    currentTruth: {
+      en: "Core public copy, machine discovery, indexing safety, fixture labeling and RU/EN explanatory parity are enforced by static checks. Separate crawlable locale URLs and population search-performance data remain unavailable.",
+      ru: "Ключевые публичные тексты, machine discovery, безопасность индексации, маркировка фикстур и RU/EN-паритет объясняющих поверхностей контролируются статическими проверками. Отдельных индексируемых locale-URL и поисковой статистики по аудитории пока нет.",
+    },
+    owners: contentSeoOwners,
   },
 ];
 

@@ -189,7 +189,13 @@ function Shell({ children }: { children: React.ReactNode }) {
       >
         {localize(locale, "Skip to content", "Перейти к содержимому")}
       </a>
-      {mobileOpen && <div className="sidebar-backdrop" onClick={closeMobile} />}
+      {mobileOpen && (
+        <div
+          className="sidebar-backdrop"
+          aria-hidden="true"
+          onClick={closeMobile}
+        />
+      )}
       <aside
         ref={sidebar}
         id="sidebar"
@@ -198,7 +204,6 @@ function Shell({ children }: { children: React.ReactNode }) {
       >
         <div className="sidebar-brand-row">
           <Link
-            prefetch={false}
             href="/"
             className="brand"
             aria-label={localize(locale, "HAVEN home", "Главная HAVEN")}
@@ -209,6 +214,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             <strong>HAVEN</strong>
           </Link>
           <button
+            type="button"
             className="icon-button sidebar-close"
             onClick={closeMobile}
             aria-label={localize(locale, "Close navigation", "Закрыть навигацию")}
@@ -328,7 +334,6 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="sidebar-bottom">
           <GrowthJourney pathname={pathname} />
           <Link
-            prefetch={false}
             className="connect-link"
             href="/delivery"
             onClick={() => setMobileOpen(false)}
@@ -353,6 +358,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             aria-label={localize(locale, "Breadcrumb", "Хлебные крошки")}
           >
             <button
+              type="button"
               ref={menuButton}
               className="icon-button mobile-menu"
               onClick={() => setMobileOpen(true)}
@@ -362,7 +368,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             >
               <Menu size={19} />
             </button>
-            <Link prefetch={false} href="/" className="crumb-root">
+            <Link href="/" className="crumb-root">
               HAVEN
             </Link>
             <span className="crumb-divider" aria-hidden="true">/</span>
@@ -381,6 +387,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             </span>
             <div className="language-switch" role="group" aria-label={localize(locale, "Language", "Язык")}>
               <button
+                type="button"
                 className={locale === "en" ? "active" : ""}
                 onClick={() => setLocale("en")}
                 aria-label={localize(locale, "Switch to English", "Переключить на английский")}
@@ -391,6 +398,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                 EN
               </button>
               <button
+                type="button"
                 className={locale === "ru" ? "active" : ""}
                 onClick={() => setLocale("ru")}
                 aria-label={localize(locale, "Switch to Russian", "Переключить на русский")}
@@ -402,6 +410,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               </button>
             </div>
             <button
+              type="button"
               className="icon-button"
               onClick={() => setSearchOpen(true)}
               title={localize(locale, "Search", "Поиск")}
@@ -412,6 +421,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               <Search size={18} />
             </button>
             <button
+              type="button"
               className="icon-button"
               onClick={toggleTheme}
               title={dark ? localize(locale, "Light theme", "Светлая тема") : localize(locale, "Dark theme", "Тёмная тема")}
@@ -438,7 +448,6 @@ function Shell({ children }: { children: React.ReactNode }) {
                   key={stage.id}
                 >
                   <Link
-                    prefetch={false}
                     href={stage.href}
                     className="journey-rail-link"
                     aria-current={active ? "step" : undefined}

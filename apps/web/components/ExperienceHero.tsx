@@ -40,7 +40,7 @@ export function ExperienceHero() {
   useEffect(() => {
     try {
       const audience = parseGrowthJourneyState(
-        window.localStorage.getItem(GROWTH_STORAGE_KEY) ||
+        window.sessionStorage.getItem(GROWTH_STORAGE_KEY) ||
           window.localStorage.getItem(LEGACY_GROWTH_STORAGE_KEY),
       ).audience;
       const index = audience ? journeyAudiences.indexOf(audience) : -1;
@@ -68,9 +68,9 @@ export function ExperienceHero() {
     setActiveJourneyIndex(index);
     try {
       const current = parseGrowthJourneyState(
-        window.localStorage.getItem(GROWTH_STORAGE_KEY),
+        window.sessionStorage.getItem(GROWTH_STORAGE_KEY),
       );
-      window.localStorage.setItem(
+      window.sessionStorage.setItem(
         GROWTH_STORAGE_KEY,
         JSON.stringify(setGrowthAudience(current, journeyAudiences[index])),
       );

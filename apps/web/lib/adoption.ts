@@ -1,4 +1,4 @@
-import { heroCtaExperiment } from "./experiments";
+import { heroCtaExperiment } from "./experiments.ts";
 
 export type AdoptionLocale = "en" | "ru";
 

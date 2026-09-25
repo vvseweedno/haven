@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { searchRecords } from "../observatory";
 import { parseCatalogQuery } from "../public-contract";
+import { pilotIntakeConfigured, publicPilotContactUrl } from "../pilot-intake";
 import { createRequestBudget } from "../security";
 
 // Only this explicit projection is exposed; no browser storage or private notes enter the catalog.
@@ -83,6 +84,7 @@ export const publicStatus = {
     publicCatalog: true,
     encryptedLocalNotebook: true,
     localObjectInspection: true,
+    pilotRequestHandoff: pilotIntakeConfigured(),
     identityAdmission: false,
     federationReplication: false,
     remoteExecution: false,
@@ -95,9 +97,17 @@ export const publicStatus = {
   },
   api: {
     version: "v1",
-    methods: ["GET", "HEAD"],
+    readMethods: ["GET", "HEAD"],
     maxPageSize: 100,
     maxQueryLength: 120,
     cacheSeconds: 30,
+  },
+  pilotIntake: {
+    endpoint: "/api/v1/pilot-request",
+    method: "POST",
+    configured: pilotIntakeConfigured(),
+    consentRequired: true,
+    implicitTracking: false,
+    fallbackContactPublished: Boolean(publicPilotContactUrl()),
   },
 };

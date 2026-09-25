@@ -181,14 +181,14 @@ export function ExperienceHero() {
                 </Link>
                 <Link
                   prefetch={false}
-                  href="/proof-desk#proof-workbench"
+                  href={activeJourney.href}
                   className="text-link"
                   data-measure="hero_cta_click"
                   data-measure-mode="manual"
-                  onClick={() => measureCta("secondary", "/proof-desk")}
+                  onClick={() => measureCta("secondary", activeJourney.href)}
                 >
-                  <Fingerprint size={15} />
-                  {text("Verify a concrete claim", "Проверить конкретное утверждение")}
+                  {text(activeJourney.routeCta, activeJourney.routeCtaRu)}
+                  <ArrowRight size={15} />
                 </Link>
               </>
             ) : (

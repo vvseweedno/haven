@@ -220,13 +220,16 @@ with sync_playwright() as p:
         ),
     )
     page.get_by_role("button", name="Open search").click()
-    search_input = page.get_by_role("textbox", name="Search HAVEN", exact=True)
+    search_dialog = page.get_by_role("dialog")
+    search_input = search_dialog.get_by_role("textbox", name="Search HAVEN", exact=True)
     search_input.fill("identity")
-    expect(page.get_by_text("Catalog unavailable", exact=True)).to_be_visible()
+    expect(search_dialog.get_by_text("Catalog unavailable", exact=True)).to_be_visible()
     search_input.fill("")
-    expect(page.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
-    expect(page.get_by_text("Catalog unavailable", exact=True)).to_have_count(0)
-    page.get_by_role("button", name="Close dialog").click()
+    expect(
+        search_dialog.get_by_role("link", name=re.compile("Evaluate fit"))
+    ).to_be_visible()
+    expect(search_dialog.get_by_text("Catalog unavailable", exact=True)).to_have_count(0)
+    search_dialog.get_by_role("button", name="Close dialog").click()
     page.unroute("**/api/v1/catalog?limit=100")
 
     # Observatory interactions live only on the Observatory route.

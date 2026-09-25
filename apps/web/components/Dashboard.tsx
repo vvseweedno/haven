@@ -287,6 +287,7 @@ export function Dashboard() {
                   ))}
                 </div>
                 <button
+                  type="button"
                   className="text-button"
                   onClick={() => setTab("Activity")}
                 >

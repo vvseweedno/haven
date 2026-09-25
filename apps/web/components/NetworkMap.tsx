@@ -238,9 +238,20 @@ export function NetworkMap() {
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
   }, []);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      setReducedMotion(media.matches);
+      if (media.matches) setMoving(false);
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
   const [view, setView] = useState<"map" | "list">("map");
   const [layer, setLayer] = useState("All objects");
   const [moving, setMoving] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [selected, setSelected] = useState<(typeof mapObjects)[number] | null>(
     null,
   );
@@ -352,11 +363,20 @@ export function NetworkMap() {
               type="button"
               className="icon-button motion-control"
               title={
-                tr(moving ? "Pause connection motion" : "Resume connection motion")
+                reducedMotion
+                  ? locale === "ru"
+                    ? "Анимация отключена системной настройкой reduced motion"
+                    : "Connection motion is disabled by the reduced-motion preference"
+                  : tr(moving ? "Pause connection motion" : "Resume connection motion")
               }
               aria-label={
-                tr(moving ? "Pause connection motion" : "Resume connection motion")
+                reducedMotion
+                  ? locale === "ru"
+                    ? "Анимация связей отключена"
+                    : "Connection motion disabled"
+                  : tr(moving ? "Pause connection motion" : "Resume connection motion")
               }
+              disabled={reducedMotion}
               onClick={() => setMoving((value) => !value)}
             >
               {moving ? <Pause size={14} /> : <Play size={14} />}

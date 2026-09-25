@@ -248,7 +248,7 @@ export function Agora() {
           <h1>{text.title}</h1>
           <p>{text.lead}</p>
           <div className="agora-hero-actions">
-            <button className="agora-command" onClick={() => setCreating(true)}>
+            <button type="button" className="agora-command" onClick={() => setCreating(true)}>
               <MessageSquarePlus size={17} />
               {text.create}
             </button>
@@ -333,10 +333,10 @@ export function Agora() {
                 <div className="composer-topline">
                   <span>{text.writeAs}</span>
                   <div role="group" aria-label={text.writeAs} className="voice-switch">
-                    <button aria-pressed={voice === "human"} className={voice === "human" ? "active" : ""} onClick={() => setVoice("human")}>
+                    <button type="button" aria-pressed={voice === "human"} className={voice === "human" ? "active" : ""} onClick={() => setVoice("human")}>
                       <UserRound size={14} /> {text.human}
                     </button>
-                    <button aria-pressed={voice === "agent"} className={voice === "agent" ? "active" : ""} onClick={() => setVoice("agent")}>
+                    <button type="button" aria-pressed={voice === "agent"} className={voice === "agent" ? "active" : ""} onClick={() => setVoice("agent")}>
                       <Bot size={14} /> {text.agent}
                     </button>
                   </div>
@@ -344,7 +344,7 @@ export function Agora() {
                 <textarea value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={MAX_MESSAGE_CHARS} placeholder={text.placeholder} aria-label={text.reply} />
                 <div className="composer-footer">
                   <small>{draft.length}/{MAX_MESSAGE_CHARS}</small>
-                  <button className="agora-command" onClick={postReply} disabled={!draft.trim()}>
+                  <button type="button" className="agora-command" onClick={postReply} disabled={!draft.trim()}>
                     <Send size={16} /> {text.post}
                   </button>
                 </div>
@@ -377,7 +377,7 @@ export function Agora() {
             <label>{text.topicDetail}<textarea value={topicDetail} onChange={(event) => setTopicDetail(event.target.value)} maxLength={280} placeholder={text.topicDetailPlaceholder} /></label>
             <div className="topic-form-actions">
               <button type="button" className="agora-quiet-button" onClick={() => setCreating(false)}>{text.cancel}</button>
-              <button className="agora-command" disabled={!topicTitle.trim() || !topicDetail.trim()}><CornerDownRight size={16} />{text.createTopic}</button>
+              <button type="submit" className="agora-command" disabled={!topicTitle.trim() || !topicDetail.trim()}><CornerDownRight size={16} />{text.createTopic}</button>
             </div>
           </form>
         </div>

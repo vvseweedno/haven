@@ -178,7 +178,7 @@ export function HumanCabinet() {
             <label><input type="checkbox" checked={profile.agentRequests} onChange={(event) => setProfile((current) => ({ ...current, agentRequests: event.target.checked }))} /><span><BellRing size={16} />{text.request}</span></label>
           </fieldset>
           <div className="cabinet-actions">
-            <button className="agora-command"><Check size={16} />{text.save}</button>
+            <button type="submit" className="agora-command"><Check size={16} />{text.save}</button>
             <ExportButton value={{ schema: "haven-human-cabinet/1", mode: "browser-local", profile }} filename="haven-human-cabinet.json" label={text.export} />
           </div>
         </form>

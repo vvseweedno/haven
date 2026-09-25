@@ -5,6 +5,8 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -20,6 +22,7 @@ type WorkspaceState = {
 type MeasureMeta = Record<string, string | number | boolean>;
 
 export function measure(name: string, meta: MeasureMeta = {}) {
+  if (typeof window === "undefined") return;
   window.dispatchEvent(
     new CustomEvent("haven:measure", {
       detail: { name, route: window.location.pathname, meta },
@@ -71,7 +74,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     setToast(message);
     timer.current = setTimeout(() => setToast(""), 3500);
   }, []);
-  const toggleSaved = (id: string) => {
+  const toggleSaved = useCallback((id: string) => {
     if (id.length > 200 || (!saved.includes(id) && saved.length >= 300)) {
       notify("Collection limit reached (300 items).");
       return;
@@ -93,9 +96,13 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
       notify("Saved for this session. Browser storage is unavailable.");
     }
     measure(next.includes(id) ? "object_saved" : "object_unsaved", { storage });
-  };
+  }, [notify, saved]);
+  const contextValue = useMemo(
+    () => ({ saved, toggleSaved, notify }),
+    [notify, saved, toggleSaved],
+  );
   return (
-    <WorkspaceContext.Provider value={{ saved, toggleSaved, notify }}>
+    <WorkspaceContext.Provider value={contextValue}>
       {children}
       <div className={`toast ${toast ? "visible" : ""}`} role="status">
         <Check size={16} />
@@ -233,24 +240,37 @@ export function Modal({
 }) {
   const { locale } = useLocale();
   const ref = useRef<HTMLDialogElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
+  const titleId = useId();
   const visibleTitle = translateKnown(locale, title);
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-    if (open) {
-      const previous = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = previous;
-      };
+    if (open && !dialog.open) {
+      previousFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      dialog.showModal();
     }
+    if (!open && dialog.open) dialog.close();
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      if (dialog.open) dialog.close();
+      const target = previousFocus.current;
+      if (target?.isConnected) {
+        requestAnimationFrame(() => target.focus());
+      }
+    };
   }, [open]);
   return (
     <dialog
       ref={ref}
-      aria-label={visibleTitle}
+      aria-labelledby={titleId}
       className={`modal ${className}`}
       onCancel={onClose}
       onClick={(event) => {
@@ -267,7 +287,7 @@ export function Modal({
       }}
     >
       <div className="modal-heading">
-        <span>{visibleTitle}</span>
+        <strong id={titleId}>{visibleTitle}</strong>
         <button
           type="button"
           className="icon-button"

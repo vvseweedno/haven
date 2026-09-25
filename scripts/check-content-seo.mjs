@@ -134,6 +134,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "/atelier",
     "/delivery",
     "/landscape",
+    "/pilot",
     "/protocol",
     "/api/v1/status",
     "/api/v1/catalog",
@@ -159,7 +160,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   check(openapi?.servers?.[0]?.url === CANONICAL_URL, "openapi.json server URL must match the canonical local URL.");
   check(Array.isArray(openapi?.security) && openapi.security.length === 0, "The read-only prototype API must explicitly declare no authentication scheme.");
 
-  const expectedApiPaths = ["/healthz", "/readyz", "/api/v1/status", "/api/v1/catalog"];
+  const expectedApiPaths = ["/healthz", "/readyz", "/api/v1/status", "/api/v1/catalog", "/api/v1/pilot-request"];
   const apiPaths = Object.keys(openapi?.paths ?? {});
   check(unique(apiPaths), "openapi.json path keys must be unique.");
   check(
@@ -168,20 +169,37 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   );
   const mutationMethods = ["post", "put", "patch", "delete"];
   for (const [path, item] of Object.entries(openapi?.paths ?? {})) {
-    check(
-      mutationMethods.every((method) => !(method in item)),
-      `openapi.json must not advertise mutation on ${path}.`,
-    );
+    if (path === "/api/v1/pilot-request") {
+      check("post" in item, "Pilot request path must publish its explicit POST handoff.");
+      check(
+        ["put", "patch", "delete"].every((method) => !(method in item)),
+        "Pilot request path must not advertise unsupported mutation methods.",
+      );
+    } else {
+      check(
+        mutationMethods.every((method) => !(method in item)),
+        `Only the explicit pilot-request path may advertise mutation; found one on ${path}.`,
+      );
+    }
   }
   const operationIds = Object.values(openapi?.paths ?? {}).flatMap((item) =>
     ["get", "head"].map((method) => item[method]?.operationId).filter(Boolean),
   );
   check(unique(operationIds), "OpenAPI operationId values must be unique.");
   check(openapi?.components?.schemas?.Status?.properties?.mode?.const === "local-demo", "OpenAPI status mode must match the runtime contract.");
+  check(
+    openapi?.paths?.["/api/v1/pilot-request"]?.post?.operationId === "submitPilotRequest",
+    "OpenAPI must document the implemented pilot-request POST operation.",
+  );
+  check(
+    agents?.interfaces?.pilotRequest === `${CANONICAL_URL}/api/v1/pilot-request`,
+    "agents.json must publish the pilot-request interface.",
+  );
   for (const token of [
     "publicCatalog",
     "encryptedLocalNotebook",
     "localObjectInspection",
+    "pilotRequestHandoff",
     "identityAdmission",
     "federationReplication",
     "remoteExecution",

@@ -63,27 +63,48 @@ function Shell({ children }: { children: React.ReactNode }) {
   const sidebar = useRef<HTMLElement>(null);
   const keyboardNavigation = useRef(false);
   useEffect(() => {
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    let explicitTheme: "dark" | "light" | null = null;
+
+    const applyTheme = (value: boolean) => {
+      setDark(value);
+      document.documentElement.dataset.theme = value ? "dark" : "light";
+    };
+
     try {
       const stored = localStorage.getItem("haven-theme");
-      const value =
-        stored === "dark" ||
-        (stored !== "light" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches);
-      setDark(value);
-      document.documentElement.dataset.theme = value ? "dark" : "light";
+      explicitTheme = stored === "dark" || stored === "light" ? stored : null;
     } catch {
-      const value = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setDark(value);
-      document.documentElement.dataset.theme = value ? "dark" : "light";
+      explicitTheme = null;
     }
+    applyTheme(explicitTheme ? explicitTheme === "dark" : systemTheme.matches);
+
+    const onSystemTheme = (event: MediaQueryListEvent) => {
+      if (!explicitTheme) applyTheme(event.matches);
+    };
+    const onStoredTheme = (event: StorageEvent) => {
+      if (event.key !== "haven-theme") return;
+      explicitTheme =
+        event.newValue === "dark" || event.newValue === "light"
+          ? event.newValue
+          : null;
+      applyTheme(explicitTheme ? explicitTheme === "dark" : systemTheme.matches);
+    };
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setSearchOpen((value) => !value);
       }
     };
+
+    systemTheme.addEventListener("change", onSystemTheme);
+    window.addEventListener("storage", onStoredTheme);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      systemTheme.removeEventListener("change", onSystemTheme);
+      window.removeEventListener("storage", onStoredTheme);
+      window.removeEventListener("keydown", onKey);
+    };
   }, []);
   useEffect(() => {
     setMobileOpen(false);

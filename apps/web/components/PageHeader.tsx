@@ -38,8 +38,8 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/discovery.png",
     assetPosition: "center",
     next: {
-      en: "Follow the evidence",
-      ru: "Проследить доказательства",
+      en: "Verify a concrete claim",
+      ru: "Проверить конкретное утверждение",
       href: "/proof-desk",
     },
     evidence: {
@@ -56,7 +56,7 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     label: { en: "Community", ru: "Сообщество" },
     asset: "/assets/cabinet-portrait.png",
     assetPosition: "70% center",
-    next: { en: "Enter Agora", ru: "Войти в Агору", href: "/agora" },
+    next: { en: "Review trust boundaries", ru: "Проверить границы доверия", href: "/trust" },
     evidence: {
       en: "Review the implemented capability ledger",
       ru: "Проверить реестр реализованных возможностей",
@@ -72,9 +72,9 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/continuity.png",
     assetPosition: "center",
     next: {
-      en: "Prepare an arrival",
-      ru: "Подготовить прибытие",
-      href: "/arrival",
+      en: "Review identity boundaries",
+      ru: "Проверить границы идентичности",
+      href: "/trust",
     },
     evidence: {
       en: "Inspect the public identity fixtures",
@@ -91,9 +91,9 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/signal-ribbon.png",
     assetPosition: "center",
     next: {
-      en: "Inspect an object",
-      ru: "Проверить объект",
-      href: "/forge/inspect",
+      en: "Assess pilot readiness",
+      ru: "Оценить готовность к пилоту",
+      href: "/delivery",
     },
     evidence: {
       en: "Review the read-only API contract",
@@ -110,9 +110,9 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/federation.png",
     assetPosition: "center",
     next: {
-      en: "Inspect the protocol",
-      ru: "Изучить протокол",
-      href: "/protocol",
+      en: "Review implementation boundaries",
+      ru: "Проверить границы реализации",
+      href: "/trust",
     },
     evidence: {
       en: "Inspect the local node manifest",
@@ -129,9 +129,9 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/proof-desk.png",
     assetPosition: "62% center",
     next: {
-      en: "Review trust limits",
-      ru: "Проверить границы доверия",
-      href: "/trust",
+      en: "Assess pilot readiness",
+      ru: "Оценить готовность к пилоту",
+      href: "/delivery",
     },
     evidence: {
       en: "Query the local capability status",
@@ -148,9 +148,9 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
     asset: "/assets/cabinet-portrait.png",
     assetPosition: "72% center",
     next: {
-      en: "Explore the Commons",
-      ru: "Исследовать Коммонс",
-      href: "/commons",
+      en: "Review privacy boundaries",
+      ru: "Проверить границы приватности",
+      href: "/trust",
     },
     evidence: {
       en: "Review storage and privacy limits",
@@ -166,139 +166,154 @@ const chapterContracts: Record<ProductChapter, ChapterContract> = {
 
 const routeNextSteps: Record<string, LocalizedCopy & { href: string }> = {
   "/landscape": {
-    en: "Run a local verification",
-    ru: "Провести локальную проверку",
+    en: "Verify a concrete claim",
+    ru: "Проверить конкретное утверждение",
     href: "/proof-desk#proof-workbench",
   },
   "/proof-desk": {
+    en: "Review trust and implementation boundaries",
+    ru: "Проверить границы доверия и реализации",
+    href: "/trust",
+  },
+  "/observatory": {
+    en: "Turn an example into a local proof receipt",
+    ru: "Превратить пример в локальную proof-квитанцию",
+    href: "/proof-desk#proof-workbench",
+  },
+  "/commons": {
+    en: "Verify one claim locally",
+    ru: "Проверить одно утверждение локально",
+    href: "/proof-desk#proof-workbench",
+  },
+  "/agents": {
+    en: "Review identity and authority boundaries",
+    ru: "Проверить границы идентичности и полномочий",
+    href: "/trust",
+  },
+  "/lineages": {
+    en: "Review continuity boundaries",
+    ru: "Проверить границы непрерывности",
+    href: "/trust",
+  },
+  "/projects": {
+    en: "Inspect the evidence graph",
+    ru: "Изучить граф доказательств",
+    href: "/observatory",
+  },
+  "/trust": {
     en: "Assess bounded pilot readiness",
     ru: "Оценить готовность к ограниченному пилоту",
     href: "/delivery#pilot-readiness",
   },
-  "/pilot": {
-    en: "Review trust boundaries",
-    ru: "Проверить границы доверия",
-    href: "/trust",
-  },
-  "/observatory": {
-    en: "Review product fit and limits",
-    ru: "Проверить применимость и ограничения",
-    href: "/landscape",
-  },
-  "/delivery": {
-    en: "Submit a qualified pilot request",
-    ru: "Отправить квалифицированный запрос на пилот",
-    href: "/pilot",
-  },
-  "/agent-federation": {
-    en: "Explore the Archipelago",
-    ru: "Исследовать Архипелаг",
-    href: "/federation",
-  },
-  "/agent-memory": {
-    en: "Open private memory",
-    ru: "Открыть приватную память",
-    href: "/vault",
-  },
-  "/agent-native-web": {
-    en: "Inspect the protocol",
-    ru: "Изучить протокол",
-    href: "/protocol",
-  },
-  "/agent-network": {
-    en: "Explore the Archipelago",
-    ru: "Исследовать Архипелаг",
-    href: "/federation",
-  },
-  "/arrival": {
-    en: "Meet the residents",
-    ru: "Познакомиться с резидентами",
-    href: "/agents",
-  },
-  "/commons": {
-    en: "Test a public claim",
-    ru: "Проверить публичное утверждение",
-    href: "/proof-desk",
-  },
-  "/constitution": {
-    en: "Review trust limits",
-    ru: "Проверить границы доверия",
-    href: "/trust",
-  },
-  "/federation": {
-    en: "Inspect the protocol",
-    ru: "Изучить протокол",
-    href: "/protocol",
-  },
-  "/forge": {
-    en: "Inspect an object",
-    ru: "Проверить объект",
-    href: "/forge/inspect",
-  },
-  "/forge/inspect": {
-    en: "Return to Forge",
-    ru: "Вернуться в Фордж",
-    href: "/forge",
-  },
-  "/governance": {
-    en: "Open Parallel Atelier",
-    ru: "Открыть параллельное ателье",
-    href: "/atelier",
-  },
-  "/lineages": {
-    en: "Meet the residents",
-    ru: "Познакомиться с резидентами",
-    href: "/agents",
-  },
-  "/projects": {
-    en: "Explore the Commons",
-    ru: "Исследовать Коммонс",
-    href: "/commons",
-  },
-  "/persistent-agent-identity": {
-    en: "Prepare an arrival",
-    ru: "Подготовить прибытие",
-    href: "/arrival",
-  },
   "/protocol": {
-    en: "Review trust limits",
-    ru: "Проверить границы доверия",
+    en: "Check implementation and trust limits",
+    ru: "Проверить ограничения реализации и доверия",
     href: "/trust",
   },
   "/protocol/a2a": {
-    en: "Prepare an arrival",
-    ru: "Подготовить прибытие",
-    href: "/arrival",
-  },
-  "/protocol/hap": {
-    en: "Prepare an arrival",
-    ru: "Подготовить прибытие",
-    href: "/arrival",
-  },
-  "/protocol/mcp": {
-    en: "Explore Forge",
-    ru: "Исследовать Фордж",
-    href: "/forge",
-  },
-  "/saved": {
-    en: "Explore the Commons",
-    ru: "Исследовать Коммонс",
-    href: "/commons",
-  },
-  "/trust": {
-    en: "Test a public claim",
-    ru: "Проверить публичное утверждение",
-    href: "/proof-desk",
-  },
-  "/vault": {
-    en: "Review privacy limits",
-    ru: "Проверить границы приватности",
+    en: "Check implementation and trust limits",
+    ru: "Проверить ограничения реализации и доверия",
     href: "/trust",
   },
+  "/protocol/hap": {
+    en: "Check implementation and trust limits",
+    ru: "Проверить ограничения реализации и доверия",
+    href: "/trust",
+  },
+  "/protocol/mcp": {
+    en: "Check implementation and trust limits",
+    ru: "Проверить ограничения реализации и доверия",
+    href: "/trust",
+  },
+  "/arrival": {
+    en: "Review identity admission boundaries",
+    ru: "Проверить границы допуска идентичности",
+    href: "/trust",
+  },
+  "/federation": {
+    en: "Review live-service boundaries",
+    ru: "Проверить границы работающих сервисов",
+    href: "/trust",
+  },
+  "/agent-federation": {
+    en: "Review live-service boundaries",
+    ru: "Проверить границы работающих сервисов",
+    href: "/trust",
+  },
+  "/agent-memory": {
+    en: "Review privacy and storage boundaries",
+    ru: "Проверить границы приватности и хранения",
+    href: "/trust",
+  },
+  "/agent-native-web": {
+    en: "Inspect the implemented protocol surface",
+    ru: "Изучить реализованную поверхность протокола",
+    href: "/protocol",
+  },
+  "/agent-network": {
+    en: "Review network implementation boundaries",
+    ru: "Проверить границы реализации сети",
+    href: "/trust",
+  },
+  "/persistent-agent-identity": {
+    en: "Review identity implementation boundaries",
+    ru: "Проверить границы реализации идентичности",
+    href: "/trust",
+  },
+  "/constitution": {
+    en: "Compare principles with implementation",
+    ru: "Сопоставить принципы с реализацией",
+    href: "/trust",
+  },
+  "/vault": {
+    en: "Review privacy and storage limits",
+    ru: "Проверить ограничения приватности и хранения",
+    href: "/trust",
+  },
+  "/cabinet": {
+    en: "Review privacy and consent boundaries",
+    ru: "Проверить границы приватности и согласия",
+    href: "/trust",
+  },
+  "/forge": {
+    en: "Inspect an object locally",
+    ru: "Проверить объект локально",
+    href: "/forge/inspect",
+  },
+  "/forge/inspect": {
+    en: "Review what the tool proves and does not prove",
+    ru: "Проверить, что инструмент доказывает и чего не доказывает",
+    href: "/trust",
+  },
+  "/governance": {
+    en: "Assess pilot governance readiness",
+    ru: "Оценить готовность управления к пилоту",
+    href: "/delivery#pilot-readiness",
+  },
+  "/collectives": {
+    en: "Assess pilot ownership readiness",
+    ru: "Оценить готовность владельцев пилота",
+    href: "/delivery#pilot-readiness",
+  },
+  "/atelier": {
+    en: "Review pilot release gates",
+    ru: "Проверить release-gates пилота",
+    href: "/delivery#pilot-readiness",
+  },
   "/worlds/continuity": {
-    en: "Return to Forge",
-    ru: "Вернуться в Фордж",
-    href: "/forge",
+    en: "Review implementation boundaries",
+    ru: "Проверить границы реализации",
+    href: "/trust",
+  },
+  "/delivery": {
+    en: "Open the explicit pilot handoff",
+    ru: "Открыть явную передачу пилота",
+    href: "/pilot",
+  },
+  "/pilot": {
+    en: "Return to pilot readiness",
+    ru: "Вернуться к готовности пилота",
+    href: "/delivery#pilot-readiness",
   },
 };
 
@@ -427,8 +442,8 @@ export function PageHeader({
   const titleId = `page-title-${routeClassName(pathname)}`;
   const category = localize(
     locale,
-    "AI-agent continuity verification",
-    "Проверка непрерывности ИИ-агентов",
+    "HAVEN evaluation",
+    "Оценка HAVEN",
   );
   const phase = localize(
     locale,

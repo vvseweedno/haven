@@ -13,6 +13,7 @@ import {
   Code2,
   FileDown,
   Gauge,
+  Send,
   MousePointer2,
   RadioTower,
   Scale,
@@ -61,7 +62,7 @@ const copy = {
     local: "Where changes are saved",
     localValue: "this browser",
     submission: "Data sent",
-    submissionValue: "none",
+    submissionValue: "explicit only",
     viewAll: "Show all",
     roleMap: "Who owns each decision",
     handoff: "Ownership and evidence",
@@ -69,10 +70,11 @@ const copy = {
     gate: "Before release",
     truth: "What is true now",
     delivery: "Release path",
-    note: "Prepare a pilot only after fit, owners, data boundaries, success evidence and stop conditions are explicit. Both downloads stay in this browser and create no lead, CRM record, price, promise or commitment.",
+    note: "Prepare a pilot only after fit, owners, data boundaries, success evidence and stop conditions are explicit. Downloads stay in this browser. A sales handoff happens only when a visitor explicitly submits the qualified pilot form.",
     atelier: "Review agent-proposed branches",
     documentation: "Open the machine-readable delivery record",
     pilotBrief: "Export qualified pilot brief",
+    pilotRequest: "Submit qualified pilot request",
     analysisBrief: "Export the experiment template",
     experiments: "Rules for responsible experiments",
     experimentKicker: "Experiments / Evidence first",
@@ -95,7 +97,7 @@ const copy = {
     local: "Где сохраняются изменения",
     localValue: "этот браузер",
     submission: "Отправка данных",
-    submissionValue: "нет",
+    submissionValue: "только явно",
     viewAll: "Показать всё",
     roleMap: "Кто отвечает за каждое решение",
     handoff: "Ответственность и доказательства",
@@ -103,10 +105,11 @@ const copy = {
     gate: "До релиза",
     truth: "Что верно сейчас",
     delivery: "Путь к релизу",
-    note: "Готовьте пилот только после явной проверки соответствия задаче, владельцев, границ данных, доказательств успеха и условий остановки. Оба файла остаются в браузере и не создают лид, запись CRM, цену, обещание или обязательство.",
+    note: "Готовьте пилот только после явной проверки соответствия задаче, владельцев, границ данных, доказательств успеха и условий остановки. Файлы остаются в браузере. Передача в продажи происходит только после явной отправки квалифицированной формы пилота.",
     atelier: "Проверить ветки, предложенные агентами",
     documentation: "Открыть машиночитаемую запись поставки",
     pilotBrief: "Экспортировать квалифицированный бриф пилота",
+    pilotRequest: "Отправить квалифицированный запрос на пилот",
     analysisBrief: "Экспортировать шаблон эксперимента",
     experiments: "Правила ответственных экспериментов",
     experimentKicker: "Эксперименты / Сначала доказательства",
@@ -261,6 +264,9 @@ export function DeliveryRoom() {
         <div className="delivery-decision-mark" aria-hidden="true"><i /><i /><i /></div>
         <div><p className="signal-kicker"><FileDown size={14} /> {text.delivery}</p><p>{text.note}</p></div>
         <div className="delivery-actions">
+          <Link href="/pilot" data-measure="pilot_request_opened">
+            {text.pilotRequest}<Send size={16} />
+          </Link>
           <a
             href="#pilot-readiness"
             data-measure="pilot_brief_exported"

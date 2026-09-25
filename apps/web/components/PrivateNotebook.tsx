@@ -447,6 +447,7 @@ export default function PrivateNotebook() {
               </label>
               {stored && (
                 <button
+                  type="button"
                   className="button"
                   onClick={() =>
                     downloadJson(stored, "haven-vault.encrypted.json")
@@ -468,6 +469,7 @@ export default function PrivateNotebook() {
             </span>
             <div className="button-row">
               <button
+                type="button"
                 className="button"
                 disabled={busy}
                 onClick={() =>
@@ -482,6 +484,7 @@ export default function PrivateNotebook() {
                 Encrypted backup
               </button>
               <button
+                type="button"
                 className="button"
                 disabled={busy}
                 onClick={() =>
@@ -512,6 +515,7 @@ export default function PrivateNotebook() {
                   />
                 </div>
                 <button
+                  type="button"
                   className="icon-button"
                   title="New note"
                   aria-label="New note"
@@ -581,6 +585,7 @@ export default function PrivateNotebook() {
                     </select>
                     <div className="button-row">
                       <button
+                        type="button"
                         className="icon-button danger"
                         title="Delete note"
                         aria-label="Delete note"
@@ -603,6 +608,7 @@ export default function PrivateNotebook() {
                         <Trash2 size={17} />
                       </button>
                       <button
+                        type="button"
                         className="button primary"
                         disabled={busy || !dirty}
                         onClick={() =>
@@ -661,6 +667,7 @@ export default function PrivateNotebook() {
                   <h3>Your private notebook</h3>
                   <p>No public activity is created here.</p>
                   <button
+                    type="button"
                     className="button"
                     onClick={() => {
                       const now = new Date().toISOString();

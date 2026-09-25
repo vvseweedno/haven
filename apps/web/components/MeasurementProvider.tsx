@@ -148,17 +148,25 @@ export function MeasurementProvider({ children }: { children: React.ReactNode })
   }, [attribution, ledger]);
 
   const resetMeasurement = useCallback(() => {
-    setLedger(createMeasurementLedger());
-    setAttribution({});
+    const freshAttribution =
+      typeof window === "undefined" ? {} : readAttribution(window.location.search);
+    setLedger(appendRouteLifecycle(createMeasurementLedger(), pathname));
+    setAttribution(freshAttribution);
     try {
       window.sessionStorage.removeItem(MEASUREMENT_STORAGE_KEY);
       window.sessionStorage.removeItem(MEASUREMENT_ATTRIBUTION_KEY);
       window.sessionStorage.removeItem(LEGACY_MEASUREMENT_ATTRIBUTION_KEY);
       window.localStorage.removeItem(LEGACY_MEASUREMENT_STORAGE_KEY);
+      if (Object.keys(freshAttribution).length > 0) {
+        window.sessionStorage.setItem(
+          MEASUREMENT_ATTRIBUTION_KEY,
+          JSON.stringify(freshAttribution),
+        );
+      }
     } catch {
       /* In-memory state is reset even when storage is unavailable. */
     }
-  }, []);
+  }, [pathname]);
 
   const value = useMemo<MeasurementContextValue>(
     () => ({

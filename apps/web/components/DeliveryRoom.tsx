@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Sparkles,
   UsersRound,
+  Waypoints,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import {
@@ -46,6 +47,7 @@ const icons: Record<string, LucideIcon> = {
   growth: Activity,
   cro: Gauge,
   "content-seo": FileText,
+  "ux-ia": Waypoints,
 };
 
 const states: Record<DeliveryState, { en: string; ru: string }> = {

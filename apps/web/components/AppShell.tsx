@@ -64,11 +64,17 @@ function Shell({ children }: { children: React.ReactNode }) {
   const keyboardNavigation = useRef(false);
   useEffect(() => {
     try {
-      const value = localStorage.getItem("haven-theme") === "dark";
+      const stored = localStorage.getItem("haven-theme");
+      const value =
+        stored === "dark" ||
+        (stored !== "light" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
       setDark(value);
       document.documentElement.dataset.theme = value ? "dark" : "light";
     } catch {
-      /* Default to light when storage is unavailable. */
+      const value = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setDark(value);
+      document.documentElement.dataset.theme = value ? "dark" : "light";
     }
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {

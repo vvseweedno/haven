@@ -91,6 +91,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const required = [
     "docs/frontend-interface.md",
     "apps/web/app/error.tsx",
+    "apps/web/app/global-error.tsx",
     "apps/web/app/loading.tsx",
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
@@ -112,7 +113,11 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const search = read("apps/web/components/SearchDialog.tsx");
   const workspace = read("apps/web/components/Workspace.tsx");
   const errorBoundary = read("apps/web/app/error.tsx");
+  const globalError = read("apps/web/app/global-error.tsx");
   const loading = read("apps/web/app/loading.tsx");
+  const agoraScene = read("apps/web/components/AgoraScene.tsx");
+  const pointerAura = read("apps/web/components/PointerAura.tsx");
+  const networkMap = read("apps/web/components/NetworkMap.tsx");
   const css = read("apps/web/app/globals.css");
   const nextConfig = read("apps/web/next.config.ts");
   const contract = read("docs/frontend-interface.md");
@@ -186,6 +191,32 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     loading.includes('role="status"') &&
       loading.includes('aria-busy="true"'),
     "Route loading UI must expose an accessible busy status.",
+  );
+  check(
+    globalError.includes("<html") &&
+      globalError.includes("onClick={reset}") &&
+      globalError.includes('href="/"'),
+    "Root-shell failures must have a last-resort retry and home recovery surface.",
+  );
+  check(
+    agoraScene.includes("agora-scene-fallback"),
+    "Agora must provide a static fallback when WebGL cannot initialize.",
+  );
+  check(
+    pointerAura.includes("reduced.addEventListener") &&
+      pointerAura.includes("coarse.addEventListener") &&
+      pointerAura.includes("const stop ="),
+    "Pointer decoration must react to live reduced-motion and coarse-pointer changes.",
+  );
+  check(
+    networkMap.includes("reducedMotion") &&
+      networkMap.includes("disabled={reducedMotion}"),
+    "Observatory connection animation must obey the reduced-motion preference in component state.",
+  );
+  check(
+    workspace.includes("document.body.appendChild(anchor)") &&
+      workspace.includes("anchor.remove()"),
+    "Shared downloads must use a browser-compatible attached anchor lifecycle.",
   );
   check(
     nextConfig.includes("reactStrictMode: true"),

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
 import {
@@ -46,7 +47,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const [catalog, setCatalog] = useState<Result[]>([]);
   const [catalogTotal, setCatalogTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
   const [error, setError] = useState<"busy" | "unavailable" | "invalid" | "failed" | "">("");
   const [retry, setRetry] = useState(0);
   const opened = useRef(false);
@@ -56,7 +58,9 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
     opened.current = true;
     measure("search_opened");
   }, []);
+  const wantsCatalog = query.trim().length > 0;
   useEffect(() => {
+    if (!wantsCatalog || catalogLoaded) return;
     const controller = new AbortController();
     setLoading(true);
     setError("");
@@ -77,6 +81,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
         if (controller.signal.aborted) return;
         setCatalog(data.items);
         setCatalogTotal(data.total);
+        setCatalogLoaded(true);
       } catch {
         if (!controller.signal.aborted) setError("failed");
       } finally {
@@ -84,10 +89,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
       }
     };
     void load();
-    return () => {
-      controller.abort();
-    };
-  }, [retry]);
+    return () => controller.abort();
+  }, [catalogLoaded, retry, wantsCatalog]);
   const results = useMemo(() => {
     const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     if (!words.length) return catalog;
@@ -155,7 +158,14 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
                   ? localize(locale, "The catalog returned an invalid response.", "Каталог вернул некорректный ответ.")
                   : localize(locale, "The public catalog could not be loaded.", "Не удалось загрузить публичный каталог.")}
             </p>
-            <button className="button" onClick={() => setRetry((n) => n + 1)}>
+            <button
+              type="button"
+              className="button"
+              onClick={() => {
+                setCatalogLoaded(false);
+                setRetry((n) => n + 1);
+              }}
+            >
               {localize(locale, "Try again", "Повторить")}
             </button>
           </div>
@@ -163,7 +173,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           !loading &&
           (query ? (
             results.map((item) => (
-              <a
+              <Link
                 key={item.id}
                 href={item.href}
                 data-measure="search_result_opened"
@@ -186,7 +196,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
                 </span>
                 <span className="result-kind">{translateKnown(locale, item.kind)}</span>
                 <ArrowUpRight size={15} />
-              </a>
+              </Link>
             ))
           ) : (
             <div className="search-task-grid">
@@ -196,7 +206,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
                 ["/trust", localize(locale, "Review boundaries", "Проверить границы"), localize(locale, "What is implemented, local or deferred?", "Что реализовано, локально или отложено?")],
                 ["/delivery", localize(locale, "Prepare pilot", "Подготовить пилот"), localize(locale, "Is a bounded pilot ready to discuss?", "Готов ли ограниченный пилот к обсуждению?")],
               ].map(([href, title, detail]) => (
-                <a
+                <Link
                   href={href}
                   className="search-task"
                   key={href}
@@ -208,7 +218,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
                   <strong>{title}</strong>
                   <small>{detail}</small>
                   <ArrowUpRight size={15} />
-                </a>
+                </Link>
               ))}
             </div>
           ))
@@ -227,7 +237,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             </p>
           </div>
         )}
-        {!loading && !query && catalogTotal > 0 && (
+        {!loading && !query && catalogLoaded && catalogTotal > 0 && (
           <p className="small-muted">
             {localize(
               locale,

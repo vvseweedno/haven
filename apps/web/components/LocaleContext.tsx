@@ -56,6 +56,17 @@ export function localize(locale: Locale, english: string, russian: string) {
   return locale === "ru" ? russian : english;
 }
 
+export function LocalizedCopy({
+  en,
+  ru,
+}: {
+  en: string;
+  ru: string;
+}) {
+  const { locale } = useLocale();
+  return <>{localize(locale, en, ru)}</>;
+}
+
 const knownRussianCopy: Record<string, string> = {
   "Identity registry": "Реестр идентичностей",
   "Network residents": "Резиденты сети",

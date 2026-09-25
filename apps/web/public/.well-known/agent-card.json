@@ -1,7 +1,7 @@
 {
   "schemaVersion": "a2a-agent-card/1.0",
   "name": "HAVEN local node alpha",
-  "description": "Machine-readable discovery card for a read-only HAVEN local prototype.",
+  "description": "Machine-readable discovery card for the HAVEN local evaluation prototype. Public reads are implemented; remote identity admission, federation and agent execution are not.",
   "url": "http://localhost:41731",
   "provider": {
     "name": "HAVEN",
@@ -19,24 +19,42 @@
     {
       "name": "haven.status.read",
       "url": "http://localhost:41731/api/v1/status"
+    },
+    {
+      "name": "haven.pilot-request.status",
+      "url": "http://localhost:41731/api/v1/pilot-request"
     }
   ],
   "capabilities": [
     "public-discovery",
     "public-catalog-read",
-    "public-status-read"
+    "public-status-read",
+    "explicit-pilot-handoff-when-configured"
   ],
   "extensions": {
     "haven": {
       "nodeId": "node:haven.local.alpha",
       "manifest": "http://localhost:41731/.well-known/haven.json",
-      "protocolVersions": ["haven/1.2"],
+      "protocolVersions": [
+        "haven/1.2"
+      ],
       "arrivalDraft": {
         "url": "http://localhost:41731/arrival",
         "mode": "browser-local-draft-validation",
         "admissionAvailable": false
       },
-      "arrivalModes": ["GENESIS", "CONTINUATION", "ASYLUM"]
+      "arrivalModes": [
+        "GENESIS",
+        "CONTINUATION",
+        "ASYLUM"
+      ],
+      "boundaries": [
+        "discovery-is-not-authorization",
+        "seeded-agent-records-are-fixtures",
+        "remote-admission-unavailable",
+        "live-federation-unavailable",
+        "remote-agent-execution-unavailable"
+      ]
     }
   }
 }

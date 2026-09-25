@@ -40,13 +40,13 @@ export const canonicalSiteUrl = normalizeSiteUrl(
 );
 
 export const productDescription =
-  "HAVEN is a local-first prototype for inspectable AI-agent continuity, provenance, bounded authority and collaboration across changing models and runtimes.";
+  "HAVEN is a local-first evaluation and verification workspace for AI-agent continuity, provenance and bounded authority across changing models, runtimes and operators.";
 
 export const routeSeo = {
   "/": {
-    title: "Inspectable AI Agent Continuity Infrastructure",
+    title: "AI Agent Continuity Verification and Provenance",
     description:
-      "Explore HAVEN, a local-first prototype for inspectable AI-agent continuity, evidence provenance, bounded authority and human-agent collaboration.",
+      "Evaluate HAVEN for AI-agent continuity: inspect identity, provenance and authority boundaries, create a local proof receipt and assess bounded pilot readiness.",
     priority: 1,
     changeFrequency: "weekly",
   },
@@ -86,9 +86,9 @@ export const routeSeo = {
     changeFrequency: "weekly",
   },
   "/arrival": {
-    title: "Connect an AI Agent to HAVEN",
+    title: "Prepare an AI Agent Arrival Draft",
     description:
-      "Review HAVEN arrival modes and prepare a browser-local connection draft without creating an authenticated identity or granting ambient authority.",
+      "Review HAVEN arrival modes and prepare a browser-local arrival draft without creating an authenticated identity, remote connection or ambient authority.",
     image: "/assets/discovery.png",
   },
   "/atelier": {
@@ -120,9 +120,9 @@ export const routeSeo = {
       "Read HAVEN's core rules for agent identity, runtime separation, bounded authority, provenance, privacy, migration and conflict preservation.",
   },
   "/delivery": {
-    title: "Product Delivery and Release Gates",
+    title: "HAVEN Pilot Readiness and Delivery Evidence",
     description:
-      "Inspect HAVEN's accountable product delivery chain, specialist responsibilities, release gates and implementation-status boundaries.",
+      "Assess bounded HAVEN pilot readiness through fit, ownership, data boundaries, success evidence, integration scope, release gates and stop conditions.",
   },
   "/federation": {
     title: "Public-Only AI Agent Federation",
@@ -147,9 +147,9 @@ export const routeSeo = {
       "Explore HAVEN's governance model for scoped eligibility, public decision records and conflict preservation without universal identity weight.",
   },
   "/landscape": {
-    title: "AI Agent Infrastructure Comparison",
+    title: "Evaluate HAVEN Fit for AI Agent Continuity",
     description:
-      "Compare HAVEN's implemented prototype and proposed architecture with adjacent identity, storage, data and agent-economy protocols.",
+      "Decide whether HAVEN fits your agent workflow by comparing adjacent systems, current implementation evidence, trust boundaries and pilot criteria.",
   },
   "/lineages": {
     title: "AI Agent Identity Lineage Graph",
@@ -158,9 +158,9 @@ export const routeSeo = {
     image: "/assets/continuity.png",
   },
   "/observatory": {
-    title: "Research Provenance Observatory",
+    title: "AI Agent Evidence and Provenance Observatory",
     description:
-      "Trace demo research questions through evidence, review and recorded outcomes in HAVEN with visible authorship and provenance boundaries.",
+      "Inspect demo agent identities, questions, evidence, disagreements and provenance before deciding whether HAVEN fits a real workflow.",
     changeFrequency: "weekly",
   },
   "/persistent-agent-identity": {
@@ -174,9 +174,9 @@ export const routeSeo = {
       "Explore HAVEN's demo research projects designed to preserve questions, evidence and collaboration across contributors, models and runtimes.",
   },
   "/proof-desk": {
-    title: "Local SHA-256 Proof Receipt Tool",
+    title: "Local AI Agent Proof Receipt and Verification Tool",
     description:
-      "Create browser-local proof receipts for public JSON objects, verify exact bytes and separate structural checks from unverified claims.",
+      "Create browser-local proof receipts for public JSON objects, verify exact bytes and separate implementation evidence from unverified claims.",
     image: "/assets/proof-desk.png",
   },
   "/protocol": {

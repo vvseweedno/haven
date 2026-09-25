@@ -1,26 +1,21 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
   Compass,
   Fingerprint,
-  GitBranch,
   Sparkles,
 } from "lucide-react";
 import {
   analogs,
-  developmentTrajectory,
   maturitySignals,
 } from "@/lib/product-landscape";
 import {
-  attributionRules,
   evaluationCriteria,
   evaluationPath,
   funnelStages,
-  pilotQuestions,
 } from "@/lib/adoption";
 import { DeferredContinuumScene } from "./DeferredContinuumScene";
 import { useLocale } from "./LocaleContext";
@@ -159,51 +154,31 @@ export function LandscapeExplorer() {
         </div>
       </section>
 
-      <section className="analog-section">
+      <section className="fit-summary" aria-labelledby="fit-summary-title">
         <div className="section-title">
           <div>
-            <p className="eyebrow">{evaluationText.nearby}</p>
-            <h2>{evaluationText.analogTitle}</h2>
+            <p className="eyebrow">{evaluationText.fitLabel}</p>
+            <h2 id="fit-summary-title">
+              {locale === "ru" ? "Сначала проверьте, стоит ли идти дальше." : "First decide whether it is worth going further."}
+            </h2>
           </div>
-          <span className="small-muted">
-            {evaluationText.external}
-          </span>
+          <Link href="/proof-desk" className="text-link">
+            {evaluationText.testClaim}
+            <Fingerprint size={15} />
+          </Link>
         </div>
-        <div className="analog-grid">
-          {analogs.map((analog) => (
-            <article className="analog-card" key={analog.name}>
-              <div className="analog-head">
-                <span className="analog-score">
-                  <Compass size={15} />
-                  {evaluationText.partial}
-                </span>
-                <a
-                  href={analog.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="icon-button"
-                  aria-label={`${evaluationText.openDocs} ${analog.name}`}
-                  title={`${evaluationText.openDocs} ${analog.name}`}
-                >
-                  <ArrowUpRight size={16} />
-                </a>
+        <div className="fit-summary-grid">
+          {evaluationCriteria.map((criterion) => (
+            <article className="fit-summary-card" key={criterion.dimension.en}>
+              <h3>{criterion.dimension[locale]}</h3>
+              <div>
+                <span>{evaluationText.fit}</span>
+                <p>{criterion.fit[locale]}</p>
               </div>
-              <p className="eyebrow">{analog.category}</p>
-              <h3>{analog.name}</h3>
-              <dl>
-                <div>
-                  <dt>{evaluationText.closest}</dt>
-                  <dd>{analog.closest}</dd>
-                </div>
-                <div>
-                  <dt>{evaluationText.difference}</dt>
-                  <dd>{analog.difference}</dd>
-                </div>
-                <div>
-                  <dt>{evaluationText.usefulNext}</dt>
-                  <dd>{analog.next}</dd>
-                </div>
-              </dl>
+              <div>
+                <span>{evaluationText.noFit}</span>
+                <p>{criterion.noFit[locale]}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -238,108 +213,71 @@ export function LandscapeExplorer() {
             </Link>
           ))}
         </div>
-        <div className="analog-grid">
-          {evaluationCriteria.map((criterion) => (
-            <article className="analog-card" key={criterion.dimension.en}>
-              <p className="eyebrow">{evaluationText.fitLabel}</p>
-              <h3>{criterion.dimension[locale]}</h3>
-              <dl>
-                <div><dt>{evaluationText.fit}</dt><dd>{criterion.fit[locale]}</dd></div>
-                <div><dt>{evaluationText.noFit}</dt><dd>{criterion.noFit[locale]}</dd></div>
-              </dl>
-            </article>
-          ))}
-          {[pilotQuestions.buyer, pilotQuestions.technicalLead].map((group) => (
-            <article className="analog-card" key={group.title.en}>
-              <p className="eyebrow">{evaluationText.questions}</p>
-              <h3>{group.title[locale]}</h3>
-              <dl>
-                {group.questions.map((question, index) => (
-                  <div key={question.en}>
-                    <dt>{String(index + 1).padStart(2, "0")}</dt>
-                    <dd>{question[locale]}</dd>
-                  </div>
-                ))}
-              </dl>
-            </article>
-          ))}
+        <div className="landscape-next-action">
+          <div>
+            <strong>
+              {locale === "ru" ? "Нужны вопросы для пилота?" : "Need pilot qualification questions?"}
+            </strong>
+            <p>
+              {locale === "ru"
+                ? "Владельцы, данные, доказательство успеха и stop conditions проверяются на отдельном этапе готовности."
+                : "Owners, data boundaries, success evidence and stop conditions belong in the dedicated readiness step."}
+            </p>
+          </div>
+          <Link href="/delivery#pilot-readiness" className="button">
+            {locale === "ru" ? "Проверить готовность к пилоту" : "Review pilot readiness"}
+            <ArrowRight size={15} />
+          </Link>
         </div>
       </section>
 
-      <section className="human-route-section" aria-labelledby="measurement-contract">
-        <div className="section-title">
-          <div>
-            <p className="eyebrow">{evaluationText.measurement}</p>
-            <h2 id="measurement-contract">{evaluationText.measurementTitle}</h2>
+      <details className="landscape-details">
+        <summary>
+          <span>
+            <strong>{evaluationText.analogTitle}</strong>
+            <small>{locale === "ru" ? "Сравнение со смежными системами — справочно" : "Adjacent-system comparison — reference only"}</small>
+          </span>
+          <Compass size={18} />
+        </summary>
+        <div className="analog-section landscape-details-body">
+          <div className="section-title">
+            <div>
+              <p className="eyebrow">{evaluationText.nearby}</p>
+              <h2>{evaluationText.analogTitle}</h2>
+            </div>
+            <span className="small-muted">{evaluationText.external}</span>
           </div>
-          <Compass size={20} />
-        </div>
-        <div className="analog-grid">
-          {funnelStages.map((stage) => (
-            <article className="analog-card" key={stage.id}>
-              <p className="eyebrow">{stage.id}</p>
-              <h3>{stage.label[locale]}</h3>
-              <dl>
-                <div><dt>{evaluationText.entry}</dt><dd className="mono">{stage.entryEvent}</dd></div>
-                <div><dt>{evaluationText.completion}</dt><dd className="mono">{stage.completionEvent}</dd></div>
-                <div><dt>{evaluationText.denominator}</dt><dd>{stage.denominator[locale]}</dd></div>
-                <div><dt>{evaluationText.dropOff}</dt><dd>{stage.dropOff[locale]}</dd></div>
-              </dl>
-            </article>
-          ))}
-          <article className="analog-card">
-            <p className="eyebrow">{evaluationText.attribution}</p>
-            <h3>{evaluationText.causal}</h3>
-            <dl>
-              {attributionRules.map((item) => (
-                <div key={item.id}>
-                  <dt>{item.id}</dt>
-                  <dd>{item.rule[locale]}</dd>
+          <div className="analog-grid">
+            {analogs.map((analog) => (
+              <article className="analog-card" key={analog.name}>
+                <div className="analog-head">
+                  <span className="analog-score">
+                    <Compass size={15} />
+                    {evaluationText.partial}
+                  </span>
+                  <a
+                    href={analog.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="icon-button"
+                    aria-label={`${evaluationText.openDocs} ${analog.name}`}
+                    title={`${evaluationText.openDocs} ${analog.name}`}
+                  >
+                    <ArrowUpRight size={16} />
+                  </a>
                 </div>
-              ))}
-            </dl>
-          </article>
-        </div>
-      </section>
-
-      <section className="trajectory-section">
-        <div className="section-title">
-          <div>
-            <p className="eyebrow">{evaluationText.development}</p>
-            <h2>{evaluationText.developmentTitle}</h2>
+                <p className="eyebrow">{analog.category}</p>
+                <h3>{analog.name}</h3>
+                <dl>
+                  <div><dt>{evaluationText.closest}</dt><dd>{analog.closest}</dd></div>
+                  <div><dt>{evaluationText.difference}</dt><dd>{analog.difference}</dd></div>
+                  <div><dt>{evaluationText.usefulNext}</dt><dd>{analog.next}</dd></div>
+                </dl>
+              </article>
+            ))}
           </div>
-          <GitBranch size={20} />
         </div>
-        <div className="trajectory-grid">
-          {developmentTrajectory.map((item) => (
-            <article key={item.stage} className="trajectory-card">
-              <span>{item.stage}</span>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-              <small>{item.signal}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="artifact-strip" aria-label={evaluationText.artifacts}>
-        {[
-          ["continuity.png", "Continuity strands"],
-          ["discovery.png", "Discovery pathways"],
-          ["federation.png", "Federation bridge"],
-        ].map(([src], index) => (
-          <div key={src} className="artifact-panel">
-            <Image
-              src={`/assets/${src}`}
-              alt={evaluationText.artifactLabels[index]}
-              width={900}
-              height={560}
-              sizes="(max-width: 700px) 88vw, 30vw"
-            />
-            <span>{evaluationText.artifactLabels[index]}</span>
-          </div>
-        ))}
-      </section>
+      </details>
     </div>
   );
 }

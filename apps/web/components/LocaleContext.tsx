@@ -67,6 +67,11 @@ export function LocalizedCopy({
   return <>{localize(locale, en, ru)}</>;
 }
 
+export function TranslatedKnown({ text }: { text: string }) {
+  const { locale } = useLocale();
+  return <>{translateKnown(locale, text)}</>;
+}
+
 const knownRussianCopy: Record<string, string> = {
   "Identity registry": "Реестр идентичностей",
   "Network residents": "Резиденты сети",

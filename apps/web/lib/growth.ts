@@ -30,9 +30,9 @@ export const audienceContexts: Array<{
   id: AudienceContext;
   label: { en: string; ru: string };
 }> = [
-  { id: "evaluating", label: { en: "Evaluating HAVEN", ru: "Оцениваю HAVEN" } },
+  { id: "evaluating", label: { en: "Evaluating fit for my organization", ru: "Оцениваю применимость для организации" } },
   { id: "building", label: { en: "Building agent systems", ru: "Создаю системы агентов" } },
-  { id: "governing", label: { en: "Governing continuity", ru: "Управляю непрерывностью" } },
+  { id: "governing", label: { en: "Governing AI risk and continuity", ru: "Управляю риском и непрерывностью ИИ" } },
 ];
 
 export const funnelSignals: Array<{
@@ -53,7 +53,7 @@ const audienceRecommendations: Record<
     evidence: {
       href: "/landscape",
       signal: "evidence_opened",
-      label: { en: "Compare the landscape", ru: "Сравнить ландшафт" },
+      label: { en: "Evaluate product fit", ru: "Оценить применимость продукта" },
       reason: {
         en: "Inspect the category and fit before evaluating implementation claims.",
         ru: "Изучите категорию и соответствие до оценки заявлений о реализации.",
@@ -62,10 +62,10 @@ const audienceRecommendations: Record<
     boundary: {
       href: "/delivery",
       signal: "boundary_reviewed",
-      label: { en: "Review delivery evidence", ru: "Изучить свидетельства разработки" },
+      label: { en: "Review pilot readiness", ru: "Проверить готовность к пилоту" },
       reason: {
-        en: "Separate implemented behavior, fixtures and planned work.",
-        ru: "Отделите реализованное поведение, фикстуры и планы.",
+        en: "Make fit, owners, data boundaries and stop conditions explicit before a pilot conversation.",
+        ru: "Зафиксируйте применимость, владельцев, границы данных и условия остановки до обсуждения пилота.",
       },
     },
   },
@@ -238,20 +238,23 @@ export function getGrowthRecommendation(
   if (!state.observedSignals.includes("boundary_reviewed")) return path.boundary;
 
   const started = state.observedSignals.includes("proof_started");
-  return {
-    href: "/proof-desk#proof-workbench",
-    signal: "proof_started",
-    label: started
-      ? { en: "Complete a local receipt", ru: "Завершить локальную квитанцию" }
-      : { en: "Open the proof workspace", ru: "Открыть proof-пространство" },
-    reason: started
-      ? {
-          en: "Opening the workspace is observed; receipt completion is not inferred.",
-          ru: "Открытие пространства зафиксировано; завершение квитанции не предполагается.",
-        }
-      : {
-          en: "Turn the review into an inspectable browser-local artifact.",
-          ru: "Преобразуйте проверку в локальный проверяемый артефакт.",
+  return started
+    ? {
+        href: "/delivery#pilot-readiness",
+        signal: "proof_started",
+        label: { en: "Assess bounded pilot readiness", ru: "Оценить готовность к ограниченному пилоту" },
+        reason: {
+          en: "You have opened the proof workspace; now make fit, ownership, data boundaries and stop conditions explicit.",
+          ru: "Proof-пространство уже открыто; теперь зафиксируйте применимость, владельцев, границы данных и условия остановки.",
         },
-  };
+      }
+    : {
+        href: "/proof-desk#proof-workbench",
+        signal: "proof_started",
+        label: { en: "Open the proof workspace", ru: "Открыть proof-пространство" },
+        reason: {
+          en: "Turn the review into an inspectable browser-local artifact before considering a pilot.",
+          ru: "Преобразуйте проверку в локальный проверяемый артефакт до обсуждения пилота.",
+        },
+      };
 }

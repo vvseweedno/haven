@@ -76,6 +76,10 @@ export function runUiBrandAudit({ root = process.cwd(), silent = false } = {}) {
       !network.includes('className="haven-mark"'),
     "Ad-hoc duplicated HAVEN mark DOM must not return.",
   );
+  check(
+    !css.includes(".haven-mark"),
+    "Legacy .haven-mark styling must not return after BrandMark migration.",
+  );
 
   for (const source of [
     ["ContinuumScene", continuum],

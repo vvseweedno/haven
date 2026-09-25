@@ -26,9 +26,12 @@ import {
 } from "../apps/web/lib/growth.ts";
 import { buildAnalysisBrief, buildPilotBrief } from "../apps/web/lib/adoption.ts";
 import { sanitizePilotRequest } from "../apps/web/lib/pilot-intake.ts";
+import { resolveCtaExperiment } from "../apps/web/lib/experiments.ts";
 import {
   MAX_MEASUREMENT_EVENTS,
   appendMeasurement,
+  appendRouteLifecycle,
+  createFrictionSnapshot,
   createFunnelSnapshot,
   createMeasurementExport,
   createMeasurementLedger,
@@ -104,34 +107,87 @@ test("measurement ledger is bounded, semantic and excludes free-form data", () =
   assert.equal(parsed.nextSequence, ledger.events.at(-1).sequence + 1);
 });
 
-test("measurement attribution is allowlisted and funnel requires outcomes", () => {
+test("measurement attribution is allowlisted and funnel requires explicit ordered outcomes", () => {
   assert.deepEqual(
-    readAttribution("?utm_source=Research_Lab&utm_medium=web&email=person%40example.com"),
-    { utm_source: "research_lab", utm_medium: "web" },
+    readAttribution("?utm_source=Research_Lab&utm_medium=web&utm_content=hero_a&email=person%40example.com"),
+    { utm_source: "research_lab", utm_medium: "web", utm_content: "hero_a" },
   );
   assert.deepEqual(parseAttribution('{"utm_campaign":"launch","email":"secret"}'), {
     utm_campaign: "launch",
   });
 
-  let ledger = appendMeasurement(createMeasurementLedger(), { name: "route_view" }, "/");
-  ledger = appendMeasurement(ledger, { name: "route_view" }, "/commons");
+  const cta = sanitizeMeasurementDetail({
+    name: "hero_cta_click",
+    meta: { target: "/proof-desk", query: "private entered text" },
+  });
+  assert.deepEqual(cta.meta, { target: "/proof-desk" });
+
+  let ledger = appendRouteLifecycle(createMeasurementLedger(), "/");
+  assert.equal(createFunnelSnapshot(ledger).reached, 0);
+
+  ledger = appendRouteLifecycle(ledger, "/landscape");
+  assert.equal(createFunnelSnapshot(ledger).reached, 1);
+
+  ledger = appendRouteLifecycle(ledger, "/proof-desk");
+  assert.equal(createFunnelSnapshot(ledger).reached, 1);
+  ledger = appendMeasurement(ledger, { name: "proof_receipt_exported" }, "/proof-desk");
   assert.equal(createFunnelSnapshot(ledger).reached, 2);
-  ledger = appendMeasurement(ledger, { name: "route_view" }, "/proof-desk");
-  assert.equal(createFunnelSnapshot(ledger).reached, 2);
-  ledger = appendMeasurement(ledger, { name: "proof_receipt_created" }, "/proof-desk");
+
+  ledger = appendRouteLifecycle(ledger, "/trust");
+  ledger = appendMeasurement(ledger, { name: "boundary_evidence_reviewed" }, "/trust");
+  assert.equal(createFunnelSnapshot(ledger).reached, 3);
+
+  ledger = appendRouteLifecycle(ledger, "/delivery");
   ledger = appendMeasurement(ledger, { name: "pilot_brief_exported" }, "/delivery");
   assert.equal(createFunnelSnapshot(ledger).reached, 4);
+
+  ledger = appendRouteLifecycle(ledger, "/pilot");
   ledger = appendMeasurement(ledger, { name: "pilot_request_submitted" }, "/pilot");
-  assert.equal(createFunnelSnapshot(ledger).reached, 5);
+  const funnel = createFunnelSnapshot(ledger);
+  assert.equal(funnel.reached, 5);
+  assert.equal(funnel.observed, 5);
+  assert.equal(funnel.nextStage, null);
+
   const exported = createMeasurementExport(ledger, { utm_source: "research_lab" });
+  assert.equal(exported.schema, "haven.measurement.export.v2");
+  assert.equal(exported.privacy.scope, "this-tab-session-only");
   assert.equal(exported.privacy.networkTransmission, false);
   assert.equal(exported.privacy.identifiers, false);
+});
+
+test("measurement friction counts failures without storing free-form input", () => {
+  let ledger = createMeasurementLedger();
+  ledger = appendMeasurement(ledger, { name: "proof_receipt_failed" }, "/proof-desk");
+  ledger = appendMeasurement(ledger, { name: "pilot_request_failed", outcome: "validation_failed" }, "/pilot");
+  ledger = appendMeasurement(ledger, { name: "growth_journey_reset" }, "/");
+  assert.deepEqual(createFrictionSnapshot(ledger), {
+    proofFailures: 1,
+    pilotFailures: 1,
+    journeyResets: 1,
+    total: 3,
+  });
+});
+
+test("hero CTA experiment is deterministic and QA-only", () => {
+  assert.deepEqual(resolveCtaExperiment(""), {
+    variant: "a",
+    source: "control",
+    eligibleForInference: false,
+  });
+  assert.deepEqual(resolveCtaExperiment("?haven_exp_cta=b"), {
+    variant: "b",
+    source: "qa_override",
+    eligibleForInference: false,
+  });
 });
 
 test("analysis brief cannot manufacture visitors, uplift or a winner", () => {
   const brief = buildAnalysisBrief("en");
   assert.equal(brief.experiment.result, "no conclusion");
+  assert.equal(brief.experiment.status, "qa-only");
   assert.equal(brief.experiment.requiredSampleSize, null);
+  assert.equal(brief.experiment.result, "no conclusion");
+  assert.equal(brief.dataQuality.populationInferenceAllowed, false);
   assert.ok(brief.funnel.every((stage) => stage.eligibleSessions === null));
   assert.match(brief.boundary, /no telemetry/i);
 });

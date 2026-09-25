@@ -181,6 +181,7 @@ function ObjectNode({ data }: NodeProps<ObjectNodeType>) {
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
       <button
+        type="button"
         className="map-object-button nodrag nopan"
         onClick={data.inspect}
         aria-label={`${locale === "ru" ? "Проверить" : "Inspect"} ${tr(data.title)}`}
@@ -302,6 +303,7 @@ export function NetworkMap() {
           </select>
           <div className="segmented" aria-label={locale === "ru" ? "Вид сети" : "Network view"}>
             <button
+              type="button"
               className={view === "map" ? "selected" : ""}
               onClick={() => setView("map")}
               aria-label={tr("Map view")}
@@ -311,6 +313,7 @@ export function NetworkMap() {
               <Waypoints size={16} />
             </button>
             <button
+              type="button"
               className={view === "list" ? "selected" : ""}
               onClick={() => setView("list")}
               aria-label={tr("List view")}
@@ -346,6 +349,7 @@ export function NetworkMap() {
             </ReactFlow>
             <span className="map-coordinate mono">ARCHIPELAGO / ALPHA</span>
             <button
+              type="button"
               className="icon-button motion-control"
               title={
                 tr(moving ? "Pause connection motion" : "Resume connection motion")
@@ -363,7 +367,7 @@ export function NetworkMap() {
             {mapObjects
               .filter((item) => layer === "All objects" || item.kind === layer)
               .map((item) => (
-                <button key={item.id} onClick={() => setSelected(item)}>
+                <button type="button" key={item.id} onClick={() => setSelected(item)}>
                   <span className={`dot ${item.tone}`} />
                   <strong>{tr(item.title)}</strong>
                   <span>{tr(item.kind)}</span>
@@ -382,6 +386,7 @@ export function NetworkMap() {
             ["Node", "mint"],
           ].map(([name, tone]) => (
             <button
+              type="button"
               key={name}
               aria-pressed={layer === name}
               onClick={() => setLayer(layer === name ? "All objects" : name)}

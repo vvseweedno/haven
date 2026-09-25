@@ -58,12 +58,19 @@ with sync_playwright() as p:
     page = context.new_page()
     errors = []
     seo_titles = {}
+    catalog_requests = []
 
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on(
         "console",
         lambda message: errors.append(message.text)
         if message.type == "error"
+        else None,
+    )
+    page.on(
+        "request",
+        lambda request: catalog_requests.append(request.url)
+        if "/api/v1/catalog" in request.url
         else None,
     )
 
@@ -181,6 +188,7 @@ with sync_playwright() as p:
     expect(dialog).to_be_visible()
     expect(dialog.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
     expect(dialog.get_by_role("link", name=re.compile("Verify evidence"))).to_be_visible()
+    assert len(catalog_requests) == 0, "Opening task-first search must not fetch the catalog."
     page.get_by_role("button", name="Close dialog").click()
     expect(search_button).to_be_focused()
 

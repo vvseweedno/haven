@@ -1784,6 +1784,46 @@ textarea {
   max-height: 60vh;
   overflow: auto;
 }
+.search-task-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin: 10px 0 14px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.search-task {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  min-height: 112px;
+  padding: 15px 38px 15px 15px;
+  background: var(--bg-raised);
+  color: var(--ink);
+}
+.search-task:hover {
+  background: var(--bg-soft);
+}
+.search-task strong {
+  font-size: 12px;
+}
+.search-task small {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+.search-task svg {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: var(--green);
+}
+@media (max-width: 560px) {
+  .search-task-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .search-results > .eyebrow {
   padding-left: 10px;
 }
@@ -3925,7 +3965,7 @@ textarea {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--line);
   background: color-mix(in srgb, var(--bg) 72%, transparent);
   backdrop-filter: blur(10px);

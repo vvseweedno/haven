@@ -13,6 +13,7 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
     let disposed = false;
+    let inViewport = true;
     let pointerX = 0;
     let pointerY = 0;
 
@@ -21,7 +22,6 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        preserveDrawingBuffer: true,
         powerPreference: "high-performance",
       });
     } catch {
@@ -32,8 +32,10 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
       element.appendChild(fallback);
       return () => fallback.remove();
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
     renderer.setClearColor(0x000000, 0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.className = "continuum-canvas";
     renderer.domElement.setAttribute("aria-hidden", "true");
     element.appendChild(renderer.domElement);
@@ -49,21 +51,19 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
     const positions = new Float32Array(nodeCount * 3);
     const colors = new Float32Array(nodeCount * 3);
     const palette = [
-      new THREE.Color("#9cc9ac"),
-      new THREE.Color("#7fb8c8"),
-      new THREE.Color("#d5bd80"),
-      new THREE.Color("#bcaeda"),
-      new THREE.Color("#ecaa95"),
+      new THREE.Color("#d8ff3d"),
+      new THREE.Color("#20d7d0"),
+      new THREE.Color("#ff704f"),
+      new THREE.Color("#a9c7b1"),
     ];
 
-    for (let i = 0; i < nodeCount; i++) {
+    for (let i = 0; i < nodeCount; i += 1) {
       const ring = 1.25 + (i % 7) * 0.34;
       const angle = i * 2.39996;
-      const z = Math.sin(i * 0.73) * 1.15;
       positions[i * 3] = Math.cos(angle) * ring + Math.sin(i * 1.7) * 0.18;
       positions[i * 3 + 1] =
         Math.sin(angle) * ring * 0.72 + Math.cos(i * 0.91) * 0.24;
-      positions[i * 3 + 2] = z;
+      positions[i * 3 + 2] = Math.sin(i * 0.73) * 1.15;
       const color = palette[i % palette.length];
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
@@ -71,25 +71,22 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
     }
 
     const pointGeometry = new THREE.BufferGeometry();
-    pointGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(positions, 3),
-    );
+    pointGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     pointGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
     const points = new THREE.Points(
       pointGeometry,
       new THREE.PointsMaterial({
-        size: 0.055,
+        size: 0.052,
         vertexColors: true,
         transparent: true,
-        opacity: 0.92,
+        opacity: 0.88,
       }),
     );
     group.add(points);
 
     const linePositions: number[] = [];
-    for (let i = 0; i < nodeCount; i++) {
-      for (let j = i + 1; j < nodeCount; j++) {
+    for (let i = 0; i < nodeCount; i += 1) {
+      for (let j = i + 1; j < nodeCount; j += 1) {
         if ((i + j) % 11 !== 0) continue;
         const ax = positions[i * 3];
         const ay = positions[i * 3 + 1];
@@ -102,6 +99,7 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
         linePositions.push(ax, ay, az, bx, by, bz);
       }
     }
+
     const lineGeometry = new THREE.BufferGeometry();
     lineGeometry.setAttribute(
       "position",
@@ -110,24 +108,24 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
     const lines = new THREE.LineSegments(
       lineGeometry,
       new THREE.LineBasicMaterial({
-        color: "#8fbfa7",
+        color: "#7fae9a",
         transparent: true,
-        opacity: 0.22,
+        opacity: 0.2,
       }),
     );
     group.add(lines);
 
     const rings = [
-      { radius: 2.35, color: "#9cc9ac", y: 0.35, z: 0.13 },
-      { radius: 2.95, color: "#7fb8c8", y: -0.52, z: -0.22 },
-      { radius: 3.42, color: "#d5bd80", y: 0.86, z: 0.4 },
+      { radius: 2.35, color: "#d8ff3d", y: 0.35, z: 0.13 },
+      { radius: 2.95, color: "#20d7d0", y: -0.52, z: -0.22 },
+      { radius: 3.42, color: "#ff704f", y: 0.86, z: 0.4 },
     ].map((ring, index) => {
       const mesh = new THREE.Mesh(
         new THREE.TorusGeometry(ring.radius, 0.0045, 8, 180),
         new THREE.MeshBasicMaterial({
           color: ring.color,
           transparent: true,
-          opacity: 0.42 - index * 0.08,
+          opacity: 0.34 - index * 0.06,
         }),
       );
       mesh.rotation.x = Math.PI / 2.5 + ring.y;
@@ -145,43 +143,60 @@ export function ContinuumScene({ className = "" }: { className?: string }) {
       camera.updateProjectionMatrix();
     };
 
-    const observer = new ResizeObserver(resize);
-    observer.observe(element);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(element);
     resize();
 
     const move = (event: PointerEvent) => {
+      if (reduced.matches) return;
       const rect = element.getBoundingClientRect();
       pointerX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
       pointerY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
     };
-    element.addEventListener("pointermove", move);
+    element.addEventListener("pointermove", move, { passive: true });
 
     const render = (time = 0) => {
-      if (disposed) return;
-      const activeMotion = !reduced.matches;
-      const t = activeMotion ? time * 0.00018 : 0.42;
-      group.rotation.y = t + pointerX * 0.08;
-      group.rotation.x = Math.sin(t * 0.8) * 0.08 + pointerY * 0.05;
+      if (disposed || !inViewport || document.hidden) return;
+      const moving = !reduced.matches;
+      const t = moving ? time * 0.00014 : 0.42;
+      group.rotation.y = t + (moving ? pointerX * 0.055 : 0);
+      group.rotation.x = Math.sin(t * 0.8) * 0.06 + (moving ? pointerY * 0.035 : 0);
       rings.forEach((ring, index) => {
-        ring.rotation.z = t * (0.9 + index * 0.3);
+        ring.rotation.z = t * (0.72 + index * 0.22);
       });
       renderer.render(scene, camera);
-      if (activeMotion) frame = requestAnimationFrame(render);
+      if (moving) frame = requestAnimationFrame(render);
     };
-    render();
 
-    const rerender = () => {
+    const restart = () => {
       cancelAnimationFrame(frame);
-      render();
+      if (disposed || !inViewport || document.hidden) return;
+      if (reduced.matches) render(0);
+      else frame = requestAnimationFrame(render);
     };
-    reduced.addEventListener("change", rerender);
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        inViewport = entry?.isIntersecting ?? true;
+        restart();
+      },
+      { threshold: 0.02 },
+    );
+    intersectionObserver.observe(element);
+
+    const visibility = () => restart();
+    document.addEventListener("visibilitychange", visibility);
+    reduced.addEventListener("change", restart);
+    restart();
 
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
-      reduced.removeEventListener("change", rerender);
+      reduced.removeEventListener("change", restart);
+      document.removeEventListener("visibilitychange", visibility);
       element.removeEventListener("pointermove", move);
-      observer.disconnect();
+      intersectionObserver.disconnect();
+      resizeObserver.disconnect();
       pointGeometry.dispose();
       lineGeometry.dispose();
       points.material.dispose();

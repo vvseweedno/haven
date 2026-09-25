@@ -169,7 +169,6 @@ export function ExperienceHero() {
             {variant === "a" ? (
               <>
                 <Link
-                  prefetch={false}
                   href="/landscape"
                   className="button primary"
                   data-measure="hero_cta_click"
@@ -208,7 +207,6 @@ export function ExperienceHero() {
                   )}
                 </Link>
                 <Link
-                  prefetch={false}
                   href="/proof-desk#proof-workbench"
                   className="text-link"
                   data-measure="hero_cta_click"

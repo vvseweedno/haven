@@ -193,8 +193,8 @@ export const deliveryRoles: DeliveryRole[] = [
     state: "active",
     role: { en: "Art direction", ru: "Арт-дирекшн" },
     responsibility: {
-      en: "Keep the 1-bit dither, CRM and data-mosh language coherent across routes.",
-      ru: "Сохраняет язык 1-bit dither, CRM и data-mosh цельным на всех маршрутах.",
+      en: "Maintain the scientific continuity language across routes: neutral instrument surfaces, the Sol/Tide/Signal system, restrained archival texture and intentional motion.",
+      ru: "Поддерживает единый язык научной непрерывности: нейтральные инструментальные поверхности, систему Sol/Tide/Signal, сдержанную архивную текстуру и осмысленный motion.",
     },
     artifact: { en: "Three-signal visual system", ru: "Трёхсигнальная визуальная система" },
     artifactHref: "/atelier",
@@ -203,8 +203,8 @@ export const deliveryRoles: DeliveryRole[] = [
       ru: "Sol, Tide и Signal должны нести иерархию, а не быть только декором.",
     },
     currentTruth: {
-      en: "Shared tokens, type and original bitmap works now reach the primary product routes.",
-      ru: "Общие токены, типографика и оригинальная растровая графика уже доходят до основных маршрутов.",
+      en: "Shared tokens, type, shape, depth and artwork treatment now reach primary and specialist product routes; dither and data-mosh remain optional accents rather than a blanket filter.",
+      ru: "Общие токены, типографика, форма, глубина и обработка визуальных материалов теперь охватывают основные и специализированные маршруты; dither и data-mosh остаются акцентами, а не общим фильтром.",
     },
   },
   {

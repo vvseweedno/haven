@@ -81,7 +81,7 @@ export default async function RootLayout({
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html:
-              "try{document.documentElement.dataset.theme=localStorage.getItem('haven-theme')==='dark'?'dark':'light'}catch(e){}",
+              "try{const s=localStorage.getItem('haven-theme');const d=s==='dark'||(s!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light'}catch(e){document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}",
           }}
         />
         <link rel="ard" href="/.well-known/ard.json" />

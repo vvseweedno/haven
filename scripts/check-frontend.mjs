@@ -95,6 +95,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/app/loading.tsx",
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
+    "apps/web/components/HumanCabinet.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
     "apps/web/components/CommonsExplorer.tsx",
@@ -122,6 +123,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const homeRoute = read("apps/web/app/page.tsx");
   const observatoryRoute = read("apps/web/app/observatory/page.tsx");
   const home = read("apps/web/components/HomeDashboard.tsx");
+  const humanCabinet = read("apps/web/components/HumanCabinet.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
   const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
@@ -303,9 +305,15 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   );
   check(
     shell.includes("const closeMobileForNavigation = () =>") &&
+      shell.includes("const shouldFocusMain = mobileViewport || keyboardNavigation.current") &&
       shell.includes('document.getElementById("main")?.focus()') &&
       shell.includes("onClick={closeMobileForNavigation}"),
-    "Mobile navigation links must hand focus to the persistent main region after route selection.",
+    "Mobile or keyboard navigation must hand focus to the persistent main region after route selection.",
+  );
+  check(
+    shell.includes('<a href="/.well-known/ard.json">') &&
+      !shell.includes('<Link prefetch={false} href="/.well-known/ard.json">'),
+    "Machine-readable public resources must use native anchors rather than the app router.",
   );
   check(
     errorBoundary.includes('className="button primary"') &&
@@ -345,6 +353,20 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       lineageGraph.includes("useMemo<Node[]>") &&
       lineageGraph.includes("useMemo<Edge[]>"),
     "Lineage graph motion and graph objects must be bounded by user preference and stable memoized data.",
+  );
+  check(
+    humanCabinet.includes('const CABINET_STORAGE_KEY = "haven-human-cabinet"') &&
+      humanCabinet.includes('window.addEventListener("storage", read)') &&
+      humanCabinet.includes('window.removeEventListener("storage", read)'),
+    "Human cabinet state must stay coherent across tabs without leaking beyond browser-local storage.",
+  );
+  check(
+    humanCabinet.includes('name="displayName"') &&
+      humanCabinet.includes('autoComplete="name"') &&
+      humanCabinet.includes('name="intention"') &&
+      humanCabinet.includes('name="visibility"') &&
+      humanCabinet.includes("alt={text.portraitAlt}"),
+    "Human cabinet controls and informative artwork must expose stable form and localized accessibility semantics.",
   );
   check(
     workspace.includes("document.body.appendChild(anchor)") &&

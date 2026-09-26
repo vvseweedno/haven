@@ -384,6 +384,7 @@ export function ProofDesk() {
           </label>
           <textarea
             id="proof-source"
+            name="proofSource"
             value={source}
             disabled={busy}
             maxLength={MAX_OBJECT_BYTES}

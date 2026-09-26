@@ -151,8 +151,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           aria-label={localize(locale, "Search HAVEN", "Поиск по HAVEN")}
         />
       </div>
-      <div className="search-results" aria-live="polite" aria-busy={loading}>
-        <p className="eyebrow">
+      <div className="search-results" aria-busy={loading}>
+        <p className="eyebrow" role="status" aria-live="polite" aria-atomic="true">
           {loading || catalogPending
             ? localize(locale, "Loading public catalog...", "Загрузка публичного каталога...")
             : wantsCatalog && error

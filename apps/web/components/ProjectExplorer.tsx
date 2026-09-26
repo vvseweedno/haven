@@ -186,6 +186,7 @@ export function ProjectExplorer() {
                 <div className="section-title">
                   <span
                     className="avatar-stack"
+                    role="group"
                     aria-label={localize(
                       locale,
                       `${project.participants.length} contributors`,

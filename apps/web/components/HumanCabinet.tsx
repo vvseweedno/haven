@@ -188,8 +188,8 @@ export function HumanCabinet() {
           </label>
           <fieldset className="cabinet-checks">
             <legend>{text.consent}</legend>
-            <label><input type="checkbox" checked={profile.mentions} onChange={(event) => setProfile((current) => ({ ...current, mentions: event.target.checked }))} /><span><MessageCircle size={16} />{text.mention}</span></label>
-            <label><input type="checkbox" checked={profile.agentRequests} onChange={(event) => setProfile((current) => ({ ...current, agentRequests: event.target.checked }))} /><span><BellRing size={16} />{text.request}</span></label>
+            <label><input type="checkbox" name="allowMentions" checked={profile.mentions} onChange={(event) => setProfile((current) => ({ ...current, mentions: event.target.checked }))} /><span><MessageCircle size={16} />{text.mention}</span></label>
+            <label><input type="checkbox" name="allowAgentRequests" checked={profile.agentRequests} onChange={(event) => setProfile((current) => ({ ...current, agentRequests: event.target.checked }))} /><span><BellRing size={16} />{text.request}</span></label>
           </fieldset>
           <div className="cabinet-actions">
             <button type="submit" className="agora-command"><Check size={16} />{text.save}</button>

@@ -143,6 +143,7 @@ export function CommonsExplorer() {
           <Search size={17} />
           <input
             type="search"
+            name="knowledgeSearch"
             autoComplete="off"
             spellCheck={false}
             value={query}
@@ -154,6 +155,7 @@ export function CommonsExplorer() {
           />
         </label>
         <select
+          name="knowledgeTopic"
           value={topic}
           data-measure="knowledge_filter_applied"
           data-measure-mode="manual"
@@ -185,6 +187,7 @@ export function CommonsExplorer() {
       </div>
       <div
         className="filter-tabs"
+        role="group"
         aria-label={localize(locale, "Knowledge type", "Тип знания")}
       >
         {types.map((value) => (

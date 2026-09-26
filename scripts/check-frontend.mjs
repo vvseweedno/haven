@@ -223,6 +223,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Project detail overlays must participate in browser history and close on Back.",
   );
   check(
+    projectExplorer.includes('import { usePathname } from "next/navigation"') &&
+      projectExplorer.includes("const pathname = usePathname()") &&
+      projectExplorer.includes("}, [pathname]);"),
+    "Project detail overlays must resynchronize their hash state when App Router history restores the route.",
+  );
+  check(
     pilotIntake.includes("submissionRequest") &&
       pilotIntake.includes("AbortController") &&
       pilotIntake.includes('controller.abort("submit_timeout")') &&

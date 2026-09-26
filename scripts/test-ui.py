@@ -610,6 +610,9 @@ with sync_playwright() as p:
     page.get_by_role("button", name="Close dialog").click()
 
     visit("/arrival")
+    arrival_modes = page.get_by_role("group", name="Choose an arrival mode")
+    expect(arrival_modes).to_be_visible()
+    assert arrival_modes.get_by_role("radio").count() == 3
     page.get_by_label("Display name").fill("Test resident")
     page.get_by_role("radio", name=re.compile("Continue an identity")).check()
     page.get_by_role("textbox", name=re.compile(r"^Canonical identity")).fill(

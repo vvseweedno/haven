@@ -2257,7 +2257,20 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 27px;
+  margin: 0 0 27px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.arrival-modes legend {
+  margin-bottom: 18px;
+  padding: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 640;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 .arrival-mode {
   display: flex;

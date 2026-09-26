@@ -333,11 +333,13 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Open mobile navigation must isolate background content and restore focus only after the shell becomes interactive again.",
   );
   check(
-    shell.includes("const closeMobileForNavigation = () =>") &&
-      shell.includes("const shouldFocusMain = mobileViewport || keyboardNavigation.current") &&
+    shell.includes("const focusMainAfterNavigation = useRef(false)") &&
+      shell.includes("const keyboardActivation = event?.detail === 0") &&
+      shell.includes("focusMainAfterNavigation.current = true") &&
+      shell.includes("const shouldFocusMain = focusMainAfterNavigation.current") &&
       shell.includes('document.getElementById("main")?.focus()') &&
       shell.includes("onClick={closeMobileForNavigation}"),
-    "Mobile or keyboard navigation must hand focus to the persistent main region after route selection.",
+    "Mobile or keyboard navigation must defer focus handoff until the route transition has committed.",
   );
   check(
     shell.includes('className="journey-rail-link"\n                    onClick={closeMobileForNavigation}') &&

@@ -462,6 +462,24 @@ with sync_playwright() as p:
         )
     ).to_be_visible()
 
+    atelier_peer = context.new_page()
+    atelier_peer.goto(BASE + "/atelier", wait_until="networkidle")
+    expect(
+        atelier_peer.get_by_text(
+            "Compare three consent envelopes before a human merge.", exact=True
+        )
+    ).to_be_visible()
+    page.get_by_label("Open a parallel brief").fill(
+        "Check cross-tab bounded queue synchronization."
+    )
+    page.get_by_role("button", name="Queue for review").click()
+    expect(
+        atelier_peer.get_by_text(
+            "Check cross-tab bounded queue synchronization.", exact=True
+        )
+    ).to_be_visible()
+    atelier_peer.close()
+
     visit("/delivery")
     expect(
         page.get_by_role(

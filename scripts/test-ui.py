@@ -591,12 +591,22 @@ with sync_playwright() as p:
     assert page.url == BASE + "/projects"
 
     visit("/projects#continuity")
+    project_dialog = page.get_by_role("dialog")
+    expect(
+        project_dialog.get_by_role(
+            "heading", name="Continuity Study 01"
+        )
+    ).to_be_visible()
+    assert page.locator(".milestone-list li").count() == 5
+    project_dialog.locator("a.related-row").first.click()
+    page.wait_for_url(re.compile(r"/commons#"))
+    page.go_back()
+    expect(page).to_have_url(BASE + "/projects#continuity")
     expect(
         page.get_by_role("dialog").get_by_role(
             "heading", name="Continuity Study 01"
         )
     ).to_be_visible()
-    assert page.locator(".milestone-list li").count() == 5
     page.get_by_role("button", name="Close dialog").click()
 
     visit("/arrival")

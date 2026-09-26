@@ -25,6 +25,7 @@ type HumanProfile = {
 };
 
 const CABINET_STORAGE_KEY = "haven-human-cabinet";
+const MAX_CABINET_STORAGE_CHARS = 20_000;
 
 const initialProfile: HumanProfile = {
   displayName: "Local human",
@@ -127,9 +128,9 @@ export function HumanCabinet() {
     const read = (event?: StorageEvent) => {
       if (event && event.key !== CABINET_STORAGE_KEY && event.key !== null) return;
       try {
-        const value: unknown = JSON.parse(
-          localStorage.getItem(CABINET_STORAGE_KEY) || "null",
-        );
+        const raw = localStorage.getItem(CABINET_STORAGE_KEY);
+        if (!raw || raw.length > MAX_CABINET_STORAGE_CHARS) return;
+        const value: unknown = JSON.parse(raw);
         if (isProfile(value)) setProfile(value);
       } catch {
         /* A fresh local profile is safer than trusting malformed storage. */

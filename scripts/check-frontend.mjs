@@ -180,6 +180,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Search must recover to the task-first state when the query is cleared.",
   );
   check(
+    search.includes("const catalogPending = wantsCatalog && !catalogLoaded && !error") &&
+      search.includes("if (!catalogLoaded || loading || error || !normalized || total !== 0) return") &&
+      search.includes("loading || catalogPending"),
+    "Search must not expose or measure zero-result states before the public catalog is ready.",
+  );
+  check(
     search.includes('import Link from "next/link"') &&
       search.includes("<Link") &&
       !search.includes('<a\n                key={item.id}'),

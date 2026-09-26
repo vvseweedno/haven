@@ -260,6 +260,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Closed mobile navigation must be explicitly hidden and inert to assistive technology.",
   );
   check(
+    shell.includes("aria-hidden={mobileViewport && mobileOpen ? true : undefined}") &&
+      shell.includes("inert={mobileViewport && mobileOpen ? true : undefined}") &&
+      shell.includes("requestAnimationFrame(() => menuButton.current?.focus())"),
+    "Open mobile navigation must isolate background content and restore focus only after the shell becomes interactive again.",
+  );
+  check(
     errorBoundary.includes('className="button primary"') &&
       errorBoundary.includes("onClick={reset}") &&
       errorBoundary.includes('href="/"'),

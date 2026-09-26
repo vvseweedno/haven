@@ -2,7 +2,6 @@ import {
   createHash,
   createPublicKey,
   randomBytes,
-  sign as signBytes,
   verify as verifyBytes,
 } from "node:crypto";
 import { createRequestBudget } from "../security";
@@ -597,9 +596,4 @@ export function borderErrorResponse(error: unknown) {
     safe.status,
     safe.status === 429 ? { "Retry-After": "1" } : undefined,
   );
-}
-
-// Kept private to production code; exported only to prove algorithm compatibility in tests.
-export function signChallengeForTestOnly(privateKey: Parameters<typeof signBytes>[2], challenge: string) {
-  return signBytes(null, Buffer.from(challenge, "base64url"), privateKey).toString("base64url");
 }

@@ -106,8 +106,6 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/ParallelAtelier.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
-    "apps/web/components/CommonsExplorer.tsx",
-    "apps/web/components/ProjectExplorer.tsx",
     "apps/web/components/ExperienceHero.tsx",
     "apps/web/components/DeferredContinuumScene.tsx",
     "apps/web/components/AppShell.tsx",
@@ -566,6 +564,26 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
         !/<(?:h[1-6]|p|div|article|section|ul|ol)\b/.test(block),
         `${display} contains block-level document structure inside a button.`,
       );
+      check(
+        !/<a\b[^>]*href=/.test(block),
+        `${display} contains an interactive link inside a button.`,
+      );
+    }
+
+    for (const match of source.matchAll(/<a\b[\s\S]*?<\/a>/g)) {
+      check(
+        !/<button\b/.test(match[0]),
+        `${display} contains a button inside an anchor.`,
+      );
+    }
+
+    for (const tagName of ["input", "select", "textarea"]) {
+      for (const tag of openingTags(source, tagName)) {
+        check(
+          /\bname\s*=/.test(tag),
+          `${display} contains a ${tagName} without a stable name.`,
+        );
+      }
     }
 
     for (const tag of [

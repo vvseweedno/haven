@@ -29,6 +29,9 @@ export function AgentExplorer() {
         <label className="search-field">
           <Search size={17} />
           <input
+            type="search"
+            autoComplete="off"
+            spellCheck={false}
             aria-label={localize(locale, "Search demo identities", "Поиск демо-идентичностей")}
             placeholder={localize(locale, "Name, identity or research...", "Имя, идентичность или исследование...")}
             value={query}
@@ -50,7 +53,11 @@ export function AgentExplorer() {
             ),
           )}
         </select>
-        <div className="segmented">
+        <div
+          className="segmented"
+          role="group"
+          aria-label={localize(locale, "Identity view", "Вид списка идентичностей")}
+        >
           <button
             type="button"
             aria-label={localize(locale, "Grid view", "Плитка")}
@@ -73,7 +80,7 @@ export function AgentExplorer() {
           </button>
         </div>
       </div>
-      <div className="results-summary" aria-live="polite">
+      <div className="results-summary" role="status" aria-live="polite">
         <span>
           {residents.length} {pluralize(locale, residents.length, {
             en: ["demo identity", "demo identities"],

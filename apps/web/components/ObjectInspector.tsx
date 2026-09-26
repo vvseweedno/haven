@@ -95,6 +95,7 @@ export default function ObjectInspector() {
                   "Open JSON file",
                   "Открыть JSON-файл",
                 )}
+                name="objectFile"
                 type="file"
                 accept=".json,application/json"
                 disabled={busy}

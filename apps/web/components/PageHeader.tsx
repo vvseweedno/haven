@@ -422,6 +422,15 @@ function translated(locale: Locale, copy: LocalizedCopy) {
   return localize(locale, copy.en, copy.ru);
 }
 
+function isApplicationRoute(href: string) {
+  return (
+    href.startsWith("/") &&
+    !href.startsWith("/api/") &&
+    !href.startsWith("/.well-known/") &&
+    !/\.(?:json|txt|xml)$/i.test(href)
+  );
+}
+
 export function PageHeader({
   eyebrow,
   title,
@@ -493,13 +502,23 @@ export function PageHeader({
             </strong>{" "}
             {translated(locale, contract.boundary)}
           </span>
-          <a
-            href={evidence.href}
-            data-measure={pathname === "/trust" ? "boundary_evidence_reviewed" : undefined}
-            data-measure-context={pathname === "/trust" ? "trust_header" : undefined}
-          >
-            {localize(locale, "Evidence source", "Источник данных")}: {translated(locale, evidence)}
-          </a>
+          {isApplicationRoute(evidence.href) ? (
+            <Link
+              href={evidence.href}
+              data-measure={pathname === "/trust" ? "boundary_evidence_reviewed" : undefined}
+              data-measure-context={pathname === "/trust" ? "trust_header" : undefined}
+            >
+              {localize(locale, "Evidence source", "Источник данных")}: {translated(locale, evidence)}
+            </Link>
+          ) : (
+            <a
+              href={evidence.href}
+              data-measure={pathname === "/trust" ? "boundary_evidence_reviewed" : undefined}
+              data-measure-context={pathname === "/trust" ? "trust_header" : undefined}
+            >
+              {localize(locale, "Evidence source", "Источник данных")}: {translated(locale, evidence)}
+            </a>
+          )}
         </p>
         <nav
           className="page-header-next"

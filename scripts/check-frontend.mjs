@@ -142,8 +142,6 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const parallelAtelier = read("apps/web/components/ParallelAtelier.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
-  const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
-  const projectExplorer = read("apps/web/components/ProjectExplorer.tsx");
   const hero = read("apps/web/components/ExperienceHero.tsx");
   const deferredScene = read("apps/web/components/DeferredContinuumScene.tsx");
   const shell = read("apps/web/components/AppShell.tsx");

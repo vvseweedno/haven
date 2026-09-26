@@ -133,9 +133,14 @@ export function ParallelAtelier() {
           <h1>{text.title}</h1>
           <p>{text.lead}</p>
         </div>
-        <div className="atelier-steps" aria-label={text.protocol}>
-          {text.steps.map((step, index) => <span key={step}><i>{String(index + 1).padStart(2, "0")}</i>{step}</span>)}
-        </div>
+        <ol className="atelier-steps" aria-label={text.protocol}>
+          {text.steps.map((step, index) => (
+            <li key={step}>
+              <i aria-hidden="true">{String(index + 1).padStart(2, "0")}</i>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="atelier-envelope">

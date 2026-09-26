@@ -113,7 +113,7 @@ with sync_playwright() as p:
 
     def audit_accessibility_basics(route):
         violations = page.evaluate(
-            """() => {
+            r"""() => {
                 const violations = [];
                 const visible = (el) => {
                     const style = getComputedStyle(el);
@@ -183,7 +183,7 @@ with sync_playwright() as p:
                     const focusable = hidden.querySelector(
                         'a[href], button, input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])'
                     );
-                    if (focusable && visible(focusable)) {
+                    if (focusable && focusable.tabIndex >= 0 && visible(focusable)) {
                         violations.push('focusable content inside aria-hidden ' + describe(hidden));
                     }
                 }

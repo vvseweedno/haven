@@ -302,6 +302,7 @@ export function NetworkMap() {
         </div>
         <div className="map-toolbar-actions">
           <select
+            name="networkLayer"
             value={layer}
             onChange={(e) => setLayer(e.target.value)}
             aria-label={locale === "ru" ? "Фильтр объектов сети" : "Filter network objects"}
@@ -312,7 +313,7 @@ export function NetworkMap() {
               ),
             )}
           </select>
-          <div className="segmented" aria-label={locale === "ru" ? "Вид сети" : "Network view"}>
+          <div className="segmented" role="group" aria-label={locale === "ru" ? "Вид сети" : "Network view"}>
             <button
               type="button"
               className={view === "map" ? "selected" : ""}
@@ -398,7 +399,7 @@ export function NetworkMap() {
         )}
       </div>
       <div className="map-legend">
-        <div>
+        <div role="group" aria-label={locale === "ru" ? "Фильтр типов объектов" : "Filter object types"}>
           {[
             ["Agent", "coral"],
             ["Knowledge", "lavender"],

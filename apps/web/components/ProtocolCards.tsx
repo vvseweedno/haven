@@ -1,18 +1,14 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import { protocolCards } from "@/lib/haven-data";
 import { translateKnown, useLocale } from "./LocaleContext";
 
-export function ProtocolCards({
-  cards,
-}: {
-  cards: Array<{ title: string; body: string; icon: LucideIcon }>;
-}) {
+export function ProtocolCards() {
   const { locale } = useLocale();
 
   return (
     <section className="protocol-grid">
-      {cards.map((card) => {
+      {protocolCards.map((card) => {
         const Icon = card.icon;
         return (
           <article className="protocol-card" key={card.title}>

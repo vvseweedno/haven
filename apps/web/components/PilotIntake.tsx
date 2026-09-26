@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2, Send, ShieldCheck } from "lucide-react";
 import { dispatchMeasurement } from "@/lib/measurement";
 import { localize, useLocale } from "./LocaleContext";
@@ -27,24 +27,41 @@ export function PilotIntake() {
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const submissionRequest = useRef<AbortController | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort("status_timeout"), 8000);
     let cancelled = false;
-    fetch("/api/v1/pilot-request", { cache: "no-store" })
-      .then((response) => response.json())
-      .then((value) => {
-        if (!cancelled) {
-          setStatus({
-            configured: value?.configured === true,
-            contactUrl: typeof value?.contactUrl === "string" ? value.contactUrl : null,
-          });
-        }
+
+    fetch("/api/v1/pilot-request", {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("status_unavailable");
+        const value: unknown = await response.json();
+        if (cancelled) return;
+        const data =
+          value && typeof value === "object"
+            ? (value as { configured?: unknown; contactUrl?: unknown })
+            : {};
+        setStatus({
+          configured: data.configured === true,
+          contactUrl:
+            typeof data.contactUrl === "string" ? data.contactUrl : null,
+        });
       })
       .catch(() => {
         if (!cancelled) setStatus({ configured: false, contactUrl: null });
-      });
+      })
+      .finally(() => window.clearTimeout(timeout));
+
     return () => {
       cancelled = true;
+      controller.abort("component_unmounted");
+      window.clearTimeout(timeout);
+      submissionRequest.current = null;
     };
   }, []);
 
@@ -123,27 +140,40 @@ export function PilotIntake() {
       attribution,
     };
 
+    submissionRequest.current?.abort("replaced");
+    const controller = new AbortController();
+    submissionRequest.current = controller;
+    const timeout = window.setTimeout(() => controller.abort("submit_timeout"), 12000);
+
     try {
       const response = await fetch("/api/v1/pilot-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
-      const data = await response.json();
-      if (!response.ok || data?.ok !== true) {
+      const data: unknown = await response.json();
+      const resultData =
+        data && typeof data === "object"
+          ? (data as { ok?: unknown; code?: unknown; requestId?: unknown })
+          : {};
+      if (!response.ok || resultData.ok !== true) {
         setResult("error");
         setMessage(copy.error);
         dispatchMeasurement({
           name: "pilot_request_failed",
           context: "pilot_intake",
-          outcome: typeof data?.code === "string" ? data.code : "unknown",
+          outcome:
+            typeof resultData.code === "string" ? resultData.code : "unknown",
         });
         return;
       }
 
       setResult("success");
       setMessage(
-        data.requestId ? `${copy.success} ${data.requestId}` : copy.success,
+        typeof resultData.requestId === "string"
+          ? `${copy.success} ${resultData.requestId}`
+          : copy.success,
       );
       formElement.reset();
       dispatchMeasurement({
@@ -152,15 +182,25 @@ export function PilotIntake() {
         outcome: "accepted",
       });
     } catch {
+      if (
+        controller.signal.aborted &&
+        submissionRequest.current !== controller
+      ) {
+        return;
+      }
       setResult("error");
       setMessage(copy.error);
       dispatchMeasurement({
         name: "pilot_request_failed",
         context: "pilot_intake",
-        outcome: "network_error",
+        outcome: controller.signal.aborted ? "timeout" : "network_error",
       });
     } finally {
-      setSubmitting(false);
+      window.clearTimeout(timeout);
+      if (submissionRequest.current === controller) {
+        submissionRequest.current = null;
+        setSubmitting(false);
+      }
     }
   }
 

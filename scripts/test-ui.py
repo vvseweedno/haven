@@ -194,11 +194,16 @@ with sync_playwright() as p:
 
     def visit(route):
         clean_route = route.split("#", 1)[0].split("?", 1)[0]
-        response = page.goto(BASE + route, wait_until="networkidle", timeout=90000)
-        assert response and response.status < 400, (
-            route,
-            response.status if response else "no response",
-        )
+        target = BASE + route
+        response = page.goto(target, wait_until="networkidle", timeout=90000)
+        if response is not None:
+            assert response.status < 400, (route, response.status)
+        else:
+            assert page.url == target, (
+                route,
+                "same-document navigation failed",
+                page.url,
+            )
         expect(page.locator("main h1").first).to_be_visible()
         assert page.locator("main h1").count() == 1, f"Expected one H1: {route}"
         audit_accessibility_basics(route)

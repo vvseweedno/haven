@@ -499,6 +499,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               onClick={toggleTheme}
               title={dark ? localize(locale, "Light theme", "Светлая тема") : localize(locale, "Dark theme", "Тёмная тема")}
               aria-label={localize(locale, "Toggle color theme", "Переключить тему")}
+              aria-pressed={dark}
               data-measure="theme_toggle"
             >
               {dark ? <Sun size={18} /> : <Moon size={18} />}

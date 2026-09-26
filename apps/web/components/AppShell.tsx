@@ -133,14 +133,10 @@ function Shell({ children }: { children: React.ReactNode }) {
     keyboardNavigation.current = false;
 
     if (!shouldFocusMain) return;
-    const firstFrame = requestAnimationFrame(() => {
-      const secondFrame = requestAnimationFrame(() => {
-        document.getElementById("main")?.focus();
-      });
-      focusMainAfterNavigation.current = false;
-      return () => cancelAnimationFrame(secondFrame);
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("main")?.focus();
     });
-    return () => cancelAnimationFrame(firstFrame);
+    return () => cancelAnimationFrame(frame);
   }, [pathname]);
   useEffect(() => {
     const markKeyboardNavigation = (event: KeyboardEvent) => {

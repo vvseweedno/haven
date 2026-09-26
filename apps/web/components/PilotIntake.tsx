@@ -61,6 +61,7 @@ export function PilotIntake() {
       cancelled = true;
       controller.abort("component_unmounted");
       window.clearTimeout(timeout);
+      submissionRequest.current?.abort("component_unmounted");
       submissionRequest.current = null;
     };
   }, []);

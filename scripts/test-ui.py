@@ -393,6 +393,17 @@ with sync_playwright() as p:
         and cabinet["profile"]["displayName"] == "Mira Local"
     )
 
+    # Browser-local cabinet state stays coherent across tabs.
+    cabinet_peer = context.new_page()
+    cabinet_peer.goto(BASE + "/cabinet", wait_until="networkidle")
+    expect(cabinet_peer.get_by_label("Display name")).to_have_value("Mira Local")
+    page.get_by_label("Display name").fill("Mira Synced")
+    page.get_by_role("button", name="Save local profile").click()
+    expect(cabinet_peer.get_by_label("Display name")).to_have_value("Mira Synced")
+    cabinet_peer.close()
+    page.get_by_label("Display name").fill("Mira Local")
+    page.get_by_role("button", name="Save local profile").click()
+
     visit("/agora")
     expect(
         page.get_by_role("heading", name="Conversation is a shared instrument.")

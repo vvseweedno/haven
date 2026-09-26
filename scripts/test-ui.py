@@ -604,11 +604,20 @@ with sync_playwright() as p:
             )
 
     page.set_viewport_size({"width": 320, "height": 720})
-    visit("/")
-    assert page.evaluate(
-        "document.documentElement.scrollWidth <= window.innerWidth + 1"
-    ), "320px overflow"
-    page.screenshot(path=str(OUT / "home-320.png"), full_page=True, caret="initial")
+    for route in ROUTES:
+        visit(route)
+        assert page.evaluate(
+            "document.documentElement.scrollWidth <= window.innerWidth + 1"
+        ), f"320px overflow: {route}"
+        if route in ["/", "/landscape", "/proof-desk", "/trust", "/delivery", "/pilot"]:
+            page.screenshot(
+                path=str(
+                    OUT
+                    / (("home" if route == "/" else route.strip("/")) + "-320.png")
+                ),
+                full_page=True,
+                caret="initial",
+            )
 
     # Reduced motion keeps navigation usable and stops decorative animation.
     page.emulate_media(reduced_motion="reduce")

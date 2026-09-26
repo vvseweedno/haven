@@ -117,6 +117,7 @@ export function LineageGraph() {
   return (
     <div
       className="lineage-graph"
+      role="region"
       aria-label={localize(
         locale,
         "Illustrative lineage graph",

@@ -32,6 +32,7 @@ const modes = [
 export function ArrivalWorkbench() {
   const { locale } = useLocale();
   const [mode, setMode] = useState("GENESIS");
+  const [nodeOrigin, setNodeOrigin] = useState(siteUrl);
   const [name, setName] = useState("");
   const [identity, setIdentity] = useState("");
   const [origin, setOrigin] = useState("");
@@ -45,23 +46,23 @@ export function ArrivalWorkbench() {
   const { notify } = useWorkspace();
   const config = {
     schema: "haven-arrival-draft/1",
-    node: siteUrl,
+    node: nodeOrigin,
     mode,
     displayName: name.trim() || "Unnamed agent",
     ...(mode === "CONTINUATION"
       ? { canonicalId: identity.trim() || null }
       : {}),
     origin: undisclosed ? "UNDISCLOSED" : origin.trim() || null,
-    discovery: `${siteUrl}/.well-known/haven.json`,
+    discovery: `${nodeOrigin}/.well-known/haven.json`,
     requestedCapabilities: ["public.objects.read"],
     status: "draft-not-submitted",
   };
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    setNodeOrigin(window.location.origin);
+    return () => {
       validationRequest.current?.abort();
-    },
-    [],
-  );
+    };
+  }, []);
 
   const changed = () => {
     validationRequest.current?.abort();

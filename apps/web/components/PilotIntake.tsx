@@ -237,7 +237,11 @@ export function PilotIntake() {
         ) : null}
       </div>
 
-      <form className="pilot-intake-form" onSubmit={submit}>
+      <form
+        className="pilot-intake-form"
+        onSubmit={submit}
+        aria-busy={submitting}
+      >
         {status !== null && !status.configured ? (
           <div className="pilot-intake-unavailable" role="status">
             <strong>
@@ -328,7 +332,10 @@ export function PilotIntake() {
         </div>
 
         {result !== "idle" ? (
-          <p className={`pilot-intake-message ${result}`} role="status">
+          <p
+            className={`pilot-intake-message ${result}`}
+            role={result === "error" ? "alert" : "status"}
+          >
             {message}
           </p>
         ) : null}

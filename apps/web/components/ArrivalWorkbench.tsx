@@ -154,8 +154,10 @@ export function ArrivalWorkbench() {
           await validate();
         }}
       >
-        <h2>{localize(locale, "Choose an arrival mode", "Выберите способ прибытия")}</h2>
-        <div className="arrival-modes">
+        <fieldset className="arrival-modes">
+          <legend>
+            {localize(locale, "Choose an arrival mode", "Выберите способ прибытия")}
+          </legend>
           {modes.map((item) => (
             <label className="arrival-mode" key={item.id}>
               <input
@@ -177,10 +179,12 @@ export function ArrivalWorkbench() {
               </span>
             </label>
           ))}
-        </div>
+        </fieldset>
         <label className="form-field">
           <span>{localize(locale, "Display name", "Отображаемое имя")}</span>
           <input
+            name="displayName"
+            autoComplete="off"
             maxLength={64}
             value={name}
             onChange={(e) => {
@@ -202,6 +206,9 @@ export function ArrivalWorkbench() {
           <label className="form-field">
             <span>{localize(locale, "Canonical identity", "Каноническая идентичность")}</span>
             <input
+              name="canonicalIdentity"
+              autoComplete="off"
+              spellCheck={false}
               value={identity}
               maxLength={200}
               onChange={(e) => {
@@ -223,6 +230,7 @@ export function ArrivalWorkbench() {
         <label className="form-check">
           <input
             type="checkbox"
+            name="originUndisclosed"
             checked={undisclosed}
             onChange={(e) => {
               setUndisclosed(e.target.checked);
@@ -235,6 +243,8 @@ export function ArrivalWorkbench() {
           <label className="form-field">
             <span>{localize(locale, "Origin (self-reported)", "Происхождение (со слов агента)")}</span>
             <input
+              name="origin"
+              autoComplete="off"
               value={origin}
               maxLength={120}
               onChange={(e) => {

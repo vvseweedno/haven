@@ -213,6 +213,13 @@ function Shell({ children }: { children: React.ReactNode }) {
     setMobileOpen(false);
     requestAnimationFrame(() => menuButton.current?.focus());
   };
+  const closeMobileForNavigation = () => {
+    setMobileOpen(false);
+    if (!mobileViewport) return;
+    requestAnimationFrame(() => {
+      document.getElementById("main")?.focus();
+    });
+  };
   const openSearchFromSidebar = () => {
     if (!window.matchMedia("(max-width: 760px)").matches) {
       setSearchOpen(true);
@@ -263,6 +270,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             href="/"
             className="brand"
             aria-label={localize(locale, "HAVEN home", "Главная HAVEN")}
+            onClick={closeMobileForNavigation}
             data-measure="navigation_select"
             data-measure-context="brand"
           >
@@ -311,7 +319,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={closeMobileForNavigation}
                   aria-current={active ? "page" : undefined}
                   className={`nav-link ${active ? "active" : ""}`}
                   data-measure="navigation_select"
@@ -362,7 +370,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                           prefetch={false}
                           key={item.href}
                           href={item.href}
-                          onClick={() => setMobileOpen(false)}
+                          onClick={closeMobileForNavigation}
                           aria-current={active ? "page" : undefined}
                           className={`nav-link nav-link-secondary ${active ? "active" : ""}`}
                           data-measure="navigation_select"
@@ -388,7 +396,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link
             className="connect-link"
             href="/delivery"
-            onClick={() => setMobileOpen(false)}
+            onClick={closeMobileForNavigation}
             data-measure="pilot_readiness_opened"
             data-measure-context="sidebar"
           >

@@ -198,8 +198,9 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Client protocol cards must own icon-bearing data instead of receiving React component functions across the server boundary.",
   );
   check(
-    agentDetailRoute.includes("export const dynamicParams = false"),
-    "Fixture identity detail routes must reject unknown IDs at the routing layer.",
+    agentDetailRoute.includes("export const dynamicParams = false") &&
+      agentDetailRoute.includes("if (!agent) notFound();"),
+    "Fixture identity detail routes must reject unknown IDs before metadata or page streaming.",
   );
   check(
     workspace.includes("const previousFocus = useRef") &&

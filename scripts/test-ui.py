@@ -293,6 +293,9 @@ with sync_playwright() as p:
     expect(dialog.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
     expect(dialog.get_by_role("link", name=re.compile("Verify evidence"))).to_be_visible()
     assert len(catalog_requests) == 0, "Opening task-first search must not fetch the catalog."
+    page.get_by_role("textbox", name="Search HAVEN", exact=True).fill("   ")
+    expect(dialog.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
+    assert len(catalog_requests) == 0, "Whitespace-only search must not fetch the catalog."
     page.get_by_role("button", name="Close dialog").click()
     expect(search_button).to_be_focused()
 

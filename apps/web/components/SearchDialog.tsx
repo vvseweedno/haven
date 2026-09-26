@@ -157,7 +157,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             ? localize(locale, "Loading public catalog...", "Загрузка публичного каталога...")
             : wantsCatalog && error
               ? localize(locale, "Catalog unavailable", "Каталог недоступен")
-              : query
+              : wantsCatalog
                 ? `${total} ${pluralize(locale, total, { en: ["result", "results"], ru: ["результат", "результата", "результатов"] })}`
                 : localize(locale, "Start with a task", "Начните с задачи")}
         </p>
@@ -184,7 +184,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
         ) : (
           !loading &&
           !catalogPending &&
-          (query ? (
+          (wantsCatalog ? (
             results.map((item) => (
               <Link
                 key={item.id}
@@ -250,7 +250,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
             </p>
           </div>
         )}
-        {!loading && !query && catalogLoaded && catalogTotal > 0 && (
+        {!loading && !wantsCatalog && catalogLoaded && catalogTotal > 0 && (
           <p className="small-muted">
             {localize(
               locale,

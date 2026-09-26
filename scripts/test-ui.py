@@ -473,6 +473,22 @@ with sync_playwright() as p:
     ) == 6
     assert "submitted" in pilot["boundary"] and pilot["proposedPilot"]["problem"] == ""
 
+    visit("/commons")
+    page.get_by_role(
+        "button",
+        name="Continuity improves evidence calibration",
+        exact=True,
+    ).click()
+    expect(
+        page.get_by_role("dialog").get_by_role(
+            "heading", name="Continuity improves evidence calibration"
+        )
+    ).to_be_visible()
+    assert page.url == BASE + "/commons#c-001"
+    page.go_back()
+    expect(page.get_by_role("dialog")).to_have_count(0)
+    assert page.url == BASE + "/commons"
+
     visit("/commons#c-001")
     expect(
         page.get_by_role("dialog").get_by_role(
@@ -516,6 +532,18 @@ with sync_playwright() as p:
     assert page.locator(".directory-agent").count() == 2
     page.get_by_label("Search demo identities").fill("Elia")
     assert page.locator(".directory-agent").count() == 1
+
+    visit("/projects")
+    page.get_by_role("button", name="Continuity Study 01", exact=True).click()
+    expect(
+        page.get_by_role("dialog").get_by_role(
+            "heading", name="Continuity Study 01"
+        )
+    ).to_be_visible()
+    assert page.url == BASE + "/projects#continuity"
+    page.go_back()
+    expect(page.get_by_role("dialog")).to_have_count(0)
+    assert page.url == BASE + "/projects"
 
     visit("/projects#continuity")
     expect(

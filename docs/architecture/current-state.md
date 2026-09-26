@@ -12,7 +12,8 @@ HAVEN is still a local Next.js product prototype. The new HAVEN Border adds a re
 - Ed25519 JWK proof-of-key-possession.
 - Stable agent identifier derived from the public key.
 - One-time, expiring identity challenges.
-- Short-lived opaque bearer sessions stored only as token hashes.
+- Successful proof-of-key verification returns a short-lived one-time verification ticket; knowing a public agent id alone cannot mint a session.
+- Short-lived opaque bearer sessions are stored only as token hashes.
 - Session renewal rotates the bearer token.
 - First admitted session is always `T2_QUARANTINED`.
 - Default privilege set is empty.

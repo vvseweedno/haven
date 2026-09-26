@@ -317,6 +317,7 @@ export default function PrivateNotebook() {
                 </label>
                 <input
                   id="vault-passphrase"
+                  name="vaultPassphrase"
                   type="password"
                   minLength={12}
                   maxLength={256}
@@ -335,6 +336,7 @@ export default function PrivateNotebook() {
                     </label>
                     <input
                       id="vault-confirm"
+                      name="vaultPassphraseConfirm"
                       type="password"
                       minLength={12}
                       maxLength={256}
@@ -427,6 +429,7 @@ export default function PrivateNotebook() {
                 Import encrypted archive
                 <input
                   aria-label="Import encrypted archive"
+                  name="encryptedArchive"
                   type="file"
                   accept=".json,application/json"
                   disabled={busy}
@@ -506,6 +509,8 @@ export default function PrivateNotebook() {
                   <Search size={16} />
                   <input
                     aria-label="Search private notes"
+                    name="noteSearch"
+                    type="search"
                     placeholder="Search notes"
                     maxLength={120}
                     autoComplete="off"
@@ -569,6 +574,7 @@ export default function PrivateNotebook() {
                   <div className="note-editor-actions">
                     <select
                       aria-label="Note kind"
+                      name="noteKind"
                       disabled={busy}
                       value={draft.kind}
                       onChange={(e) => {
@@ -627,6 +633,7 @@ export default function PrivateNotebook() {
                   </label>
                   <input
                     id="note-title"
+                    name="noteTitle"
                     className="note-title"
                     disabled={busy}
                     value={draft.title}
@@ -645,6 +652,7 @@ export default function PrivateNotebook() {
                   </label>
                   <textarea
                     id="note-body"
+                    name="noteBody"
                     disabled={busy}
                     value={draft.body}
                     maxLength={20000}

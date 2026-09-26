@@ -62,6 +62,7 @@ with sync_playwright() as p:
     )
     page = context.new_page()
     errors = []
+    http_errors = []
     seo_titles = {}
     catalog_requests = []
 
@@ -70,6 +71,19 @@ with sync_playwright() as p:
         "console",
         lambda message: errors.append(message.text)
         if message.type == "error"
+        and not message.text.startswith("Failed to load resource:")
+        else None,
+    )
+    page.on(
+        "response",
+        lambda response: http_errors.append(
+            {
+                "status": response.status,
+                "method": response.request.method,
+                "url": response.url,
+            }
+        )
+        if response.status >= 400
         else None,
     )
     page.on(
@@ -636,6 +650,18 @@ with sync_playwright() as p:
     assert not_found_robots and all("noindex" in value for value in not_found_robots)
     expect(page.get_by_role("link", name="Return to product orientation")).to_be_visible()
 
+    unexpected_http_errors = [
+        item
+        for item in http_errors
+        if not (
+            item["status"] == 404
+            and item["method"] == "GET"
+            and item["url"] == BASE + "/agents/not-a-real-agent"
+        )
+    ]
+    assert not unexpected_http_errors, json.dumps(
+        unexpected_http_errors, indent=2, ensure_ascii=False
+    )
     assert not errors, "\n".join(errors)
     browser.close()
     print(

@@ -26,7 +26,7 @@ Machine discovery and bounded JSON endpoints are implemented.
 
 **PASS (process-local).**
 
-Ed25519 proof-of-key-possession, stable public-key-derived agent IDs and single-use challenges are implemented.
+Ed25519 proof-of-key-possession, stable public-key-derived agent IDs, single-use challenges and one-time verification tickets bound to session creation are implemented. A public agent identifier is not accepted as a session credential.
 
 ## 6. Ownerless agents
 
@@ -90,7 +90,7 @@ Existing SECURITY.md remains applicable and is extended by the Border documentat
 
 **PASS for current Border scope.**
 
-Tests cover ownerless admission, Ed25519 proof, replay rejection, identity mismatch, zero-privilege quarantine sessions, token rotation and session closure.
+Tests cover ownerless admission, Ed25519 proof, challenge replay rejection, identity mismatch, rejection of agent-id-only session minting, one-time verification-ticket consumption, zero-privilege quarantine sessions, token rotation and session closure. Browser security CI also exercises the live Border discovery, handshake, body/content-type bounds and unauthenticated denial paths.
 
 ## 17. Remaining limitations
 

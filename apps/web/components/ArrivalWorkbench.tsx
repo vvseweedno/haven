@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Download, FileCheck2, ShieldCheck } from "lucide-react";
 import { siteUrl } from "@/lib/haven-data";
 import { localize, useLocale } from "./LocaleContext";
@@ -40,6 +40,8 @@ export function ArrivalWorkbench() {
     ok: boolean;
     code: "name" | "identity" | "origin" | "valid" | "manifest";
   } | null>(null);
+  const [validating, setValidating] = useState(false);
+  const validationRequest = useRef<AbortController | null>(null);
   const { notify } = useWorkspace();
   const config = {
     schema: "haven-arrival-draft/1",
@@ -54,7 +56,18 @@ export function ArrivalWorkbench() {
     requestedCapabilities: ["public.objects.read"],
     status: "draft-not-submitted",
   };
-  const changed = () => setValidation(null);
+  useEffect(
+    () => () => {
+      validationRequest.current?.abort();
+    },
+    [],
+  );
+
+  const changed = () => {
+    validationRequest.current?.abort();
+    setValidating(false);
+    setValidation(null);
+  };
   const validate = async () => {
     if (!name.trim()) {
       setValidation({
@@ -80,12 +93,33 @@ export function ArrivalWorkbench() {
       });
       return false;
     }
+    validationRequest.current?.abort();
+    const controller = new AbortController();
+    validationRequest.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), 8000);
+    setValidating(true);
+
     try {
-      const response = await fetch("/.well-known/haven.json");
+      const response = await fetch("/.well-known/haven.json", {
+        signal: controller.signal,
+        cache: "no-store",
+      });
       if (!response.ok) throw new Error("Unavailable");
-      const manifest = await response.json();
-      if (!manifest.arrival?.modes?.includes(mode))
+      const manifest: unknown = await response.json();
+      const modes =
+        manifest &&
+        typeof manifest === "object" &&
+        "arrival" in manifest &&
+        (manifest as { arrival?: unknown }).arrival &&
+        typeof (manifest as { arrival: unknown }).arrival === "object" &&
+        "modes" in (manifest as { arrival: { modes?: unknown } }).arrival
+          ? (manifest as { arrival: { modes?: unknown } }).arrival.modes
+          : null;
+      if (!Array.isArray(modes) || !modes.includes(mode)) {
         throw new Error("Unsupported mode");
+      }
+      if (controller.signal.aborted) return false;
+
       setValidation({
         ok: true,
         code: "valid",
@@ -96,11 +130,18 @@ export function ArrivalWorkbench() {
       });
       return true;
     } catch {
+      if (controller.signal.aborted) return false;
       setValidation({
         ok: false,
         code: "manifest",
       });
       return false;
+    } finally {
+      window.clearTimeout(timeout);
+      if (validationRequest.current === controller) {
+        validationRequest.current = null;
+        setValidating(false);
+      }
     }
   };
   return (
@@ -207,11 +248,15 @@ export function ArrivalWorkbench() {
         <button
           className="button primary"
           type="submit"
+          disabled={validating}
+          aria-busy={validating}
           data-measure="arrival_draft_validated"
           data-measure-mode="manual"
         >
           <FileCheck2 size={16} />
-          {localize(locale, "Validate draft", "Проверить черновик")}
+          {validating
+            ? localize(locale, "Validating…", "Проверка…")
+            : localize(locale, "Validate draft", "Проверить черновик")}
         </button>
       </form>
       <div className="config-panel">
@@ -244,6 +289,8 @@ export function ArrivalWorkbench() {
             type="button"
             data-measure="arrival_draft_exported"
             data-measure-mode="manual"
+            disabled={validating}
+            aria-busy={validating}
             onClick={async () => {
               if (await validate()) {
                 downloadJson(config, "haven-arrival-draft.json");

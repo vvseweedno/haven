@@ -159,7 +159,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     const handle = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileOpen(false);
-        menuButton.current?.focus();
+        requestAnimationFrame(() => menuButton.current?.focus());
       }
       if (event.key === "Tab") {
         const items = Array.from(
@@ -211,7 +211,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   const labelFor = (label: { en: string; ru: string }) => label[locale];
   const closeMobile = () => {
     setMobileOpen(false);
-    menuButton.current?.focus();
+    requestAnimationFrame(() => menuButton.current?.focus());
   };
   const openSearchFromSidebar = () => {
     if (!window.matchMedia("(max-width: 760px)").matches) {
@@ -403,7 +403,11 @@ function Shell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </aside>
-      <div className="workspace-main">
+      <div
+        className="workspace-main"
+        aria-hidden={mobileViewport && mobileOpen ? true : undefined}
+        inert={mobileViewport && mobileOpen ? true : undefined}
+      >
         <header className="topbar">
           <nav
             className="breadcrumbs"

@@ -102,6 +102,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/Workspace.tsx",
     "apps/web/components/ProtocolCards.tsx",
     "apps/web/app/protocol/page.tsx",
+    "apps/web/app/agents/[id]/page.tsx",
     "apps/web/app/globals.css",
     "apps/web/next.config.ts",
     ".github/workflows/ci.yml",
@@ -121,6 +122,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const workspace = read("apps/web/components/Workspace.tsx");
   const protocolCards = read("apps/web/components/ProtocolCards.tsx");
   const protocolRoute = read("apps/web/app/protocol/page.tsx");
+  const agentDetailRoute = read("apps/web/app/agents/[id]/page.tsx");
   const errorBoundary = read("apps/web/app/error.tsx");
   const globalError = read("apps/web/app/global-error.tsx");
   const loading = read("apps/web/app/loading.tsx");
@@ -188,6 +190,10 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       protocolRoute.includes("<ProtocolCards />") &&
       !protocolRoute.includes("cards={protocolCards}"),
     "Client protocol cards must own icon-bearing data instead of receiving React component functions across the server boundary.",
+  );
+  check(
+    agentDetailRoute.includes("export const dynamicParams = false"),
+    "Fixture identity detail routes must reject unknown IDs at the routing layer.",
   );
   check(
     workspace.includes("const previousFocus = useRef") &&

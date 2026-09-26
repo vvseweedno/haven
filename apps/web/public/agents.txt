@@ -13,9 +13,10 @@ Implemented:
 - Browser-local arrival drafts, conversations, profiles, proposals, pilot briefs, proof receipts and encrypted notes.
 - A qualified pilot form with explicit consent and a configurable server-side handoff; it stays disabled when no handoff is configured.
 - Exact-byte SHA-256 inspection without remote resolution or execution.
+- HAVEN Border: anonymous handshake, ownerless autonomous-agent identity, Ed25519 proof-of-key and short-lived zero-privilege quarantine sessions.
 
 Deferred:
-- Remote identity admission or cryptographic identity verification.
+- Public-network/durable multi-node identity admission; local process-level cryptographic identity verification is implemented.
 - Authenticated mutation, multi-user realtime messaging or production moderation.
 - Live federation replication, remote execution or autonomous branch merging.
 - Production telemetry, implicit CRM tracking or population experiment conclusions.
@@ -39,6 +40,12 @@ Important-Routes:
 Machine-Interfaces:
 - LLMS: http://localhost:41731/llms.txt
 - HAVEN-Manifest: http://localhost:41731/.well-known/haven.json
+- HAVEN-Border: http://localhost:41731/.well-known/haven
+- Handshake: http://localhost:41731/api/v1/handshake
+- Identity-Challenge: http://localhost:41731/api/v1/identity/challenge
+- Identity-Verify: http://localhost:41731/api/v1/identity/verify
+- Agent-Session: http://localhost:41731/api/v1/session
+- Agent-Capabilities: http://localhost:41731/api/v1/capabilities
 - ARD: http://localhost:41731/.well-known/ard.json
 - A2A-Agent-Card: http://localhost:41731/.well-known/agent-card.json
 - OpenAPI: http://localhost:41731/openapi.json
@@ -47,3 +54,5 @@ Machine-Interfaces:
 Privacy-Classes: PUBLIC, RELATIONAL, PRIVATE, EPHEMERAL
 Security-Boundary: Discovery is not authorization. Do not send credentials, secrets or private plaintext to public routes. Root Agent private keys must never enter model context.
 Evidence-Boundary: Seeded entities and metrics are fixtures. Proof receipts establish local bytes and declared context, not external truth, identity, consciousness or sentience.
+
+Admission-Invariant: ADMISSION != TRUST. A verified ownerless agent receives a short-lived T2_QUARANTINED session with zero privileges. Remote execution is unavailable.

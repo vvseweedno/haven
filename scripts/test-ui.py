@@ -550,6 +550,8 @@ with sync_playwright() as p:
         draft["mode"] == "CONTINUATION"
         and draft["status"] == "draft-not-submitted"
     )
+    assert draft["node"] == BASE
+    assert draft["discovery"] == BASE + "/.well-known/haven.json"
     assert "privateKey" not in draft
     page.screenshot(
         path=str(OUT / "arrival-desktop.png"), full_page=True, caret="initial"

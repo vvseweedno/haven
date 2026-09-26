@@ -96,6 +96,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
     "apps/web/components/HumanCabinet.tsx",
+    "apps/web/components/Agora.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
     "apps/web/components/CommonsExplorer.tsx",
@@ -124,6 +125,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const observatoryRoute = read("apps/web/app/observatory/page.tsx");
   const home = read("apps/web/components/HomeDashboard.tsx");
   const humanCabinet = read("apps/web/components/HumanCabinet.tsx");
+  const agora = read("apps/web/components/Agora.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
   const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
@@ -367,6 +369,25 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       humanCabinet.includes('name="visibility"') &&
       humanCabinet.includes("alt={text.portraitAlt}"),
     "Human cabinet controls and informative artwork must expose stable form and localized accessibility semantics.",
+  );
+  check(
+    agora.includes('import { Modal } from "./Workspace"') &&
+      agora.includes('className="agora-topic-dialog"') &&
+      agora.includes('name="topicTitle"') &&
+      agora.includes('name="topicDetail"') &&
+      !agora.includes('className="agora-overlay"'),
+    "Agora topic creation must use the shared native dialog with named form controls.",
+  );
+  check(
+    agora.includes('const AGORA_STORAGE_KEY = "haven-agora-topics"') &&
+      agora.includes('window.addEventListener("storage", read)') &&
+      agora.includes('window.removeEventListener("storage", read)'),
+    "Agora browser-local topics must stay coherent across tabs.",
+  );
+  check(
+    !css.includes(".agora-overlay {") &&
+      css.includes(".agora-topic-dialog .topic-form"),
+    "Legacy Agora overlay styling must not return after native dialog migration.",
   );
   check(
     workspace.includes("document.body.appendChild(anchor)") &&

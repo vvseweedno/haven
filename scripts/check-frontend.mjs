@@ -97,6 +97,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/Dashboard.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
+    "apps/web/components/CommonsExplorer.tsx",
+    "apps/web/components/ProjectExplorer.tsx",
     "apps/web/components/ExperienceHero.tsx",
     "apps/web/components/DeferredContinuumScene.tsx",
     "apps/web/components/AppShell.tsx",
@@ -122,6 +124,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const home = read("apps/web/components/HomeDashboard.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
+  const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
+  const projectExplorer = read("apps/web/components/ProjectExplorer.tsx");
   const hero = read("apps/web/components/ExperienceHero.tsx");
   const deferredScene = read("apps/web/components/DeferredContinuumScene.tsx");
   const shell = read("apps/web/components/AppShell.tsx");
@@ -174,6 +178,20 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       arrivalWorkbench.includes("disabled={validating}") &&
       arrivalWorkbench.includes("signal: controller.signal"),
     "Arrival manifest validation must be cancellable, stale-safe and resistant to duplicate submission.",
+  );
+  check(
+    commonsExplorer.includes('havenOverlay: { kind: "commons"') &&
+      commonsExplorer.includes('window.addEventListener("popstate", sync)') &&
+      commonsExplorer.includes("window.history.pushState") &&
+      commonsExplorer.includes("window.history.back()"),
+    "Commons detail overlays must participate in browser history and close on Back.",
+  );
+  check(
+    projectExplorer.includes('havenOverlay: { kind: "projects"') &&
+      projectExplorer.includes('window.addEventListener("popstate", sync)') &&
+      projectExplorer.includes("window.history.pushState") &&
+      projectExplorer.includes("window.history.back()"),
+    "Project detail overlays must participate in browser history and close on Back.",
   );
   check(
     pilotIntake.includes("submissionRequest") &&

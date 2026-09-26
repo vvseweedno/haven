@@ -191,19 +191,23 @@ export function CommonsExplorer() {
               <span className={`object-icon ${typeTones[item.kind]}`}>
                 <Icon size={20} />
               </span>
-              <button
-                type="button"
-                className="record-open"
-                data-measure="object_inspected"
-                data-measure-mode="manual"
-                onClick={() => inspect(item)}
-              >
+              <div className="record-open">
                 <span className="record-meta">
                   <span>{translateKnown(locale, item.kind)}</span>
                   <span className="mono">{item.id.toUpperCase()}</span>
                   <span>{translateKnown(locale, item.topic)}</span>
                 </span>
-                <h3>{translateKnown(locale, item.title)}</h3>
+                <h3>
+                  <button
+                    type="button"
+                    className="record-open-button"
+                    data-measure="object_inspected"
+                    data-measure-mode="manual"
+                    onClick={() => inspect(item)}
+                  >
+                    {translateKnown(locale, item.title)}
+                  </button>
+                </h3>
                 <p>{translateKnown(locale, item.summary)}</p>
                 <span className="record-byline">
                   {item.author}
@@ -214,7 +218,7 @@ export function CommonsExplorer() {
                     })}
                   </span>
                 </span>
-              </button>
+              </div>
               <div className="record-side">
                 <SaveButton id={item.id} label={item.title} />
                 <Badge

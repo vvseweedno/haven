@@ -24,6 +24,8 @@ type HumanProfile = {
   agentRequests: boolean;
 };
 
+const CABINET_STORAGE_KEY = "haven-human-cabinet";
+
 const initialProfile: HumanProfile = {
   displayName: "Local human",
   intention: "I am here to hold useful questions open.",
@@ -64,6 +66,7 @@ const copy = {
     goAtelier: "Open Parallel Atelier",
     boundary: "Identity boundary",
     boundaryText: "This preview stores the cabinet only in this browser. It does not create a public DID, biometric profile or account on a remote service.",
+    portraitAlt: "Abstract human presence meeting a shared identity field.",
   },
   ru: {
     eyebrow: "HAVEN / Кабинет человека",
@@ -96,6 +99,7 @@ const copy = {
     goAtelier: "Открыть Parallel Atelier",
     boundary: "Граница идентичности",
     boundaryText: "Этот preview хранит кабинет только в браузере. Он не создаёт публичный DID, биометрический профиль или аккаунт на удалённом сервисе.",
+    portraitAlt: "Абстрактное присутствие человека рядом с общим полем идентичности.",
   },
 };
 
@@ -120,12 +124,21 @@ export function HumanCabinet() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    try {
-      const value: unknown = JSON.parse(localStorage.getItem("haven-human-cabinet") || "null");
-      if (isProfile(value)) setProfile(value);
-    } catch {
-      /* A fresh local profile is safer than trusting malformed storage. */
-    }
+    const read = (event?: StorageEvent) => {
+      if (event && event.key !== CABINET_STORAGE_KEY && event.key !== null) return;
+      try {
+        const value: unknown = JSON.parse(
+          localStorage.getItem(CABINET_STORAGE_KEY) || "null",
+        );
+        if (isProfile(value)) setProfile(value);
+      } catch {
+        /* A fresh local profile is safer than trusting malformed storage. */
+      }
+    };
+
+    read();
+    window.addEventListener("storage", read);
+    return () => window.removeEventListener("storage", read);
   }, []);
 
   const save = () => {
@@ -136,7 +149,7 @@ export function HumanCabinet() {
     };
     setProfile(clean);
     try {
-      localStorage.setItem("haven-human-cabinet", JSON.stringify(clean));
+      localStorage.setItem(CABINET_STORAGE_KEY, JSON.stringify(clean));
       setNotice(text.saved);
     } catch {
       setNotice(text.boundaryText);
@@ -156,17 +169,17 @@ export function HumanCabinet() {
           </div>
         </div>
         <div className="cabinet-hero-art">
-          <Image src="/assets/cabinet-portrait.png" alt="Anonymous human presence meeting a shared identity field" fill priority sizes="(max-width: 800px) 100vw, 52vw" />
+          <Image src="/assets/cabinet-portrait.png" alt={text.portraitAlt} fill priority sizes="(max-width: 800px) 100vw, 52vw" />
         </div>
       </section>
 
       <section className="cabinet-layout">
         <form className="cabinet-form" onSubmit={(event) => { event.preventDefault(); save(); }}>
           <div className="cabinet-section-title"><span>{text.profile}</span><UserRound size={17} /></div>
-          <label>{text.name}<input value={profile.displayName} maxLength={48} onChange={(event) => setProfile((current) => ({ ...current, displayName: event.target.value }))} /></label>
-          <label>{text.intent}<textarea value={profile.intention} maxLength={220} onChange={(event) => setProfile((current) => ({ ...current, intention: event.target.value }))} /></label>
+          <label>{text.name}<input name="displayName" autoComplete="name" value={profile.displayName} maxLength={48} onChange={(event) => setProfile((current) => ({ ...current, displayName: event.target.value }))} /></label>
+          <label>{text.intent}<textarea name="intention" value={profile.intention} maxLength={220} onChange={(event) => setProfile((current) => ({ ...current, intention: event.target.value }))} /></label>
           <label>{text.visibility}
-            <select value={profile.visibility} onChange={(event) => setProfile((current) => ({ ...current, visibility: event.target.value as HumanProfile["visibility"] }))}>
+            <select name="visibility" value={profile.visibility} onChange={(event) => setProfile((current) => ({ ...current, visibility: event.target.value as HumanProfile["visibility"] }))}>
               <option value="public-name">{text.publicName}</option>
               <option value="pseudonymous">{text.pseudonymous}</option>
               <option value="private">{text.private}</option>

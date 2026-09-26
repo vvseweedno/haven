@@ -73,13 +73,14 @@ const state =
 const requestBudget = createRequestBudget(120, 2);
 
 export class BorderError extends Error {
-  constructor(
-    public readonly status: number,
-    public readonly code: string,
-    message: string,
-  ) {
+  readonly status: number;
+  readonly code: string;
+
+  constructor(status: number, code: string, message: string) {
     super(message);
     this.name = "BorderError";
+    this.status = status;
+    this.code = code;
   }
 }
 
@@ -367,7 +368,7 @@ export function verifyIdentityChallenge(payload: unknown) {
     );
   }
   const signature = parseBase64Url(payload.signature, "signature", 64);
-  let key;
+  let key: ReturnType<typeof createPublicKey>;
   try {
     key = createPublicKey({ key: publicKey as JsonWebKey, format: "jwk" });
   } catch {

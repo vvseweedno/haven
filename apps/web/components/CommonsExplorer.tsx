@@ -59,16 +59,53 @@ export function CommonsExplorer() {
     };
     sync();
     window.addEventListener("hashchange", sync);
-    return () => window.removeEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
   }, []);
+
   const inspect = (item: KnowledgeRecord) => {
+    const previousState =
+      window.history.state && typeof window.history.state === "object"
+        ? window.history.state
+        : {};
+    const overlay = (previousState as {
+      havenOverlay?: { kind?: string; id?: string };
+    }).havenOverlay;
+    const nextState = {
+      ...previousState,
+      havenOverlay: { kind: "commons", id: item.id },
+    };
+    const href = `#${item.id}`;
+
+    if (overlay?.kind === "commons") {
+      window.history.replaceState(nextState, "", href);
+    } else {
+      window.history.pushState(nextState, "", href);
+    }
     setSelected(item);
-    window.history.replaceState(null, "", `#${item.id}`);
     measure("object_inspected", { kind: item.kind, source: "commons" });
   };
+
   const close = () => {
+    const state =
+      window.history.state && typeof window.history.state === "object"
+        ? window.history.state
+        : null;
+    const overlay = (state as {
+      havenOverlay?: { kind?: string; id?: string };
+    } | null)?.havenOverlay;
+
+    if (overlay?.kind === "commons") {
+      window.history.back();
+      return;
+    }
+
     setSelected(null);
-    window.history.replaceState(null, "", window.location.pathname);
+    const nextUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(state, "", nextUrl);
   };
   const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const results = knowledge.filter(

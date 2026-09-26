@@ -19,6 +19,7 @@ ROUTES = [
     "/cabinet",
     "/atelier",
     "/delivery",
+    "/pilot",
     "/landscape",
     "/proof-desk",
     "/agents",

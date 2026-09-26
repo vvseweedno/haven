@@ -630,8 +630,10 @@ with sync_playwright() as p:
     response = page.goto(BASE + "/agents/not-a-real-agent", wait_until="networkidle")
     assert response and response.status in {200, 404}, response.status if response else None
     expect(page.get_by_role("heading", name="Object not found")).to_be_visible()
-    not_found_robots = page.locator('meta[name="robots"]').get_attribute("content") or ""
-    assert "noindex" in not_found_robots
+    not_found_robots = page.locator('meta[name="robots"]').evaluate_all(
+        "(nodes) => nodes.map((node) => node.getAttribute('content') || '')"
+    )
+    assert not_found_robots and all("noindex" in value for value in not_found_robots)
     expect(page.get_by_role("link", name="Return to product orientation")).to_be_visible()
 
     assert not errors, "\n".join(errors)

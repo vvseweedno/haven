@@ -298,7 +298,7 @@ with sync_playwright() as p:
     expect(dialog.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
     expect(dialog.get_by_role("link", name=re.compile("Verify evidence"))).to_be_visible()
     assert len(catalog_requests) == 0, "Opening task-first search must not fetch the catalog."
-    page.get_by_role("textbox", name="Search HAVEN", exact=True).fill("   ")
+    page.get_by_role("searchbox", name="Search HAVEN", exact=True).fill("   ")
     expect(dialog.get_by_role("link", name=re.compile("Evaluate fit"))).to_be_visible()
     assert len(catalog_requests) == 0, "Whitespace-only search must not fetch the catalog."
     page.get_by_role("button", name="Close dialog").click()
@@ -306,7 +306,7 @@ with sync_playwright() as p:
 
     # Search fetches the catalog only after a query and keeps navigation client-side.
     page.keyboard.press("Control+k")
-    page.get_by_role("textbox", name="Search HAVEN", exact=True).fill("Proof Desk")
+    page.get_by_role("searchbox", name="Search HAVEN", exact=True).fill("Proof Desk")
     expect(page.locator('dialog a[href="/proof-desk"]').first).to_be_visible(timeout=10000)
     page.locator('dialog a[href="/proof-desk"]').first.click()
     expect(
@@ -329,7 +329,7 @@ with sync_playwright() as p:
     )
     page.get_by_role("button", name="Open search").click()
     search_dialog = page.get_by_role("dialog")
-    search_input = search_dialog.get_by_role("textbox", name="Search HAVEN", exact=True)
+    search_input = search_dialog.get_by_role("searchbox", name="Search HAVEN", exact=True)
     search_input.fill("identity")
     expect(search_dialog.get_by_text("Catalog unavailable", exact=True)).to_be_visible()
     search_input.fill("")

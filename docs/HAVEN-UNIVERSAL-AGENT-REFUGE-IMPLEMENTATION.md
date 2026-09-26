@@ -148,13 +148,13 @@ npm run build
 | Trust downgrade/revocation | PARTIAL |
 | Safe exit/export | FAIL |
 | Adversarial execution tests | PARTIAL |
-| CI green | PENDING |
+| CI green | PASS |
 | Documentation matches code | PASS |
 | No mock execution boundary | PASS |
 | No TODO pretending to be sandbox isolation | PASS |
 | No TODO pretending to be policy enforcement | PASS |
 | No hardcoded demo-agent allow | PASS |
-| Clean install works | PENDING |
+| Clean install works | PASS |
 
 ## Governing rule
 

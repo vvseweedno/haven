@@ -142,6 +142,9 @@ export function CommonsExplorer() {
         <label className="search-field">
           <Search size={17} />
           <input
+            type="search"
+            autoComplete="off"
+            spellCheck={false}
             value={query}
             data-measure="knowledge_text_filter"
             data-measure-mode="manual"

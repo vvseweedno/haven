@@ -128,7 +128,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
     if (lastNoResultQuery.current === normalized) return;
     lastNoResultQuery.current = normalized;
     measure("search_no_results", { source: "public_catalog" });
-  }, [error, loading, query, total]);
+  }, [catalogLoaded, error, loading, query, total]);
   return (
     <Modal
       open
@@ -142,6 +142,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           autoFocus
           type="search"
           name="query"
+          autoComplete="off"
+          spellCheck={false}
           value={query}
           maxLength={120}
           onChange={(e) => setQuery(e.target.value)}

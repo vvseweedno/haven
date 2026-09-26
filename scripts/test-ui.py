@@ -519,7 +519,7 @@ with sync_playwright() as p:
     measurement = json.loads(
         Path(download_info.value.path()).read_text(encoding="utf-8")
     )
-    assert measurement["schema"] == "haven.measurement.export.v1"
+    assert measurement["schema"] == "haven.measurement.export.v2"
     assert measurement["privacy"]["networkTransmission"] is False
     assert measurement["privacy"]["identifiers"] is False
 

@@ -15,10 +15,12 @@ import {
 } from "lucide-react";
 import { AgoraScene } from "./AgoraScene";
 import { localize, useLocale } from "./LocaleContext";
+import { Modal } from "./Workspace";
 import { agoraTopics, type AgoraMessage, type AgoraTopic, type VoiceKind } from "@/lib/agora";
 
 const MAX_TOPICS = 40;
 const MAX_MESSAGE_CHARS = 900;
+const AGORA_STORAGE_KEY = "haven-agora-topics";
 
 function isStoredMessage(value: unknown): value is AgoraMessage {
   if (!value || typeof value !== "object") return false;
@@ -61,7 +63,7 @@ function isStoredTopic(value: unknown): value is AgoraTopic {
 
 function storedTopics() {
   try {
-    const value: unknown = JSON.parse(localStorage.getItem("haven-agora-topics") || "null");
+    const value: unknown = JSON.parse(localStorage.getItem(AGORA_STORAGE_KEY) || "null");
     return Array.isArray(value) ? value.filter(isStoredTopic).slice(0, MAX_TOPICS) : agoraTopics;
   } catch {
     return agoraTopics;
@@ -165,16 +167,27 @@ export function Agora() {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const restored = storedTopics();
-    setTopics(restored);
-    setActiveId(restored[0]?.id || "");
-    setHydrated(true);
+    const read = (event?: StorageEvent) => {
+      if (event && event.key !== AGORA_STORAGE_KEY && event.key !== null) return;
+      const restored = storedTopics();
+      setTopics(restored);
+      setActiveId((current) =>
+        restored.some((topic) => topic.id === current)
+          ? current
+          : restored[0]?.id || "",
+      );
+      setHydrated(true);
+    };
+
+    read();
+    window.addEventListener("storage", read);
+    return () => window.removeEventListener("storage", read);
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
     try {
-      localStorage.setItem("haven-agora-topics", JSON.stringify(topics));
+      localStorage.setItem(AGORA_STORAGE_KEY, JSON.stringify(topics));
     } catch {
       setNotice(text.localNotice);
     }
@@ -371,19 +384,53 @@ export function Agora() {
         </aside>
       </section>
 
-      {creating && (
-        <div className="agora-overlay" role="presentation">
-          <form className="topic-form" onSubmit={createTopic}>
-            <div className="agora-panel-heading"><span>{text.create}</span><MessageSquarePlus size={17} /></div>
-            <label>{text.topicLabel}<input autoFocus value={topicTitle} onChange={(event) => setTopicTitle(event.target.value)} maxLength={120} placeholder={text.topicPlaceholder} /></label>
-            <label>{text.topicDetail}<textarea value={topicDetail} onChange={(event) => setTopicDetail(event.target.value)} maxLength={280} placeholder={text.topicDetailPlaceholder} /></label>
-            <div className="topic-form-actions">
-              <button type="button" className="agora-quiet-button" onClick={() => setCreating(false)}>{text.cancel}</button>
-              <button type="submit" className="agora-command" disabled={!topicTitle.trim() || !topicDetail.trim()}><CornerDownRight size={16} />{text.createTopic}</button>
-            </div>
-          </form>
-        </div>
-      )}
+      <Modal
+        open={creating}
+        onClose={() => setCreating(false)}
+        title={text.create}
+        className="agora-topic-dialog"
+      >
+        <form className="topic-form" onSubmit={createTopic}>
+          <label>
+            {text.topicLabel}
+            <input
+              autoFocus
+              name="topicTitle"
+              value={topicTitle}
+              onChange={(event) => setTopicTitle(event.target.value)}
+              maxLength={120}
+              placeholder={text.topicPlaceholder}
+            />
+          </label>
+          <label>
+            {text.topicDetail}
+            <textarea
+              name="topicDetail"
+              value={topicDetail}
+              onChange={(event) => setTopicDetail(event.target.value)}
+              maxLength={280}
+              placeholder={text.topicDetailPlaceholder}
+            />
+          </label>
+          <div className="topic-form-actions">
+            <button
+              type="button"
+              className="agora-quiet-button"
+              onClick={() => setCreating(false)}
+            >
+              {text.cancel}
+            </button>
+            <button
+              type="submit"
+              className="agora-command"
+              disabled={!topicTitle.trim() || !topicDetail.trim()}
+            >
+              <CornerDownRight size={16} />
+              {text.createTopic}
+            </button>
+          </div>
+        </form>
+      </Modal>
       <p className="agora-announcement" aria-live="polite">{notice}</p>
     </div>
   );

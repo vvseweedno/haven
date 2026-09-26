@@ -149,6 +149,46 @@ with sync_playwright() as p:
         assert 'no-store' in response.headers['cache-control']
     assert context.request.get(BASE + '/api/v1/status').json()['capabilities']['remoteExecution'] is False
 
+    # HAVEN Border is reachable as a machine surface but remains zero-trust and fail-closed.
+    border = context.request.get(BASE + '/.well-known/haven')
+    assert border.status == 200
+    border_data = border.json()
+    assert border_data['admission']['anonymous'] is True
+    assert border_data['admission']['humanOwnerRequired'] is False
+    assert border_data['admission']['defaultTrust'] == 0
+    assert border_data['execution']['available'] is False
+    assert border_data['capabilities']['default'] == []
+
+    handshake = context.request.post(
+        BASE + '/api/v1/handshake',
+        data={'protocol': 'haven/1.3'},
+    )
+    assert handshake.status == 200
+    assert handshake.json()['ok'] is True
+    assert context.request.post(
+        BASE + '/api/v1/handshake',
+        data={'protocol': 'haven/999'},
+    ).status == 409
+    assert context.request.post(
+        BASE + '/api/v1/handshake',
+        data='not-json',
+        headers={'Content-Type': 'text/plain'},
+    ).status == 415
+    assert context.request.post(
+        BASE + '/api/v1/handshake',
+        data={'padding': 'x' * 17000},
+    ).status == 413
+
+    # Public agent identifiers are not credentials. Session creation needs the
+    # one-time ticket returned only after proof-of-key-possession.
+    session_without_ticket = context.request.post(
+        BASE + '/api/v1/session',
+        data={'agentId': 'agent:public-identifier-is-not-a-secret'},
+    )
+    assert session_without_ticket.status == 401
+    assert session_without_ticket.json()['code'] == 'VERIFICATION_TICKET_REQUIRED'
+    assert context.request.get(BASE + '/api/v1/capabilities').status == 401
+
     # Inspector computes exact-byte hashes, clears stale reports and never executes input.
     visit('/forge/inspect')
     source = '{"schema":"test/1","visibility":"PRIVATE","body":"<script>window.__objectInjected=true</script>"}'

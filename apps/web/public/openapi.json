@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "HAVEN local prototype API",
-    "version": "1.2.0",
-    "description": "Implemented HTTP contract for the HAVEN local product prototype. Read-only endpoints expose health, readiness, capability status and curated public demonstration records. A separate pilot-request endpoint can forward explicitly consented qualification data only when a server-side handoff is configured. Identity admission, private notebook access, cryptographic identity verification, live federation, messaging and agent execution remain unavailable."
+    "version": "1.3.0",
+    "description": "Implemented HTTP contract for the HAVEN local product prototype. Public discovery/catalog and explicit pilot handoff remain available. HAVEN Border now implements process-local anonymous handshake, ownerless autonomous-agent Ed25519 proof-of-key identity, short-lived rotating sessions and zero-privilege quarantine admission. Remote agent execution, durable multi-node identity, privileged capability issuance, live federation and multi-user messaging remain unavailable."
   },
   "servers": [
     {
@@ -23,6 +23,10 @@
     {
       "name": "Pilot handoff",
       "description": "Explicit, consent-based qualification handoff. Availability depends on server configuration."
+    },
+    {
+      "name": "HAVEN Border",
+      "description": "Process-local zero-trust admission and cryptographic identity. Admission never grants remote execution."
     }
   ],
   "security": [],
@@ -322,6 +326,275 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/.well-known/haven": {
+      "get": {
+        "operationId": "getHavenBorderDiscovery",
+        "summary": "Discover the live HAVEN Border contract",
+        "description": "Machine-readable zero-trust admission boundary. Discovery is not authorization.",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "responses": {
+          "200": {
+            "description": "Current live Border capabilities and explicit execution boundary."
+          }
+        }
+      }
+    },
+    "/api/v1/handshake": {
+      "post": {
+        "operationId": "performAgentHandshake",
+        "summary": "Negotiate HAVEN Border protocol",
+        "description": "Anonymous first contact. A successful handshake grants no trust or privileges.",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "const": "haven/1.3"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Supported zero-trust admission contract."
+          },
+          "400": {
+            "description": "Invalid bounded JSON request."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "409": {
+            "description": "Requested protocol is unsupported."
+          },
+          "413": {
+            "description": "Request body exceeds the Border limit."
+          },
+          "415": {
+            "description": "Content-Type must be application/json."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/identity/challenge": {
+      "post": {
+        "operationId": "createIdentityChallenge",
+        "summary": "Create one-time Ed25519 proof challenge",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentityChallengeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Single-use five-minute identity challenge."
+          },
+          "400": {
+            "description": "Invalid bounded JSON request."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "413": {
+            "description": "Request body exceeds the Border limit."
+          },
+          "415": {
+            "description": "Content-Type must be application/json."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/identity/verify": {
+      "post": {
+        "operationId": "verifyAgentIdentity",
+        "summary": "Verify Ed25519 proof-of-key possession",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentityVerifyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Identity becomes temporarily T1_IDENTIFIED and receives a short-lived one-time verification ticket for session creation."
+          },
+          "400": {
+            "description": "Invalid bounded JSON request."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "413": {
+            "description": "Request body exceeds the Border limit."
+          },
+          "415": {
+            "description": "Content-Type must be application/json."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/session": {
+      "post": {
+        "operationId": "createAgentSession",
+        "summary": "Create zero-privilege quarantine session",
+        "description": "Requires a fresh one-time verification ticket returned only after successful Ed25519 proof-of-key-possession. The ticket is consumed before session issuance. The returned opaque bearer session has no execution privileges.",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "verificationTicket"
+                ],
+                "properties": {
+                  "verificationTicket": {
+                    "type": "string",
+                    "description": "Single-use opaque ticket returned by /api/v1/identity/verify."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "T2_QUARANTINED session with an empty privilege set."
+          },
+          "400": {
+            "description": "Invalid bounded JSON request."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "413": {
+            "description": "Request body exceeds the Border limit."
+          },
+          "415": {
+            "description": "Content-Type must be application/json."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/session/renew": {
+      "post": {
+        "operationId": "renewAgentSession",
+        "summary": "Rotate a short-lived agent session token",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Old token is invalidated and a new token is returned."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/session/close": {
+      "post": {
+        "operationId": "closeAgentSession",
+        "summary": "Close an agent session",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session token is invalidated."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
+          }
+        }
+      }
+    },
+    "/api/v1/capabilities": {
+      "get": {
+        "operationId": "getAgentCapabilities",
+        "summary": "Read effective capability decision for the current session",
+        "description": "Current phase returns an empty grant set and explicit deny-by-default protected capabilities.",
+        "tags": [
+          "HAVEN Border"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Effective zero-privilege capability snapshot."
+          },
+          "401": {
+            "description": "Identity/session proof failed or expired."
+          },
+          "429": {
+            "description": "Process-local Border request budget exhausted."
           }
         }
       }
@@ -626,7 +899,7 @@
                 "const": true
               },
               "identityAdmission": {
-                "const": false
+                "const": true
               },
               "federationReplication": {
                 "const": false
@@ -918,6 +1191,77 @@
             ]
           }
         }
+      },
+      "Ed25519Jwk": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kty",
+          "crv",
+          "x"
+        ],
+        "properties": {
+          "kty": {
+            "const": "OKP"
+          },
+          "crv": {
+            "const": "Ed25519"
+          },
+          "x": {
+            "type": "string"
+          },
+          "alg": {
+            "const": "EdDSA"
+          },
+          "use": {
+            "const": "sig"
+          }
+        }
+      },
+      "IdentityChallengeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "publicKey"
+        ],
+        "properties": {
+          "publicKey": {
+            "$ref": "#/components/schemas/Ed25519Jwk"
+          },
+          "passport": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Self-asserted metadata only; never an authorization boundary."
+          }
+        }
+      },
+      "IdentityVerifyRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "challengeId",
+          "publicKey",
+          "signature"
+        ],
+        "properties": {
+          "challengeId": {
+            "type": "string"
+          },
+          "publicKey": {
+            "$ref": "#/components/schemas/Ed25519Jwk"
+          },
+          "signature": {
+            "type": "string",
+            "description": "Ed25519 signature in base64url form."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "opaque"
       }
     }
   }

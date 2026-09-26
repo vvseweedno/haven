@@ -667,6 +667,7 @@ with sync_playwright() as p:
     expect(page.locator(".sidebar")).not_to_have_class(re.compile("is-open"))
     expect(page.locator(".sidebar")).to_have_css("visibility", "hidden")
     expect(page.locator("main h1")).to_contain_text("Decide whether HAVEN fits")
+    expect(page.locator("main")).to_be_focused()
 
     for route in ROUTES:
         visit(route)

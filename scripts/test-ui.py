@@ -837,7 +837,7 @@ with sync_playwright() as p:
         assert "Disallow: /api/" in robots.text()
 
     response = page.goto(BASE + "/agents/not-a-real-agent", wait_until="networkidle")
-    assert response and response.status in {200, 404}, response.status if response else None
+    assert response and response.status == 404, response.status if response else None
     expect(page.get_by_role("heading", name="Object not found")).to_be_visible()
     not_found_robots = page.locator('meta[name="robots"]').evaluate_all(
         "(nodes) => nodes.map((node) => node.getAttribute('content') || '')"

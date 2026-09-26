@@ -291,6 +291,14 @@ with sync_playwright() as p:
     page.keyboard.press("Enter")
     expect(page.locator("main")).to_be_focused()
 
+    # Keyboard activation of the global journey keeps focus on the persistent main region.
+    boundary_step = page.locator(".journey-rail-link").nth(2)
+    boundary_step.focus()
+    page.keyboard.press("Enter")
+    page.wait_for_url(BASE + "/trust")
+    expect(page.locator("main")).to_be_focused()
+    visit("/")
+
     search_button = page.get_by_role("button", name="Open search")
     search_button.click()
     dialog = page.get_by_role("dialog")

@@ -337,7 +337,6 @@ export function ProjectExplorer() {
                       key={id}
                       className="related-row"
                       href={`/commons#${id}`}
-                      onClick={close}
                     >
                       <BookSymbol />
                       <span>{translateKnown(locale, record.title)}</span>

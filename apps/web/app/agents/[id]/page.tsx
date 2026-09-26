@@ -12,6 +12,8 @@ import { createPageMetadata } from "@/lib/seo";
 export function generateStaticParams() {
   return agents.map((agent) => ({ id: agent.id }));
 }
+
+export const dynamicParams = false;
 export async function generateMetadata({
   params,
 }: {

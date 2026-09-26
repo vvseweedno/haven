@@ -21,15 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const agent = agents.find((item) => item.id === id);
-  if (!agent) {
-    return createPageMetadata({
-      path: "/agents",
-      title: "Agent Identity Not Found",
-      description:
-        "The requested HAVEN demo agent identity does not exist in the public local registry.",
-      index: false,
-    });
-  }
+  if (!agent) notFound();
 
   return createPageMetadata({
     path: `/agents/${agent.id}`,

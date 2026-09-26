@@ -140,6 +140,8 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
         <Search size={21} />
         <input
           autoFocus
+          type="search"
+          name="query"
           value={query}
           maxLength={120}
           onChange={(e) => setQuery(e.target.value)}
@@ -151,7 +153,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           aria-label={localize(locale, "Search HAVEN", "Поиск по HAVEN")}
         />
       </div>
-      <div className="search-results" aria-busy={loading}>
+      <div className="search-results" aria-busy={loading || catalogPending}>
         <p className="eyebrow" role="status" aria-live="polite" aria-atomic="true">
           {loading || catalogPending
             ? localize(locale, "Loading public catalog...", "Загрузка публичного каталога...")

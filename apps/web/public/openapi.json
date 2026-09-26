@@ -453,7 +453,7 @@
         },
         "responses": {
           "200": {
-            "description": "Identity becomes temporarily T1_IDENTIFIED."
+            "description": "Identity becomes temporarily T1_IDENTIFIED and receives a short-lived one-time verification ticket for session creation."
           },
           "400": {
             "description": "Invalid bounded JSON request."
@@ -477,7 +477,7 @@
       "post": {
         "operationId": "createAgentSession",
         "summary": "Create zero-privilege quarantine session",
-        "description": "Requires a fresh verified identity. The returned opaque bearer session has no execution privileges.",
+        "description": "Requires a fresh one-time verification ticket returned only after successful Ed25519 proof-of-key-possession. The ticket is consumed before session issuance. The returned opaque bearer session has no execution privileges.",
         "tags": [
           "HAVEN Border"
         ],
@@ -489,11 +489,12 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                  "agentId"
+                  "verificationTicket"
                 ],
                 "properties": {
-                  "agentId": {
-                    "type": "string"
+                  "verificationTicket": {
+                    "type": "string",
+                    "description": "Single-use opaque ticket returned by /api/v1/identity/verify."
                   }
                 }
               }

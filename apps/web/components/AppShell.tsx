@@ -214,8 +214,10 @@ function Shell({ children }: { children: React.ReactNode }) {
     requestAnimationFrame(() => menuButton.current?.focus());
   };
   const closeMobileForNavigation = () => {
+    const shouldFocusMain = mobileViewport || keyboardNavigation.current;
     setMobileOpen(false);
-    if (!mobileViewport) return;
+    if (!shouldFocusMain) return;
+    keyboardNavigation.current = false;
     requestAnimationFrame(() => {
       document.getElementById("main")?.focus();
     });
@@ -554,10 +556,10 @@ function Shell({ children }: { children: React.ReactNode }) {
             <Link prefetch={false} href="/protocol">
               {localize(locale, "Protocol & API", "Протокол и API")}
             </Link>
-            <Link prefetch={false} href="/.well-known/ard.json">
+            <a href="/.well-known/ard.json">
               {localize(locale, "Machine entrance", "Вход для машин")}
-              <ArrowUpRight size={12} />
-            </Link>
+              <ArrowUpRight size={12} aria-hidden="true" />
+            </a>
           </div>
         </footer>
       </div>

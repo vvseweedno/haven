@@ -306,6 +306,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Shared dialogs must use a programmatically labelled semantic heading.",
   );
   check(
+    workspace.includes('import { usePathname } from "next/navigation"') &&
+      workspace.includes("const pathname = usePathname()") &&
+      workspace.includes("}, [open, pathname]);"),
+    "Native dialogs must resynchronize their imperative open state after App Router history restoration.",
+  );
+  check(
     shell.includes('explicitTheme.current = nextTheme') &&
       shell.includes('if (!explicitTheme.current) applyTheme(event.matches)'),
     "An explicit theme choice must not be overwritten by later system-theme changes.",

@@ -228,6 +228,7 @@ with sync_playwright() as p:
 
     # A failed catalog request must not poison the task-first empty-query state.
     visit("/")
+    expected_http_error_start = len(http_errors)
     page.route(
         "**/api/v1/catalog?limit=100",
         lambda route: route.fulfill(
@@ -248,6 +249,15 @@ with sync_playwright() as p:
     expect(search_dialog.get_by_text("Catalog unavailable", exact=True)).to_have_count(0)
     search_dialog.get_by_role("button", name="Close dialog").click()
     page.unroute("**/api/v1/catalog?limit=100")
+    simulated_catalog_errors = http_errors[expected_http_error_start:]
+    assert simulated_catalog_errors == [
+        {
+            "status": 503,
+            "method": "GET",
+            "url": BASE + "/api/v1/catalog?limit=100",
+        }
+    ]
+    del http_errors[expected_http_error_start:]
 
     # Observatory interactions live only on the Observatory route.
     visit("/observatory")

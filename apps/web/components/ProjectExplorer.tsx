@@ -107,6 +107,7 @@ export function ProjectExplorer() {
           <Search size={17} aria-hidden="true" />
           <input
             type="search"
+            name="projectSearch"
             autoComplete="off"
             spellCheck={false}
             placeholder={localize(
@@ -120,6 +121,7 @@ export function ProjectExplorer() {
           />
         </label>
         <select
+          name="projectStatus"
           value={status}
           onChange={(e) =>
             setStatus(e.target.value as (typeof statusOptions)[number])

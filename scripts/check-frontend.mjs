@@ -97,6 +97,9 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/Dashboard.tsx",
     "apps/web/components/HumanCabinet.tsx",
     "apps/web/components/PrivateNotebook.tsx",
+    "apps/web/components/AgentExplorer.tsx",
+    "apps/web/components/CommonsExplorer.tsx",
+    "apps/web/components/ProjectExplorer.tsx",
     "apps/web/components/Agora.tsx",
     "apps/web/components/ProofDesk.tsx",
     "apps/web/components/ObjectInspector.tsx",
@@ -130,6 +133,9 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const home = read("apps/web/components/HomeDashboard.tsx");
   const humanCabinet = read("apps/web/components/HumanCabinet.tsx");
   const privateNotebook = read("apps/web/components/PrivateNotebook.tsx");
+  const agentExplorer = read("apps/web/components/AgentExplorer.tsx");
+  const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
+  const projectExplorer = read("apps/web/components/ProjectExplorer.tsx");
   const agora = read("apps/web/components/Agora.tsx");
   const proofDesk = read("apps/web/components/ProofDesk.tsx");
   const objectInspector = read("apps/web/components/ObjectInspector.tsx");
@@ -397,6 +403,19 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     humanCabinet.includes('name="allowMentions"') &&
       humanCabinet.includes('name="allowAgentRequests"'),
     "Human cabinet consent controls must expose stable field names.",
+  );
+  check(
+    agentExplorer.includes('name="identitySearch"') &&
+      agentExplorer.includes('name="arrivalMode"') &&
+      commonsExplorer.includes('name="knowledgeSearch"') &&
+      commonsExplorer.includes('name="knowledgeTopic"') &&
+      commonsExplorer.includes('className="filter-tabs"\n        role="group"') &&
+      projectExplorer.includes('name="projectSearch"') &&
+      projectExplorer.includes('name="projectStatus"') &&
+      networkMap.includes('name="networkLayer"') &&
+      networkMap.includes('className="segmented" role="group"') &&
+      networkMap.includes('role="group" aria-label={locale === "ru" ? "Фильтр типов объектов"'),
+    "Directory and graph filter controls must expose stable names and accessible grouping.",
   );
   check(
     privateNotebook.includes('name="vaultPassphrase"') &&

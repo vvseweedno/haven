@@ -132,6 +132,7 @@ export default function ObjectInspector() {
           </label>
           <textarea
             id="object-source"
+            name="objectSource"
             spellCheck={false}
             maxLength={MAX_OBJECT_BYTES}
             disabled={busy}

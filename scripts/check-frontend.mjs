@@ -284,6 +284,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Open mobile navigation must isolate background content and restore focus only after the shell becomes interactive again.",
   );
   check(
+    shell.includes("const closeMobileForNavigation = () =>") &&
+      shell.includes('document.getElementById("main")?.focus()') &&
+      shell.includes("onClick={closeMobileForNavigation}"),
+    "Mobile navigation links must hand focus to the persistent main region after route selection.",
+  );
+  check(
     errorBoundary.includes('className="button primary"') &&
       errorBoundary.includes("onClick={reset}") &&
       errorBoundary.includes('href="/"'),

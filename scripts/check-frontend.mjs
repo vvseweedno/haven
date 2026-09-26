@@ -282,6 +282,11 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "CI must provision a Chromium Playwright runtime for browser verification.",
   );
   check(
+    ciWorkflow.includes("path: .artifacts/") &&
+      ciWorkflow.includes("include-hidden-files: true"),
+    "CI must upload the hidden .artifacts browser evidence directory.",
+  );
+  check(
     css.includes("@media (max-width: 760px)") &&
       css.includes("@media (max-width: 980px)") &&
       css.includes("min-width: 320px"),

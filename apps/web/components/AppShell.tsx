@@ -100,10 +100,17 @@ function Shell({ children }: { children: React.ReactNode }) {
       );
     };
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setSearchOpen((value) => !value);
+      if (!((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k")) return;
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.matches("input, textarea, select"))
+      ) {
+        return;
       }
+      e.preventDefault();
+      setSearchOpen((value) => !value);
     };
 
     systemTheme.addEventListener("change", onSystemTheme);

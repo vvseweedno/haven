@@ -448,6 +448,10 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Responsive CSS must preserve desktop/tablet/mobile and the 320px floor.",
   );
   check(
+    css.includes("scroll-padding-top: 130px"),
+    "Sticky topbar and journey rail must not cover same-document hash targets.",
+  );
+  check(
     css.includes("@media (prefers-reduced-motion: reduce)"),
     "Frontend must retain a reduced-motion path.",
   );

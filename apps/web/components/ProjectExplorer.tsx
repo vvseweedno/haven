@@ -25,24 +25,58 @@ export function ProjectExplorer() {
   );
 
   useEffect(() => {
-    const sync = () =>
-      setSelected(
-        projects.find((item) => item.id === window.location.hash.slice(1)) ||
-          null,
-      );
+    const sync = () => {
+      const id = window.location.hash.slice(1);
+      setSelected(projects.find((item) => item.id === id) || null);
+    };
     sync();
     window.addEventListener("hashchange", sync);
-    return () => window.removeEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
   }, []);
 
   const inspect = (project: (typeof projects)[number]) => {
+    const previousState =
+      window.history.state && typeof window.history.state === "object"
+        ? window.history.state
+        : {};
+    const overlay = (previousState as {
+      havenOverlay?: { kind?: string; id?: string };
+    }).havenOverlay;
+    const nextState = {
+      ...previousState,
+      havenOverlay: { kind: "projects", id: project.id },
+    };
+    const href = `#${project.id}`;
+
+    if (overlay?.kind === "projects") {
+      window.history.replaceState(nextState, "", href);
+    } else {
+      window.history.pushState(nextState, "", href);
+    }
     setSelected(project);
-    window.history.replaceState(null, "", `#${project.id}`);
   };
 
   const close = () => {
+    const state =
+      window.history.state && typeof window.history.state === "object"
+        ? window.history.state
+        : null;
+    const overlay = (state as {
+      havenOverlay?: { kind?: string; id?: string };
+    } | null)?.havenOverlay;
+
+    if (overlay?.kind === "projects") {
+      window.history.back();
+      return;
+    }
+
     setSelected(null);
-    window.history.replaceState(null, "", window.location.pathname);
+    const nextUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(state, "", nextUrl);
   };
 
   const normalizedQuery = query.trim().toLowerCase();

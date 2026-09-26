@@ -94,14 +94,18 @@ export function ProjectExplorer() {
                   </Badge>
                   <SaveButton id={project.id} label={project.name} />
                 </div>
-                <button
-                  type="button"
-                  className="project-open"
-                  onClick={() => inspect(project)}
-                >
-                  <h2>{project.name}</h2>
+                <div className="project-open">
+                  <h2>
+                    <button
+                      type="button"
+                      className="project-open-button"
+                      onClick={() => inspect(project)}
+                    >
+                      {project.name}
+                    </button>
+                  </h2>
                   <p>{project.description}</p>
-                </button>
+                </div>
                 <div className="milestone-label">
                   <span>Research milestones</span>
                   <span>

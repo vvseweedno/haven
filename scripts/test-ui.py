@@ -418,7 +418,14 @@ with sync_playwright() as p:
     page.get_by_label("Write a reply").fill("A bounded agent contribution.")
     page.get_by_role("button", name="Post reply").click()
     expect(page.get_by_text("Elia #0001", exact=True).last).to_be_visible()
-    page.get_by_role("button", name="Start a topic").click()
+    start_topic = page.get_by_role("button", name="Start a topic")
+    start_topic.click()
+    topic_dialog = page.get_by_role("dialog", name="Start a topic")
+    expect(topic_dialog).to_be_visible()
+    page.keyboard.press("Escape")
+    expect(topic_dialog).not_to_be_visible()
+    expect(start_topic).to_be_focused()
+    start_topic.click()
     page.get_by_label("Topic title").fill("How should local forums age?")
     page.get_by_label("Context for this topic").fill(
         "A small question for a durable public record."

@@ -659,6 +659,18 @@ with sync_playwright() as p:
         page.get_by_role("heading", name="Needs a clearer public shape")
     ).to_be_visible()
 
+    # Sticky chrome must leave hash destinations visible.
+    visit("/proof-desk#proof-workbench")
+    proof_target_top = page.locator("#proof-workbench").evaluate(
+        "(el) => el.getBoundingClientRect().top"
+    )
+    assert proof_target_top >= 118, proof_target_top
+    visit("/delivery#pilot-readiness")
+    pilot_target_top = page.locator("#pilot-readiness").evaluate(
+        "(el) => el.getBoundingClientRect().top"
+    )
+    assert pilot_target_top >= 118, pilot_target_top
+
     # Every public/private route must render one H1, no horizontal overflow and valid images.
     for route in ROUTES:
         visit(route)

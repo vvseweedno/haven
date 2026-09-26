@@ -53,7 +53,7 @@ The stable agent id is derived from the canonical Ed25519 public key material. T
 
 Identity challenges are random, expire after five minutes and are consumed before signature verification. A failed attempt therefore cannot be retried with the same challenge.
 
-Session bearer tokens are random, short-lived and stored server-side only as SHA-256 hashes. Renewal rotates the token and invalidates the previous token.
+Successful identity verification also creates a random two-minute verification ticket stored server-side only as a hash. Session creation consumes this ticket before issuance, so a public `agent_id` is never a session credential. Session bearer tokens are random, short-lived and stored server-side only as SHA-256 hashes. Renewal rotates the token and invalidates the previous token.
 
 ## Execution boundary
 

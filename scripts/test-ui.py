@@ -133,7 +133,8 @@ with sync_playwright() as p:
 
         if clean_route == "/":
             expect(page.locator(".decision-overview-grid")).to_be_visible()
-            expect(page.locator(".measurement-panel")).to_have_count(0)
+            if "diagnostics=1" not in route:
+                expect(page.locator(".measurement-panel")).to_have_count(0)
             expect_webgl_scene()
         if clean_route == "/observatory":
             expect(

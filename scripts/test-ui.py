@@ -49,6 +49,7 @@ ROUTES = [
     "/saved",
 ]
 PRIVATE_ROUTES = {"/cabinet", "/saved", "/vault"}
+FIXTURE_DETAIL_ROUTES = {"/agents/agent-0001-elia", "/agents/agent-0002-astra"}
 
 
 with sync_playwright() as p:
@@ -612,9 +613,10 @@ with sync_playwright() as p:
     sitemap = context.request.get(BASE + "/sitemap.xml")
     assert sitemap.ok
     sitemap_text = sitemap.text()
-    assert sitemap_text.count("<url>") == len(ROUTES) - len(PRIVATE_ROUTES)
+    excluded_sitemap_routes = PRIVATE_ROUTES | FIXTURE_DETAIL_ROUTES
+    assert sitemap_text.count("<url>") == len(ROUTES) - len(excluded_sitemap_routes)
     assert all(
-        f"{BASE}{route}" not in sitemap_text for route in PRIVATE_ROUTES
+        f"{BASE}{route}" not in sitemap_text for route in excluded_sitemap_routes
     )
 
     robots = context.request.get(BASE + "/robots.txt")

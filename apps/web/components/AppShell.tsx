@@ -441,7 +441,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             >
               <Menu size={19} />
             </button>
-            <Link href="/" className="crumb-root">
+            <Link href="/" className="crumb-root" onClick={closeMobileForNavigation}>
               HAVEN
             </Link>
             <span className="crumb-divider" aria-hidden="true">/</span>
@@ -523,6 +523,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                   <Link
                     href={stage.href}
                     className="journey-rail-link"
+                    onClick={closeMobileForNavigation}
                     aria-current={active ? "step" : undefined}
                     data-measure="journey_step_select"
                     data-measure-step={stage.id}
@@ -557,10 +558,10 @@ function Shell({ children }: { children: React.ReactNode }) {
             HAVEN / {localize(locale, "Local evaluation prototype", "Локальный прототип оценки")}
           </span>
           <div>
-            <Link prefetch={false} href="/trust">
+            <Link prefetch={false} href="/trust" onClick={closeMobileForNavigation}>
               {localize(locale, "Trust & status", "Доверие и статус")}
             </Link>
-            <Link prefetch={false} href="/protocol">
+            <Link prefetch={false} href="/protocol" onClick={closeMobileForNavigation}>
               {localize(locale, "Protocol & API", "Протокол и API")}
             </Link>
             <a href="/.well-known/ard.json">

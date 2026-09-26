@@ -100,6 +100,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/AppShell.tsx",
     "apps/web/components/SearchDialog.tsx",
     "apps/web/components/Workspace.tsx",
+    "apps/web/components/ProtocolCards.tsx",
+    "apps/web/app/protocol/page.tsx",
     "apps/web/app/globals.css",
     "apps/web/next.config.ts",
     ".github/workflows/ci.yml",
@@ -117,6 +119,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const shell = read("apps/web/components/AppShell.tsx");
   const search = read("apps/web/components/SearchDialog.tsx");
   const workspace = read("apps/web/components/Workspace.tsx");
+  const protocolCards = read("apps/web/components/ProtocolCards.tsx");
+  const protocolRoute = read("apps/web/app/protocol/page.tsx");
   const errorBoundary = read("apps/web/app/error.tsx");
   const globalError = read("apps/web/app/global-error.tsx");
   const loading = read("apps/web/app/loading.tsx");
@@ -178,6 +182,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       search.includes("<Link") &&
       !search.includes('<a\n                key={item.id}'),
     "Internal search results must use Next Link navigation.",
+  );
+  check(
+    protocolCards.includes('import { protocolCards } from "@/lib/haven-data"') &&
+      protocolRoute.includes("<ProtocolCards />") &&
+      !protocolRoute.includes("cards={protocolCards}"),
+    "Client protocol cards must own icon-bearing data instead of receiving React component functions across the server boundary.",
   );
   check(
     workspace.includes("const previousFocus = useRef") &&

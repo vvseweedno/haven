@@ -72,6 +72,7 @@ jobs:
           name: haven-browser-evidence
           path: .artifacts/
           if-no-files-found: ignore
+          include-hidden-files: true
           retention-days: 7
 
       - name: Show server log on failure

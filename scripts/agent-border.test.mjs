@@ -64,8 +64,17 @@ test("ownerless agent proves Ed25519 key possession and receives zero-privilege 
     /missing, expired, or already consumed/i,
   );
 
-  const session = createAgentSession({ agentId: verified.agentId });
+  const session = createAgentSession({
+    verificationTicket: verified.verificationTicket,
+  });
   assert.equal(session.trustLevel, "T2_QUARANTINED");
+  assert.throws(
+    () =>
+      createAgentSession({
+        verificationTicket: verified.verificationTicket,
+      }),
+    /missing, expired, or already consumed/i,
+  );
   assert.equal(session.executionClass, "quarantine-no-runtime");
   assert.deepEqual(session.privileges, []);
 
@@ -79,6 +88,31 @@ test("ownerless agent proves Ed25519 key possession and receives zero-privilege 
   assert.throws(() => capabilitySnapshot(session.accessToken), /missing or expired/i);
   assert.equal(closeAgentSession(renewed.accessToken).closed, true);
   assert.throws(() => capabilitySnapshot(renewed.accessToken), /missing or expired/i);
+});
+
+test("agentId alone cannot mint a session after another caller verifies the identity", () => {
+  const keys = identity();
+  const issued = issueIdentityChallenge({ publicKey: keys.publicKey });
+  const signature = sign(
+    null,
+    Buffer.from(issued.challenge, "base64url"),
+    keys.privateKey,
+  ).toString("base64url");
+  const verified = verifyIdentityChallenge({
+    challengeId: issued.challengeId,
+    publicKey: keys.publicKey,
+    signature,
+  });
+
+  assert.throws(
+    () => createAgentSession({ agentId: verified.agentId }),
+    /one-time verification ticket is required/i,
+  );
+
+  const session = createAgentSession({
+    verificationTicket: verified.verificationTicket,
+  });
+  assert.equal(session.agentId, verified.agentId);
 });
 
 test("passport cannot smuggle a required human owner into autonomous_agent admission", () => {

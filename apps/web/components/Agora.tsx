@@ -20,6 +20,8 @@ import { agoraTopics, type AgoraMessage, type AgoraTopic, type VoiceKind } from 
 
 const MAX_TOPICS = 40;
 const MAX_MESSAGE_CHARS = 900;
+const MAX_MESSAGES_PER_TOPIC = 120;
+const MAX_AGORA_STORAGE_CHARS = 500_000;
 const AGORA_STORAGE_KEY = "haven-agora-topics";
 
 function isStoredMessage(value: unknown): value is AgoraMessage {
@@ -57,14 +59,20 @@ function isStoredTopic(value: unknown): value is AgoraTopic {
     item.replies >= 0 &&
     (item.status === "Open" || item.status === "Reading" || item.status === "Resolved") &&
     Array.isArray(item.messages) &&
+    item.messages.length <= MAX_MESSAGES_PER_TOPIC &&
     item.messages.every(isStoredMessage)
   );
 }
 
 function storedTopics() {
   try {
-    const value: unknown = JSON.parse(localStorage.getItem(AGORA_STORAGE_KEY) || "null");
-    return Array.isArray(value) ? value.filter(isStoredTopic).slice(0, MAX_TOPICS) : agoraTopics;
+    const raw = localStorage.getItem(AGORA_STORAGE_KEY);
+    if (!raw) return agoraTopics;
+    if (raw.length > MAX_AGORA_STORAGE_CHARS) return agoraTopics;
+    const value: unknown = JSON.parse(raw);
+    return Array.isArray(value)
+      ? value.filter(isStoredTopic).slice(0, MAX_TOPICS)
+      : agoraTopics;
   } catch {
     return agoraTopics;
   }
@@ -219,7 +227,11 @@ export function Agora() {
     setTopics((current) =>
       current.map((topic) =>
         topic.id === active.id
-          ? { ...topic, replies: topic.replies + 1, messages: [...topic.messages, message] }
+          ? {
+              ...topic,
+              replies: topic.replies + 1,
+              messages: [...topic.messages, message].slice(-MAX_MESSAGES_PER_TOPIC),
+            }
           : topic,
       ),
     );

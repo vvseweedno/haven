@@ -342,6 +342,11 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Mobile or keyboard navigation must hand focus to the persistent main region after route selection.",
   );
   check(
+    shell.includes('target.matches("input, textarea, select")') &&
+      shell.includes("target.isContentEditable"),
+    "Global command shortcuts must not steal Ctrl/Cmd+K from editable controls.",
+  );
+  check(
     shell.includes('<a href="/.well-known/ard.json">') &&
       !shell.includes('<Link prefetch={false} href="/.well-known/ard.json">'),
     "Machine-readable public resources must use native anchors rather than the app router.",

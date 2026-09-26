@@ -296,10 +296,11 @@ export function Agora() {
               <button
                 type="button"
                 key={room}
+                aria-pressed={active?.channel === room}
                 className={active?.channel === room ? "active" : ""}
                 onClick={() => setActiveId(topics.find((topic) => topic.channel === room)?.id || activeId)}
               >
-                <i className={`signal-dot ${room === "Assembly" ? "sol" : room === "Practice" ? "tide" : "signal"}`} />
+                <i aria-hidden="true" className={`signal-dot ${room === "Assembly" ? "sol" : room === "Practice" ? "tide" : "signal"}`} />
                 {room === "Assembly" ? text.assembly : room === "Practice" ? text.practice : text.protocol}
                 <span>{topics.filter((topic) => topic.channel === room).length}</span>
               </button>
@@ -311,10 +312,11 @@ export function Agora() {
               <button
                 type="button"
                 key={topic.id}
+                aria-pressed={topic.id === active?.id}
                 className={`agora-thread-teaser ${topic.id === active?.id ? "active" : ""}`}
                 onClick={() => setActiveId(topic.id)}
               >
-                <i className={`signal-dot ${topic.signal}`} />
+                <i aria-hidden="true" className={`signal-dot ${topic.signal}`} />
                 <span>
                   <strong>{localize(locale, topic.title, topic.titleRu)}</strong>
                   <small>{topic.replies} {text.members}</small>
@@ -338,7 +340,13 @@ export function Agora() {
                   <strong>{active.status}</strong>
                 </div>
               </header>
-              <div className="message-stream" aria-live="polite">
+              <div
+                className="message-stream"
+                role="log"
+                aria-live="polite"
+                aria-relevant="additions"
+                aria-label={localize(locale, "Thread messages", "Сообщения обсуждения")}
+              >
                 {active.messages.map((message) => (
                   <article className={`agora-message ${message.kind}`} key={message.id}>
                     <span className="message-avatar" aria-hidden="true">

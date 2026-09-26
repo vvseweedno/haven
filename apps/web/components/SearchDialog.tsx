@@ -59,6 +59,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
     measure("search_opened");
   }, []);
   const wantsCatalog = query.trim().length > 0;
+  const catalogPending = wantsCatalog && !catalogLoaded && !error;
   useEffect(() => {
     if (!wantsCatalog) {
       setError("");
@@ -123,7 +124,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
   const total = results.length;
   useEffect(() => {
     const normalized = query.trim();
-    if (loading || error || !normalized || total !== 0) return;
+    if (!catalogLoaded || loading || error || !normalized || total !== 0) return;
     if (lastNoResultQuery.current === normalized) return;
     lastNoResultQuery.current = normalized;
     measure("search_no_results", { source: "public_catalog" });
@@ -152,7 +153,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
       </div>
       <div className="search-results" aria-live="polite" aria-busy={loading}>
         <p className="eyebrow">
-          {loading
+          {loading || catalogPending
             ? localize(locale, "Loading public catalog...", "Загрузка публичного каталога...")
             : wantsCatalog && error
               ? localize(locale, "Catalog unavailable", "Каталог недоступен")
@@ -182,6 +183,7 @@ export default function SearchDialog({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           !loading &&
+          !catalogPending &&
           (query ? (
             results.map((item) => (
               <Link

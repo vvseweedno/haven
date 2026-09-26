@@ -30,11 +30,15 @@ export function ProjectExplorer() {
       setSelected(projects.find((item) => item.id === id) || null);
     };
     sync();
+    const frame = requestAnimationFrame(sync);
     window.addEventListener("hashchange", sync);
     window.addEventListener("popstate", sync);
+    window.addEventListener("pageshow", sync);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("hashchange", sync);
       window.removeEventListener("popstate", sync);
+      window.removeEventListener("pageshow", sync);
     };
   }, []);
 

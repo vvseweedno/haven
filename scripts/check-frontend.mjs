@@ -390,6 +390,14 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       );
     }
 
+    for (const match of source.matchAll(/<button\b[\s\S]*?<\/button>/g)) {
+      const block = match[0];
+      check(
+        !/<(?:h[1-6]|p|div|article|section|ul|ol)\b/.test(block),
+        `${display} contains block-level document structure inside a button.`,
+      );
+    }
+
     for (const tag of [
       ...openingTags(source, "img"),
       ...openingTags(source, "Image"),

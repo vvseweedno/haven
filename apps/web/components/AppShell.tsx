@@ -63,6 +63,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   const menuButton = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLElement>(null);
   const keyboardNavigation = useRef(false);
+  const focusMainAfterNavigation = useRef(false);
   const explicitTheme = useRef<"dark" | "light" | null>(null);
   useEffect(() => {
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -126,7 +127,20 @@ function Shell({ children }: { children: React.ReactNode }) {
     setMobileOpen(false);
     setSearchOpen(false);
     setSkipVisible(false);
+
+    const shouldFocusMain = focusMainAfterNavigation.current;
+    focusMainAfterNavigation.current = false;
     keyboardNavigation.current = false;
+
+    if (!shouldFocusMain) return;
+    const firstFrame = requestAnimationFrame(() => {
+      const secondFrame = requestAnimationFrame(() => {
+        document.getElementById("main")?.focus();
+      });
+      focusMainAfterNavigation.current = false;
+      return () => cancelAnimationFrame(secondFrame);
+    });
+    return () => cancelAnimationFrame(firstFrame);
   }, [pathname]);
   useEffect(() => {
     const markKeyboardNavigation = (event: KeyboardEvent) => {
@@ -220,14 +234,15 @@ function Shell({ children }: { children: React.ReactNode }) {
     setMobileOpen(false);
     requestAnimationFrame(() => menuButton.current?.focus());
   };
-  const closeMobileForNavigation = () => {
-    const shouldFocusMain = mobileViewport || keyboardNavigation.current;
+  const closeMobileForNavigation = (
+    event?: React.MouseEvent<HTMLElement>,
+  ) => {
+    const keyboardActivation = event?.detail === 0;
+    const shouldFocusMain =
+      mobileViewport || keyboardNavigation.current || keyboardActivation;
     setMobileOpen(false);
     if (!shouldFocusMain) return;
-    keyboardNavigation.current = false;
-    requestAnimationFrame(() => {
-      document.getElementById("main")?.focus();
-    });
+    focusMainAfterNavigation.current = true;
   };
   const openSearchFromSidebar = () => {
     if (!window.matchMedia("(max-width: 760px)").matches) {

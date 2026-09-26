@@ -674,7 +674,7 @@ with sync_playwright() as p:
     page.get_by_role("button", name="Switch to Russian").click()
     expect(page.locator("html")).to_have_attribute("lang", "ru")
     expect(page.get_by_label("Поиск проектов")).to_be_visible()
-    expect(page.get_by_role("button", name="Открыть проект")).to_be_visible()
+    expect(page.get_by_role("button", name="Открыть проект").first).to_be_visible()
 
     visit("/forge/inspect")
     expect(page.get_by_role("button", name="Проверить объект")).to_be_visible()

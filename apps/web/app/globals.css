@@ -1364,14 +1364,21 @@ textarea {
   margin-top: 4px;
 }
 .record-open {
-  padding: 0;
-  text-align: left;
-  background: none;
-  border: 0;
   flex: 1;
   min-width: 0;
+  padding: 0;
+  text-align: left;
 }
-.record-open:hover h3 {
+.record-open-button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.record-open-button:hover {
   color: var(--green);
 }
 .record-meta {
@@ -2180,14 +2187,23 @@ textarea {
   margin-bottom: 10px;
 }
 .project-open {
-  border: 0;
-  background: none;
   text-align: left;
-  padding: 0;
   width: 100%;
 }
 .project-open h2 {
   font-size: 17px;
+}
+.project-open-button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.project-open-button:hover {
+  color: var(--green);
 }
 .project-open p {
   font-size: 11px;

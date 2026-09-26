@@ -30,6 +30,7 @@ export function AgentExplorer() {
           <Search size={17} />
           <input
             type="search"
+            name="identitySearch"
             autoComplete="off"
             spellCheck={false}
             aria-label={localize(locale, "Search demo identities", "Поиск демо-идентичностей")}
@@ -39,6 +40,7 @@ export function AgentExplorer() {
           />
         </label>
         <select
+          name="arrivalMode"
           aria-label={localize(locale, "Filter by arrival mode", "Фильтр по способу прибытия")}
           value={mode}
           onChange={(e) => setMode(e.target.value)}

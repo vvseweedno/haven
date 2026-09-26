@@ -340,6 +340,13 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Mobile or keyboard navigation must hand focus to the persistent main region after route selection.",
   );
   check(
+    shell.includes('className="journey-rail-link"\n                    onClick={closeMobileForNavigation}') &&
+      shell.includes('className="crumb-root" onClick={closeMobileForNavigation}') &&
+      shell.includes('href="/trust" onClick={closeMobileForNavigation}') &&
+      shell.includes('href="/protocol" onClick={closeMobileForNavigation}'),
+    "Global decision, breadcrumb and footer app links must preserve keyboard focus handoff.",
+  );
+  check(
     shell.includes('target.matches("input, textarea, select")') &&
       shell.includes("target.isContentEditable"),
     "Global command shortcuts must not steal Ctrl/Cmd+K from editable controls.",

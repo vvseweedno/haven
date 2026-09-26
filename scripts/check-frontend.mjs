@@ -97,6 +97,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/Dashboard.tsx",
     "apps/web/components/HumanCabinet.tsx",
     "apps/web/components/Agora.tsx",
+    "apps/web/components/ParallelAtelier.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
     "apps/web/components/CommonsExplorer.tsx",
@@ -126,6 +127,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const home = read("apps/web/components/HomeDashboard.tsx");
   const humanCabinet = read("apps/web/components/HumanCabinet.tsx");
   const agora = read("apps/web/components/Agora.tsx");
+  const parallelAtelier = read("apps/web/components/ParallelAtelier.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
   const commonsExplorer = read("apps/web/components/CommonsExplorer.tsx");
@@ -383,6 +385,24 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       agora.includes('window.addEventListener("storage", read)') &&
       agora.includes('window.removeEventListener("storage", read)'),
     "Agora browser-local topics must stay coherent across tabs.",
+  );
+  check(
+    agora.includes("MAX_MESSAGES_PER_TOPIC") &&
+      agora.includes("MAX_AGORA_STORAGE_CHARS") &&
+      agora.includes(".slice(-MAX_MESSAGES_PER_TOPIC)"),
+    "Agora storage and rendered message history must remain explicitly bounded.",
+  );
+  check(
+    humanCabinet.includes("MAX_CABINET_STORAGE_CHARS") &&
+      humanCabinet.includes("raw.length > MAX_CABINET_STORAGE_CHARS"),
+    "Human Cabinet must reject unexpectedly large browser-local payloads before JSON parsing.",
+  );
+  check(
+    parallelAtelier.includes('const ATELIER_STORAGE_KEY = "haven-parallel-briefs"') &&
+      parallelAtelier.includes("MAX_ATELIER_STORAGE_CHARS") &&
+      parallelAtelier.includes('window.addEventListener("storage", read)') &&
+      parallelAtelier.includes('name="parallelBrief"'),
+    "Parallel Atelier must keep its bounded local queue synchronized across tabs with stable form semantics.",
   );
   check(
     !css.includes(".agora-overlay {") &&

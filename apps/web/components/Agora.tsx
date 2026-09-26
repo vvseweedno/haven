@@ -368,7 +368,7 @@ export function Agora() {
                     </button>
                   </div>
                 </div>
-                <textarea value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={MAX_MESSAGE_CHARS} placeholder={text.placeholder} aria-label={text.reply} />
+                <textarea name="reply" value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={MAX_MESSAGE_CHARS} placeholder={text.placeholder} aria-label={text.reply} />
                 <div className="composer-footer">
                   <small>{draft.length}/{MAX_MESSAGE_CHARS}</small>
                   <button type="button" className="agora-command" onClick={postReply} disabled={!draft.trim()}>

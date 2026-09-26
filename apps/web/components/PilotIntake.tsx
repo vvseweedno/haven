@@ -213,7 +213,12 @@ export function PilotIntake() {
         </p>
         <h2 id="pilot-intake-title">{copy.title}</h2>
         <p>{copy.lead}</p>
-        <div className="pilot-intake-status" aria-live="polite">
+        <div
+          id="pilot-intake-status"
+          className="pilot-intake-status"
+          role="status"
+          aria-live="polite"
+        >
           <ShieldCheck size={17} aria-hidden="true" />
           <span>
             {status === null
@@ -241,6 +246,7 @@ export function PilotIntake() {
         className="pilot-intake-form"
         onSubmit={submit}
         aria-busy={submitting}
+        aria-describedby="pilot-intake-status"
       >
         {status !== null && !status.configured ? (
           <div className="pilot-intake-unavailable" role="status">
@@ -262,6 +268,9 @@ export function PilotIntake() {
         ) : null}
 
         <fieldset className="pilot-intake-fields" disabled={!status?.configured}>
+        <legend className="sr-only">
+          {localize(locale, "Pilot request details", "Данные запроса на пилот")}
+        </legend>
         <div className="pilot-intake-grid">
           <label>
             <span>{copy.name}</span>

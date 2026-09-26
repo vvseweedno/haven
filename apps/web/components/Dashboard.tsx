@@ -417,6 +417,7 @@ export function Dashboard() {
                 </p>
               </div>
               <select
+                name="activityFilter"
                 value={eventFilter}
                 onChange={(e) => setEventFilter(e.target.value)}
                 aria-label={copy.activityFilter}

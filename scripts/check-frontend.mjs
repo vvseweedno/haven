@@ -95,6 +95,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/app/loading.tsx",
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
+    "apps/web/components/ArrivalWorkbench.tsx",
+    "apps/web/components/PilotIntake.tsx",
     "apps/web/components/ExperienceHero.tsx",
     "apps/web/components/DeferredContinuumScene.tsx",
     "apps/web/components/AppShell.tsx",
@@ -118,6 +120,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const homeRoute = read("apps/web/app/page.tsx");
   const observatoryRoute = read("apps/web/app/observatory/page.tsx");
   const home = read("apps/web/components/HomeDashboard.tsx");
+  const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
+  const pilotIntake = read("apps/web/components/PilotIntake.tsx");
   const hero = read("apps/web/components/ExperienceHero.tsx");
   const deferredScene = read("apps/web/components/DeferredContinuumScene.tsx");
   const shell = read("apps/web/components/AppShell.tsx");
@@ -163,6 +167,20 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       deferredScene.includes("requestIdleCallback") &&
       deferredScene.includes('rootMargin: "240px 0px"'),
     "Decorative Three.js should be deferred until the scene is near the viewport and the browser is idle.",
+  );
+  check(
+    arrivalWorkbench.includes("AbortController") &&
+      arrivalWorkbench.includes("validationRequest.current?.abort()") &&
+      arrivalWorkbench.includes("disabled={validating}") &&
+      arrivalWorkbench.includes("signal: controller.signal"),
+    "Arrival manifest validation must be cancellable, stale-safe and resistant to duplicate submission.",
+  );
+  check(
+    pilotIntake.includes("submissionRequest") &&
+      pilotIntake.includes("AbortController") &&
+      pilotIntake.includes('controller.abort("submit_timeout")') &&
+      pilotIntake.includes("signal: controller.signal"),
+    "Pilot status and submission requests must have abort and timeout boundaries.",
   );
   check(
     observatoryRoute.includes('import { Dashboard }') &&

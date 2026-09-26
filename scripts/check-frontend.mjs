@@ -103,6 +103,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/PageHeader.tsx",
     "apps/web/components/EndpointGrid.tsx",
     "apps/web/components/ProtocolCards.tsx",
+    "apps/web/components/LineageGraph.tsx",
     "apps/web/app/protocol/page.tsx",
     "apps/web/app/agents/[id]/page.tsx",
     "apps/web/app/globals.css",
@@ -125,6 +126,7 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const pageHeader = read("apps/web/components/PageHeader.tsx");
   const endpointGrid = read("apps/web/components/EndpointGrid.tsx");
   const protocolCards = read("apps/web/components/ProtocolCards.tsx");
+  const lineageGraph = read("apps/web/components/LineageGraph.tsx");
   const protocolRoute = read("apps/web/app/protocol/page.tsx");
   const agentDetailRoute = read("apps/web/app/agents/[id]/page.tsx");
   const errorBoundary = read("apps/web/app/error.tsx");
@@ -188,6 +190,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       search.includes("if (!catalogLoaded || loading || error || !normalized || total !== 0) return") &&
       search.includes("loading || catalogPending"),
     "Search must not expose or measure zero-result states before the public catalog is ready.",
+  );
+  check(
+    search.includes(": wantsCatalog") &&
+      search.includes("(wantsCatalog ? (") &&
+      search.includes("!wantsCatalog && catalogLoaded"),
+    "Whitespace-only search input must remain in the task-first state.",
   );
   check(
     search.includes('import Link from "next/link"') &&
@@ -282,6 +290,13 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     networkMap.includes("reducedMotion") &&
       networkMap.includes("disabled={reducedMotion}"),
     "Observatory connection animation must obey the reduced-motion preference in component state.",
+  );
+  check(
+    lineageGraph.includes('matchMedia("(prefers-reduced-motion: reduce)")') &&
+      lineageGraph.includes("animated: !reducedMotion") &&
+      lineageGraph.includes("useMemo<Node[]>") &&
+      lineageGraph.includes("useMemo<Edge[]>"),
+    "Lineage graph motion and graph objects must be bounded by user preference and stable memoized data.",
   );
   check(
     workspace.includes("document.body.appendChild(anchor)") &&

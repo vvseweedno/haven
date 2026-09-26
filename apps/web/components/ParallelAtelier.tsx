@@ -21,6 +21,9 @@ type Brief = {
   createdAt: string;
 };
 
+const ATELIER_STORAGE_KEY = "haven-parallel-briefs";
+const MAX_ATELIER_STORAGE_CHARS = 32_000;
+
 const copy = {
   en: {
     eyebrow: "HAVEN / Parallel atelier",
@@ -74,14 +77,37 @@ export function ParallelAtelier() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    try {
-      const value: unknown = JSON.parse(localStorage.getItem("haven-parallel-briefs") || "[]");
-      if (Array.isArray(value)) {
-        setQueued(value.filter((item) => item && typeof item.title === "string" && item.title.length <= 160 && typeof item.createdAt === "string" && item.createdAt.length <= 40).slice(0, 8) as Brief[]);
+    const read = (event?: StorageEvent) => {
+      if (event && event.key !== ATELIER_STORAGE_KEY && event.key !== null) return;
+      try {
+        const raw = localStorage.getItem(ATELIER_STORAGE_KEY);
+        if (!raw || raw.length > MAX_ATELIER_STORAGE_CHARS) {
+          setQueued([]);
+          return;
+        }
+        const value: unknown = JSON.parse(raw);
+        if (Array.isArray(value)) {
+          setQueued(
+            value
+              .filter(
+                (item) =>
+                  item &&
+                  typeof item.title === "string" &&
+                  item.title.length <= 160 &&
+                  typeof item.createdAt === "string" &&
+                  item.createdAt.length <= 40,
+              )
+              .slice(0, 8) as Brief[],
+          );
+        }
+      } catch {
+        setQueued([]);
       }
-    } catch {
-      /* Empty local queue is the safe fallback. */
-    }
+    };
+
+    read();
+    window.addEventListener("storage", read);
+    return () => window.removeEventListener("storage", read);
   }, []);
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +117,7 @@ export function ParallelAtelier() {
     const next = [{ title, createdAt: new Date().toISOString() }, ...queued].slice(0, 8);
     setQueued(next);
     try {
-      localStorage.setItem("haven-parallel-briefs", JSON.stringify(next));
+      localStorage.setItem(ATELIER_STORAGE_KEY, JSON.stringify(next));
     } catch {
       /* This keeps the local session useful even if persistence is denied. */
     }
@@ -142,7 +168,7 @@ export function ParallelAtelier() {
       <section className="atelier-action-grid">
         <form className="parallel-brief" onSubmit={submit}>
           <div className="atelier-section-heading"><span>{text.create}</span><Sparkles size={17} /></div>
-          <textarea value={brief} onChange={(event) => setBrief(event.target.value)} maxLength={160} placeholder={text.placeholder} aria-label={text.create} />
+          <textarea name="parallelBrief" value={brief} onChange={(event) => setBrief(event.target.value)} maxLength={160} placeholder={text.placeholder} aria-label={text.create} />
           <button type="submit" className="agora-command" disabled={!brief.trim()}><GitFork size={16} />{text.queue}</button>
           {queued.length > 0 && <div className="queued-briefs">{queued.map((item) => <span key={item.createdAt}>{item.title}</span>)}</div>}
         </form>

@@ -4,7 +4,7 @@ import {
   randomBytes,
   verify as verifyBytes,
 } from "node:crypto";
-import { createRequestBudget } from "../security";
+import { createRequestBudget } from "../security.ts";
 
 export const HAVEN_BORDER_PROTOCOL = "haven/1.3";
 export const BORDER_BODY_LIMIT_BYTES = 16 * 1024;

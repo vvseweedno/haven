@@ -186,6 +186,21 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Arrival manifest validation must be cancellable, stale-safe and resistant to duplicate submission.",
   );
   check(
+    arrivalWorkbench.includes('<fieldset className="arrival-modes">') &&
+      arrivalWorkbench.includes("<legend>") &&
+      arrivalWorkbench.includes('name="displayName"') &&
+      arrivalWorkbench.includes('name="canonicalIdentity"') &&
+      arrivalWorkbench.includes('name="originUndisclosed"') &&
+      arrivalWorkbench.includes('name="origin"'),
+    "Arrival mode and draft inputs must expose native grouped form semantics.",
+  );
+  check(
+    css.includes(".arrival-modes legend") &&
+      css.includes("border: 0") &&
+      css.includes("min-width: 0"),
+    "Arrival fieldset styling must preserve responsive layout without reintroducing default browser chrome.",
+  );
+  check(
     commonsExplorer.includes('havenOverlay: { kind: "commons"') &&
       commonsExplorer.includes('window.addEventListener("popstate", sync)') &&
       commonsExplorer.includes("window.history.pushState") &&

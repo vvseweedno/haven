@@ -111,6 +111,87 @@ with sync_playwright() as p:
         )
         assert healthy, f"WebGL context is unavailable or lost: {selector}"
 
+    def audit_accessibility_basics(route):
+        violations = page.evaluate(
+            """() => {
+                const violations = [];
+                const visible = (el) => {
+                    const style = getComputedStyle(el);
+                    return style.display !== 'none' &&
+                        style.visibility !== 'hidden' &&
+                        !el.hidden &&
+                        (el.getClientRects().length > 0 || style.position === 'fixed');
+                };
+                const describe = (el) => {
+                    const id = el.id ? '#' + el.id : '';
+                    const cls = typeof el.className === 'string' && el.className
+                        ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.')
+                        : '';
+                    return el.tagName.toLowerCase() + id + cls;
+                };
+                const ids = new Map();
+                for (const el of document.querySelectorAll('[id]')) {
+                    if (!el.id) continue;
+                    ids.set(el.id, (ids.get(el.id) || 0) + 1);
+                }
+                for (const [id, count] of ids) {
+                    if (count > 1) violations.push('duplicate id #' + id + ' x' + count);
+                }
+
+                for (const el of document.querySelectorAll('input, select, textarea')) {
+                    if (el.type === 'hidden' || !visible(el)) continue;
+                    const labelledBy = el.getAttribute('aria-labelledby');
+                    const hasName = Boolean(
+                        el.getAttribute('aria-label') ||
+                        el.getAttribute('title') ||
+                        (el.labels && el.labels.length) ||
+                        (labelledBy && labelledBy.split(/\s+/).every((id) => document.getElementById(id)))
+                    );
+                    if (!hasName) violations.push('unnamed form control ' + describe(el));
+                }
+
+                for (const el of document.querySelectorAll('button, a[href]')) {
+                    if (!visible(el)) continue;
+                    const labelledBy = el.getAttribute('aria-labelledby');
+                    const imageAlt = Array.from(el.querySelectorAll('img'))
+                        .map((img) => img.alt || '')
+                        .join(' ')
+                        .trim();
+                    const hasName = Boolean(
+                        (el.getAttribute('aria-label') || '').trim() ||
+                        (el.getAttribute('title') || '').trim() ||
+                        (el.textContent || '').trim() ||
+                        imageAlt ||
+                        (labelledBy && labelledBy.split(/\s+/).every((id) => document.getElementById(id)))
+                    );
+                    if (!hasName) violations.push('unnamed interactive ' + describe(el));
+                }
+
+                for (const attr of ['aria-labelledby', 'aria-describedby', 'aria-controls']) {
+                    for (const el of document.querySelectorAll('[' + attr + ']')) {
+                        const value = (el.getAttribute(attr) || '').trim();
+                        if (!value) continue;
+                        for (const id of value.split(/\s+/)) {
+                            if (!document.getElementById(id)) {
+                                violations.push(attr + ' missing #' + id + ' on ' + describe(el));
+                            }
+                        }
+                    }
+                }
+
+                for (const hidden of document.querySelectorAll('[aria-hidden="true"]:not([inert])')) {
+                    const focusable = hidden.querySelector(
+                        'a[href], button, input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (focusable && visible(focusable)) {
+                        violations.push('focusable content inside aria-hidden ' + describe(hidden));
+                    }
+                }
+                return violations;
+            }"""
+        )
+        assert not violations, f"Accessibility basics failed on {route}:\n" + "\n".join(violations)
+
     def visit(route):
         clean_route = route.split("#", 1)[0].split("?", 1)[0]
         response = page.goto(BASE + route, wait_until="networkidle", timeout=90000)
@@ -120,6 +201,7 @@ with sync_playwright() as p:
         )
         expect(page.locator("main h1").first).to_be_visible()
         assert page.locator("main h1").count() == 1, f"Expected one H1: {route}"
+        audit_accessibility_basics(route)
 
         title = page.title()
         assert title.endswith(" | HAVEN"), (route, title)

@@ -303,3 +303,15 @@ The follow-up frontend pass tightened behavior that only appeared under real bro
 - primary fit/proof routes keep normal Next.js prefetch behavior while deep specialist routes can remain intent-loaded;
 - deferred Continuum WebGL waits until its surface approaches the viewport and browser idle time is available, while keeping the existing static placeholder and reduced-motion/runtime fallbacks;
 - the static frontend audit now protects search recovery, semantic dialog headings, primary-route prefetching and near-viewport Three.js loading.
+
+
+## Implemented continuation — 2026-09-26 / pass 2
+
+The second continuation pass focused on interaction correctness that sits between routing, browser state and accessibility:
+
+- keyboard-driven sidebar navigation now moves focus into the persistent `main` region after route selection, while pointer navigation keeps normal pointer behavior;
+- the machine-readable ARD footer entry uses a native anchor instead of the Next.js app router;
+- the Human Cabinet uses named form controls, browser name autocomplete and localized informative image alt text;
+- browser-local Human Cabinet state now listens for `storage` changes so multiple tabs on the same origin stay coherent without introducing a server account;
+- Playwright now verifies that Cabinet state actually propagates between two tabs in one browser context;
+- the frontend static audit protects the new focus-transfer, native machine-link and browser-local synchronization behavior.

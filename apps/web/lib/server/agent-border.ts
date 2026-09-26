@@ -10,6 +10,7 @@ export const HAVEN_BORDER_PROTOCOL = "haven/1.3";
 export const BORDER_BODY_LIMIT_BYTES = 16 * 1024;
 export const CHALLENGE_TTL_MS = 5 * 60 * 1000;
 export const VERIFICATION_TTL_MS = 10 * 60 * 1000;
+export const VERIFICATION_TICKET_TTL_MS = 2 * 60 * 1000;
 export const SESSION_TTL_MS = 10 * 60 * 1000;
 
 export type PrincipalType =
@@ -42,6 +43,12 @@ type VerifiedPrincipal = {
   verifiedUntil: number;
 };
 
+type VerificationTicketRecord = {
+  agentId: string;
+  ticketHash: string;
+  expiresAt: number;
+};
+
 type SessionRecord = {
   id: string;
   agentId: string;
@@ -55,6 +62,7 @@ type SessionRecord = {
 type BorderState = {
   challenges: Map<string, ChallengeRecord>;
   verified: Map<string, VerifiedPrincipal>;
+  verificationTickets: Map<string, VerificationTicketRecord>;
   sessions: Map<string, SessionRecord>;
 };
 
@@ -67,6 +75,7 @@ const state =
   (globalThis.__havenAgentBorderState = {
     challenges: new Map(),
     verified: new Map(),
+    verificationTickets: new Map(),
     sessions: new Map(),
   });
 
@@ -233,6 +242,9 @@ function purgeExpired(at = now()) {
   for (const [agentId, principal] of state.verified) {
     if (principal.verifiedUntil <= at) state.verified.delete(agentId);
   }
+  for (const [ticketHash, ticket] of state.verificationTickets) {
+    if (ticket.expiresAt <= at) state.verificationTickets.delete(ticketHash);
+  }
   for (const [tokenHash, session] of state.sessions) {
     if (session.expiresAt <= at) state.sessions.delete(tokenHash);
   }
@@ -266,7 +278,9 @@ export function borderDiscovery() {
     },
     session: {
       ttlSeconds: SESSION_TTL_MS / 1000,
+      verificationTicketTtlSeconds: VERIFICATION_TICKET_TTL_MS / 1000,
       bearerTokens: "opaque-random-short-lived",
+      creation: "one-time-verification-ticket-required",
       renewalRotatesToken: true,
     },
     execution: {
@@ -393,6 +407,17 @@ export function verifyIdentityChallenge(payload: unknown) {
     publicKeyFingerprint: fingerprint,
     verifiedUntil,
   });
+  const verificationTicket = randomBytes(32).toString("base64url");
+  const ticketHash = sha256(verificationTicket);
+  const ticketExpiresAt = Math.min(
+    verifiedUntil,
+    now() + VERIFICATION_TICKET_TTL_MS,
+  );
+  state.verificationTickets.set(ticketHash, {
+    agentId: challenge.agentId,
+    ticketHash,
+    expiresAt: ticketExpiresAt,
+  });
   return {
     agentId: challenge.agentId,
     principalType: "autonomous_agent" as const,
@@ -400,6 +425,8 @@ export function verifyIdentityChallenge(payload: unknown) {
     verificationStatus: "verified" as const,
     trustLevel: "T1_IDENTIFIED" as const,
     verifiedUntil: new Date(verifiedUntil).toISOString(),
+    verificationTicket,
+    verificationTicketExpiresAt: new Date(ticketExpiresAt).toISOString(),
   };
 }
 
@@ -421,10 +448,37 @@ function sessionView(session: SessionRecord) {
 export function createAgentSession(payload: unknown) {
   enforceBorderBudget();
   purgeExpired();
-  if (!isObject(payload) || typeof payload.agentId !== "string") {
-    throw new BorderError(400, "INVALID_REQUEST", "agentId is required.");
+  if (!isObject(payload)) {
+    throw new BorderError(400, "INVALID_REQUEST", "Expected a JSON object.");
   }
-  const verified = state.verified.get(payload.agentId);
+  const ticket = payload.verificationTicket;
+  if (
+    typeof ticket !== "string" ||
+    ticket.length < 20 ||
+    ticket.length > 256 ||
+    !/^[A-Za-z0-9_-]+$/.test(ticket)
+  ) {
+    throw new BorderError(
+      401,
+      "VERIFICATION_TICKET_REQUIRED",
+      "A one-time verification ticket is required.",
+    );
+  }
+  const ticketHash = sha256(ticket);
+  const ticketRecord = state.verificationTickets.get(ticketHash);
+  if (!ticketRecord || ticketRecord.expiresAt <= now()) {
+    state.verificationTickets.delete(ticketHash);
+    throw new BorderError(
+      401,
+      "VERIFICATION_TICKET_INVALID",
+      "Verification ticket is missing, expired, or already consumed.",
+    );
+  }
+
+  // Consume before session issuance to make session creation single-use.
+  state.verificationTickets.delete(ticketHash);
+
+  const verified = state.verified.get(ticketRecord.agentId);
   if (!verified || verified.verifiedUntil <= now()) {
     throw new BorderError(
       401,
@@ -435,7 +489,7 @@ export function createAgentSession(payload: unknown) {
   const accessToken = randomBytes(32).toString("base64url");
   const record: SessionRecord = {
     id: randomId("session"),
-    agentId: payload.agentId,
+    agentId: ticketRecord.agentId,
     tokenHash: sessionTokenHash(accessToken),
     createdAt: now(),
     expiresAt: now() + SESSION_TTL_MS,
@@ -482,7 +536,22 @@ export function renewAgentSession(token: string) {
     );
   }
   state.sessions.delete(current.tokenHash);
-  return createAgentSession({ agentId: current.agentId });
+  const accessToken = randomBytes(32).toString("base64url");
+  const record: SessionRecord = {
+    id: randomId("session"),
+    agentId: current.agentId,
+    tokenHash: sessionTokenHash(accessToken),
+    createdAt: now(),
+    expiresAt: now() + SESSION_TTL_MS,
+    trustLevel: "T2_QUARANTINED",
+    executionClass: "quarantine-no-runtime",
+  };
+  state.sessions.set(record.tokenHash, record);
+  return {
+    ...sessionView(record),
+    accessToken,
+    tokenType: "Bearer" as const,
+  };
 }
 
 export function closeAgentSession(token: string) {

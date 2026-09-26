@@ -100,6 +100,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/AppShell.tsx",
     "apps/web/components/SearchDialog.tsx",
     "apps/web/components/Workspace.tsx",
+    "apps/web/components/PageHeader.tsx",
+    "apps/web/components/EndpointGrid.tsx",
     "apps/web/components/ProtocolCards.tsx",
     "apps/web/app/protocol/page.tsx",
     "apps/web/app/agents/[id]/page.tsx",
@@ -120,6 +122,8 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const shell = read("apps/web/components/AppShell.tsx");
   const search = read("apps/web/components/SearchDialog.tsx");
   const workspace = read("apps/web/components/Workspace.tsx");
+  const pageHeader = read("apps/web/components/PageHeader.tsx");
+  const endpointGrid = read("apps/web/components/EndpointGrid.tsx");
   const protocolCards = read("apps/web/components/ProtocolCards.tsx");
   const protocolRoute = read("apps/web/app/protocol/page.tsx");
   const agentDetailRoute = read("apps/web/app/agents/[id]/page.tsx");
@@ -190,6 +194,18 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       search.includes("<Link") &&
       !search.includes('<a\n                key={item.id}'),
     "Internal search results must use Next Link navigation.",
+  );
+  check(
+    pageHeader.includes("function isApplicationRoute") &&
+      pageHeader.includes("isApplicationRoute(evidence.href) ?") &&
+      pageHeader.includes("<Link") &&
+      pageHeader.includes("<a"),
+    "Page-header evidence links must use client navigation for app routes and native navigation for machine resources.",
+  );
+  check(
+    !endpointGrid.includes('import Link from "next/link"') &&
+      endpointGrid.includes('<a className="endpoint-card"'),
+    "Machine-readable endpoint cards must use native anchors rather than the Next.js app router.",
   );
   check(
     protocolCards.includes('import { protocolCards } from "@/lib/haven-data"') &&

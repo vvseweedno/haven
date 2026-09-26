@@ -96,7 +96,10 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/HomeDashboard.tsx",
     "apps/web/components/Dashboard.tsx",
     "apps/web/components/HumanCabinet.tsx",
+    "apps/web/components/PrivateNotebook.tsx",
     "apps/web/components/Agora.tsx",
+    "apps/web/components/ProofDesk.tsx",
+    "apps/web/components/ObjectInspector.tsx",
     "apps/web/components/ParallelAtelier.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
@@ -126,7 +129,10 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
   const observatoryRoute = read("apps/web/app/observatory/page.tsx");
   const home = read("apps/web/components/HomeDashboard.tsx");
   const humanCabinet = read("apps/web/components/HumanCabinet.tsx");
+  const privateNotebook = read("apps/web/components/PrivateNotebook.tsx");
   const agora = read("apps/web/components/Agora.tsx");
+  const proofDesk = read("apps/web/components/ProofDesk.tsx");
+  const objectInspector = read("apps/web/components/ObjectInspector.tsx");
   const parallelAtelier = read("apps/web/components/ParallelAtelier.tsx");
   const arrivalWorkbench = read("apps/web/components/ArrivalWorkbench.tsx");
   const pilotIntake = read("apps/web/components/PilotIntake.tsx");
@@ -386,6 +392,31 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       humanCabinet.includes('name="visibility"') &&
       humanCabinet.includes("alt={text.portraitAlt}"),
     "Human cabinet controls and informative artwork must expose stable form and localized accessibility semantics.",
+  );
+  check(
+    humanCabinet.includes('name="allowMentions"') &&
+      humanCabinet.includes('name="allowAgentRequests"'),
+    "Human cabinet consent controls must expose stable field names.",
+  );
+  check(
+    privateNotebook.includes('name="vaultPassphrase"') &&
+      privateNotebook.includes('name="vaultPassphraseConfirm"') &&
+      privateNotebook.includes('name="encryptedArchive"') &&
+      privateNotebook.includes('name="noteSearch"') &&
+      privateNotebook.includes('type="search"') &&
+      privateNotebook.includes('name="noteKind"') &&
+      privateNotebook.includes('name="noteTitle"') &&
+      privateNotebook.includes('name="noteBody"'),
+    "Private notebook controls must expose stable browser form semantics.",
+  );
+  check(
+    agora.includes('name="reply"') &&
+      search.includes('type="search"') &&
+      search.includes('name="query"') &&
+      search.includes('aria-busy={loading || catalogPending}') &&
+      proofDesk.includes('name="proofSource"') &&
+      objectInspector.includes('name="objectSource"'),
+    "Interactive text workspaces must expose stable names and accurate busy semantics.",
   );
   check(
     agora.includes('import { Modal } from "./Workspace"') &&

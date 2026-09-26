@@ -345,6 +345,23 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
       );
     }
 
+    for (const tag of [
+      ...openingTags(source, "img"),
+      ...openingTags(source, "Image"),
+    ]) {
+      check(
+        /\balt\s*=/.test(tag),
+        `${display} contains an image without explicit alternative-text semantics.`,
+      );
+      if (tag.startsWith("<Image")) {
+        check(
+          /\bfill(?:\s|=|>)/.test(tag) ||
+            (/\bwidth\s*=/.test(tag) && /\bheight\s*=/.test(tag)),
+          `${display} contains a Next Image without fill or explicit width/height.`,
+        );
+      }
+    }
+
     for (const tag of openingTags(source, "a")) {
       const opensNewContext = /\btarget\s*=\s*["']_blank["']/.test(tag);
       if (!opensNewContext) continue;

@@ -669,6 +669,20 @@ with sync_playwright() as p:
     assert measurement["privacy"]["networkTransmission"] is False
     assert measurement["privacy"]["identifiers"] is False
 
+    # The client locale must persist across routes without leaving mixed-language tool chrome.
+    visit("/projects")
+    page.get_by_role("button", name="Switch to Russian").click()
+    expect(page.locator("html")).to_have_attribute("lang", "ru")
+    expect(page.get_by_label("Поиск проектов")).to_be_visible()
+    expect(page.get_by_role("button", name="Открыть проект")).to_be_visible()
+
+    visit("/forge/inspect")
+    expect(page.get_by_role("button", name="Проверить объект")).to_be_visible()
+    expect(page.get_by_text("Только JSON", exact=True)).to_be_visible()
+    page.get_by_role("button", name="Переключить на английский").click()
+    expect(page.locator("html")).to_have_attribute("lang", "en")
+    expect(page.get_by_role("button", name="Inspect object")).to_be_visible()
+
     # Theme preference persists after an explicit user choice.
     page.get_by_role("button", name="Toggle color theme").click()
     theme = page.locator("html").get_attribute("data-theme")

@@ -1375,6 +1375,7 @@ textarea {
   border: 0;
   background: none;
   color: inherit;
+  cursor: pointer;
   font: inherit;
   text-align: left;
 }
@@ -2199,6 +2200,7 @@ textarea {
   border: 0;
   background: none;
   color: inherit;
+  cursor: pointer;
   font: inherit;
   text-align: left;
 }

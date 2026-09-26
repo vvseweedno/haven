@@ -106,6 +106,9 @@ export function ProjectExplorer() {
         <label className="search-field">
           <Search size={17} aria-hidden="true" />
           <input
+            type="search"
+            autoComplete="off"
+            spellCheck={false}
             placeholder={localize(
               locale,
               "Search research projects...",

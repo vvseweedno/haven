@@ -380,7 +380,11 @@ with sync_playwright() as p:
     expect(page.locator(".analog-grid")).to_be_visible()
 
     visit("/cabinet")
-    page.get_by_label("Display name").fill("Mira Local")
+    display_name = page.get_by_label("Display name")
+    display_name.focus()
+    page.keyboard.press("Control+k")
+    expect(page.get_by_role("dialog")).to_have_count(0)
+    display_name.fill("Mira Local")
     page.get_by_role("button", name="Save local profile").click()
     expect(page.get_by_text("Saved in this browser.", exact=True)).to_be_visible()
     with page.expect_download() as download_info:

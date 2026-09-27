@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, Circle, Search } from "lucide-react";
@@ -18,6 +19,7 @@ const statusOptions = ["All projects", "Active", "Planned"] as const;
 
 export function ProjectExplorer() {
   const { locale } = useLocale();
+  const pathname = usePathname();
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<(typeof statusOptions)[number]>("All projects");
   const [selected, setSelected] = useState<(typeof projects)[number] | null>(
@@ -30,13 +32,17 @@ export function ProjectExplorer() {
       setSelected(projects.find((item) => item.id === id) || null);
     };
     sync();
+    const frame = requestAnimationFrame(sync);
     window.addEventListener("hashchange", sync);
     window.addEventListener("popstate", sync);
+    window.addEventListener("pageshow", sync);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("hashchange", sync);
       window.removeEventListener("popstate", sync);
+      window.removeEventListener("pageshow", sync);
     };
-  }, []);
+  }, [pathname]);
 
   const inspect = (project: (typeof projects)[number]) => {
     const previousState =

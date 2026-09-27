@@ -351,6 +351,7 @@ export function ProofDesk() {
               {text.openJson}
               <input
                 aria-label={text.openJsonAria}
+                name="proofFile"
                 type="file"
                 accept=".json,application/json"
                 disabled={busy}

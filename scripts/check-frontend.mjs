@@ -106,8 +106,6 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "apps/web/components/ParallelAtelier.tsx",
     "apps/web/components/ArrivalWorkbench.tsx",
     "apps/web/components/PilotIntake.tsx",
-    "apps/web/components/CommonsExplorer.tsx",
-    "apps/web/components/ProjectExplorer.tsx",
     "apps/web/components/ExperienceHero.tsx",
     "apps/web/components/DeferredContinuumScene.tsx",
     "apps/web/components/AppShell.tsx",
@@ -225,6 +223,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Project detail overlays must participate in browser history and close on Back.",
   );
   check(
+    projectExplorer.includes('import { usePathname } from "next/navigation"') &&
+      projectExplorer.includes("const pathname = usePathname()") &&
+      projectExplorer.includes("}, [pathname]);"),
+    "Project detail overlays must resynchronize their hash state when App Router history restores the route.",
+  );
+  check(
     pilotIntake.includes("submissionRequest") &&
       pilotIntake.includes("AbortController") &&
       pilotIntake.includes('controller.abort("submit_timeout")') &&
@@ -306,6 +310,12 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Shared dialogs must use a programmatically labelled semantic heading.",
   );
   check(
+    workspace.includes('import { usePathname } from "next/navigation"') &&
+      workspace.includes("const pathname = usePathname()") &&
+      workspace.includes("}, [open, pathname]);"),
+    "Native dialogs must resynchronize their imperative open state after App Router history restoration.",
+  );
+  check(
     shell.includes('explicitTheme.current = nextTheme') &&
       shell.includes('if (!explicitTheme.current) applyTheme(event.matches)'),
     "An explicit theme choice must not be overwritten by later system-theme changes.",
@@ -333,11 +343,13 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
     "Open mobile navigation must isolate background content and restore focus only after the shell becomes interactive again.",
   );
   check(
-    shell.includes("const closeMobileForNavigation = () =>") &&
-      shell.includes("const shouldFocusMain = mobileViewport || keyboardNavigation.current") &&
+    shell.includes("const focusMainAfterNavigation = useRef(false)") &&
+      shell.includes("const keyboardActivation = event?.detail === 0") &&
+      shell.includes("focusMainAfterNavigation.current = true") &&
+      shell.includes("const shouldFocusMain = focusMainAfterNavigation.current") &&
       shell.includes('document.getElementById("main")?.focus()') &&
       shell.includes("onClick={closeMobileForNavigation}"),
-    "Mobile or keyboard navigation must hand focus to the persistent main region after route selection.",
+    "Mobile or keyboard navigation must defer focus handoff until the route transition has committed.",
   );
   check(
     shell.includes('className="journey-rail-link"\n                    onClick={closeMobileForNavigation}') &&
@@ -558,6 +570,26 @@ export function runFrontendAudit({ root = process.cwd(), silent = false } = {}) 
         !/<(?:h[1-6]|p|div|article|section|ul|ol)\b/.test(block),
         `${display} contains block-level document structure inside a button.`,
       );
+      check(
+        !/<a\b[^>]*href=/.test(block),
+        `${display} contains an interactive link inside a button.`,
+      );
+    }
+
+    for (const match of source.matchAll(/<a\b[\s\S]*?<\/a>/g)) {
+      check(
+        !/<button\b/.test(match[0]),
+        `${display} contains a button inside an anchor.`,
+      );
+    }
+
+    for (const tagName of ["input", "select", "textarea"]) {
+      for (const tag of openingTags(source, tagName)) {
+        check(
+          /\bname\s*=/.test(tag),
+          `${display} contains a ${tagName} without a stable name.`,
+        );
+      }
     }
 
     for (const tag of [

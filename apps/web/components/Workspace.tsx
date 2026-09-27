@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -243,6 +244,7 @@ export function Modal({
   className?: string;
 }) {
   const { locale } = useLocale();
+  const pathname = usePathname();
   const ref = useRef<HTMLDialogElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
   const titleId = useId();
@@ -270,7 +272,7 @@ export function Modal({
         requestAnimationFrame(() => target.focus());
       }
     };
-  }, [open]);
+  }, [open, pathname]);
   return (
     <dialog
       ref={ref}

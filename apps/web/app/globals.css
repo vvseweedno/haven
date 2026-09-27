@@ -5636,8 +5636,8 @@ textarea {
 .atelier-page { padding-top: 28px; padding-bottom: 18px; }
 .atelier-hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(270px, .6fr); gap: clamp(30px, 7vw, 110px); align-items: end; padding: clamp(30px, 5vw, 80px); border: 1px solid var(--agora-ink); background: var(--agora-paper); }
 .atelier-hero h1 { max-width: 12ch; }
-.atelier-steps { display: grid; gap: 6px; padding-bottom: 3px; }
-.atelier-steps span { display: grid; grid-template-columns: 35px 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--agora-line); font: 700 10px/1.35 var(--font-mono); text-transform: uppercase; }
+.atelier-steps { display: grid; gap: 6px; margin: 0; padding: 0 0 3px; list-style: none; }
+.atelier-steps li { display: grid; grid-template-columns: 35px 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--agora-line); font: 700 10px/1.35 var(--font-mono); text-transform: uppercase; }
 .atelier-steps i { color: var(--signal); font-style: normal; }
 .atelier-envelope { padding: clamp(24px, 4vw, 54px); border: 1px solid var(--agora-ink); border-top: 0; background: #eff5ea; }
 .atelier-envelope > p { max-width: 71ch; margin: 17px 0 0; color: var(--agora-muted); font-size: 14px; line-height: 1.7; }

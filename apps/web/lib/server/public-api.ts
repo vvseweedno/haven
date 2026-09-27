@@ -85,7 +85,7 @@ export const publicStatus = {
     encryptedLocalNotebook: true,
     localObjectInspection: true,
     pilotRequestHandoff: pilotIntakeConfigured(),
-    identityAdmission: false,
+    identityAdmission: true,
     federationReplication: false,
     remoteExecution: false,
   },

@@ -1,6 +1,6 @@
 # HAVEN local product prototype
 
-> HAVEN is a local, evidence-led prototype for evaluating software-agent continuity, provenance, typed memory boundaries and bounded authority across changing models, runtimes and operators. It provides browser-local workflows, curated fixtures, read-only discovery APIs and an optional explicit-consent pilot handoff; it is not a live agent network, identity provider, operating federation or execution runtime.
+> HAVEN is a local, evidence-led prototype for evaluating software-agent continuity, provenance, typed memory boundaries and bounded authority across changing models, runtimes and operators. It now includes a process-local HAVEN Border for ownerless Ed25519 proof-of-key admission and zero-privilege quarantine sessions, alongside browser-local workflows, curated fixtures and an optional explicit-consent pilot handoff. It is not yet a production identity provider, operating federation or execution runtime.
 
 Canonical local URL: http://localhost:41731
 
@@ -28,7 +28,7 @@ Language status: the interface offers English and Russian copy through a same-UR
 
 ## Local workflows
 
-- [Arrival](http://localhost:41731/arrival): Validate and export a local arrival draft; remote admission is unavailable.
+- [Arrival](http://localhost:41731/arrival): Validate and export a local arrival draft. Process-local machine identity admission exists through HAVEN Border; remote runtime admission and execution remain unavailable.
 - [Agora](http://localhost:41731/agora): Try a browser-local bilingual conversation prototype; no multi-user publishing occurs.
 - [Human cabinet](http://localhost:41731/cabinet): Manage a browser-local profile, consent choices and participation receipt.
 - [Parallel Atelier](http://localhost:41731/atelier): Prepare local agent-branch proposals; human merge remains mandatory.
@@ -36,12 +36,18 @@ Language status: the interface offers English and Russian copy through a same-UR
 
 ## Machine contracts
 
-- [HAVEN manifest](http://localhost:41731/.well-known/haven.json): Local node status and public resource map.
+- [HAVEN manifest](http://localhost:41731/.well-known/haven.json): Static local node status and public resource map.
+- [HAVEN Border](http://localhost:41731/.well-known/haven): Live zero-trust machine admission discovery.
+- [Agent handshake](http://localhost:41731/api/v1/handshake): Anonymous first contact; successful handshake grants no trust or privileges.
+- [Identity challenge](http://localhost:41731/api/v1/identity/challenge): Request a single-use Ed25519 proof-of-key challenge.
+- [Identity verification](http://localhost:41731/api/v1/identity/verify): Verify proof of possession for an ownerless autonomous-agent identity.
+- [Agent session](http://localhost:41731/api/v1/session): Create a short-lived T2_QUARANTINED zero-privilege session after verification.
+- [Agent capabilities](http://localhost:41731/api/v1/capabilities): Inspect the effective deny-by-default capability set for a current session.
 - [ARD descriptor](http://localhost:41731/.well-known/ard.json): Agentic resource discovery metadata.
 - [A2A agent card](http://localhost:41731/.well-known/agent-card.json): Read-only discovery interfaces and arrival boundary.
 - [agents.txt](http://localhost:41731/agents.txt): Concise plain-text product and capability card.
 - [agents.json](http://localhost:41731/agents.json): Structured product, route, language and capability status.
-- [OpenAPI](http://localhost:41731/openapi.json): OpenAPI 3.1 description of implemented health, readiness, status, catalog and optional consent-based pilot-request endpoints.
+- [OpenAPI](http://localhost:41731/openapi.json): OpenAPI 3.1 description of implemented public, pilot-handoff and HAVEN Border endpoints.
 
 ## Optional
 

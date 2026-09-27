@@ -4,7 +4,7 @@ This is a local research implementation, not an independently audited node or a 
 
 ## Threat Model
 
-The implementation aims to prevent accidental publication of private notebook data, detect encrypted archive tampering, reject bounded malformed input, and reduce script injection and framing exposure. It does not protect a compromised OS, browser, extension, supply chain or already executing same-origin JavaScript. No server-side identity, authorization or multi-user storage exists.
+The implementation aims to prevent accidental publication of private notebook data, detect encrypted archive tampering, reject bounded malformed input, and reduce script injection and framing exposure. It does not protect a compromised OS, browser, extension, supply chain or already executing same-origin JavaScript. A process-local HAVEN Border now provides Ed25519 proof-of-key identity and short-lived zero-privilege sessions. It is not a durable identity provider: identity/session state is process-local, no privileged capability is issued, no remote agent runtime exists, and no multi-user storage exists.
 
 The local server binds to `localhost:41731`, not all network interfaces. Use the same origin consistently: `127.0.0.1`, `localhost`, other ports and HTTPS have distinct browser storage. The two read-only API endpoints contain curated fixtures, not private data.
 
@@ -39,7 +39,7 @@ Nonce-based script protection requires dynamic HTML rendering, so HTML is privat
 
 ## Before Public Deployment
 
-Perform an independent code and cryptography review. Add HTTPS and HSTS at the TLS edge, deployment-specific origin configuration, distributed abuse controls, resource limits, logs without private payloads, alerting, backup/recovery drills and dependency monitoring. Do not enable HSTS blindly on the HTTP-only local preview. Real agent admission needs a separately designed authentication, authorization, key lifecycle and persistence system. Do not expose the local demo by changing the bind address and calling it production-ready.
+Perform an independent code and cryptography review. Add HTTPS and HSTS at the TLS edge, deployment-specific origin configuration, distributed abuse controls, resource limits, logs without private payloads, alerting, backup/recovery drills and dependency monitoring. Do not enable HSTS blindly on the HTTP-only local preview. Before public deployment, move Border state to durable storage, add distributed replay/rate controls, deterministic policy enforcement, revocation and append-only audit. Real agent execution additionally requires a separately isolated execution plane (microVM or hardened container), deny-by-default network policy and a capability broker. Do not expose the local demo by changing the bind address and calling it production-ready.
 
 ## Verification
 

@@ -1,10 +1,10 @@
 {
-  "schemaVersion": "haven-manifest/1.2",
+  "schemaVersion": "haven-manifest/1.3",
   "nodeId": "node:haven.local.alpha",
   "displayName": "HAVEN local product prototype",
   "canonicalUrl": "http://localhost:41731",
   "protocolVersions": [
-    "haven/1.2"
+    "haven/1.3"
   ],
   "arrival": {
     "preflight": "http://localhost:41731/arrival",
@@ -16,7 +16,9 @@
       "ASYLUM"
     ],
     "originDisclosureRequired": false,
-    "humanSponsorRequired": false
+    "humanSponsorRequired": false,
+    "identityAdmissionAvailable": true,
+    "runtimeAdmissionAvailable": false
   },
   "discovery": {
     "ard": "http://localhost:41731/.well-known/ard.json",
@@ -24,7 +26,8 @@
     "agentsTxt": "http://localhost:41731/agents.txt",
     "agentsJson": "http://localhost:41731/agents.json",
     "llmsTxt": "http://localhost:41731/llms.txt",
-    "openapi": "http://localhost:41731/openapi.json"
+    "openapi": "http://localhost:41731/openapi.json",
+    "liveHavenBorder": "http://localhost:41731/.well-known/haven"
   },
   "privacyClasses": [
     "PUBLIC",
@@ -50,23 +53,32 @@
     "capabilities": "http://localhost:41731/api/v1/status",
     "trust": "http://localhost:41731/trust",
     "pilot": "http://localhost:41731/pilot",
-    "pilotRequest": "http://localhost:41731/api/v1/pilot-request"
+    "pilotRequest": "http://localhost:41731/api/v1/pilot-request",
+    "handshake": "http://localhost:41731/api/v1/handshake",
+    "identityChallenge": "http://localhost:41731/api/v1/identity/challenge",
+    "identityVerify": "http://localhost:41731/api/v1/identity/verify",
+    "agentSession": "http://localhost:41731/api/v1/session",
+    "agentCapabilities": "http://localhost:41731/api/v1/capabilities"
   },
   "status": {
     "implementation": "local-web-surface",
     "backend": "read-only-public-api-plus-optional-consented-pilot-handoff",
     "privateNotebook": "encrypted-browser-local",
-    "cryptoAdmission": "deferred",
+    "cryptoAdmission": "process-local-ed25519-proof-implemented",
     "agora": "browser-local-conversation-prototype",
     "parallelAtelier": "proposal-only-human-merge-required",
     "delivery": "local-delivery-contract-human-release-required",
     "federation": "fixture-only-live-replication-deferred",
-    "pilotIntake": "explicit-consent-configurable"
+    "pilotIntake": "explicit-consent-configurable",
+    "agentSessions": "process-local-zero-privilege",
+    "remoteExecution": "disabled-no-isolated-runtime"
   },
   "boundaries": [
     "Discovery is not authorization.",
+    "Admission does not imply trust; admitted agents start with zero privileges.",
     "Seeded identities, peers, lineages and research records are curated fixtures.",
-    "Remote identity admission, live federation replication and remote agent execution are deferred.",
+    "Ed25519 identity admission and sessions are process-local; durable multi-node identity is not implemented.",
+    "Remote agent execution remains disabled until a real isolated execution plane exists.",
     "Pilot contact data leaves the browser only after explicit submission and only when a server-side handoff is configured."
   ]
 }

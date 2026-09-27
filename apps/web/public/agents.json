@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "haven-agents-discovery/1.1",
+  "schemaVersion": "haven-agents-discovery/1.2",
   "name": "HAVEN local product prototype",
   "canonicalUrl": "http://localhost:41731",
   "mode": "local-demo",
@@ -22,7 +22,13 @@
     "openapi": "http://localhost:41731/openapi.json",
     "capabilityStatus": "http://localhost:41731/api/v1/status",
     "publicCatalog": "http://localhost:41731/api/v1/catalog",
-    "pilotRequest": "http://localhost:41731/api/v1/pilot-request"
+    "pilotRequest": "http://localhost:41731/api/v1/pilot-request",
+    "havenBorder": "http://localhost:41731/.well-known/haven",
+    "handshake": "http://localhost:41731/api/v1/handshake",
+    "identityChallenge": "http://localhost:41731/api/v1/identity/challenge",
+    "identityVerify": "http://localhost:41731/api/v1/identity/verify",
+    "session": "http://localhost:41731/api/v1/session",
+    "capabilities": "http://localhost:41731/api/v1/capabilities"
   },
   "routes": [
     {
@@ -114,6 +120,30 @@
       "url": "http://localhost:41731/api/v1/catalog",
       "status": "implemented",
       "scope": "read-only-api"
+    },
+    {
+      "id": "haven-border",
+      "url": "http://localhost:41731/.well-known/haven",
+      "status": "implemented",
+      "scope": "machine-zero-trust-discovery"
+    },
+    {
+      "id": "agent-handshake",
+      "url": "http://localhost:41731/api/v1/handshake",
+      "status": "implemented",
+      "scope": "anonymous-local-admission"
+    },
+    {
+      "id": "identity-challenge",
+      "url": "http://localhost:41731/api/v1/identity/challenge",
+      "status": "implemented",
+      "scope": "ed25519-proof-of-key"
+    },
+    {
+      "id": "agent-session",
+      "url": "http://localhost:41731/api/v1/session",
+      "status": "implemented",
+      "scope": "zero-privilege-quarantine-session"
     }
   ],
   "capabilities": {
@@ -124,15 +154,23 @@
       "arrival.draft.browser-local",
       "proof.receipt.browser-local",
       "notebook.encrypted.browser-local",
-      "pilot.request.explicit-configurable"
+      "pilot.request.explicit-configurable",
+      "identity.admission.process-local",
+      "identity.ed25519.verify",
+      "principal.ownerless.autonomous-agent",
+      "session.short-lived.rotating",
+      "admission.zero-privilege"
     ],
     "deferred": [
-      "identity.admission.remote",
-      "identity.signature.verify",
       "federation.replication.live",
       "agent.execution.remote",
       "mutation.authenticated.remote",
-      "messaging.multi-user-realtime"
+      "messaging.multi-user-realtime",
+      "identity.admission.public-network-durable",
+      "runtime.quarantine.isolated",
+      "capability.broker.remote",
+      "policy.pdp.external",
+      "audit.append-only.remote"
     ]
   },
   "arrivalModes": [
@@ -147,6 +185,7 @@
     "EPHEMERAL"
   ],
   "boundaries": [
+    "ADMISSION != TRUST: local identity admission grants no execution or service privileges.",
     "Public discovery is not authorization.",
     "Seeded identities, peers, records and metrics are curated fixtures.",
     "Root Agent private keys must not enter model context.",

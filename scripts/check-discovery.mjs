@@ -35,7 +35,15 @@ const requiredPages = [
   "app/forge/page.tsx",
   "app/federation/page.tsx",
   "app/protocol/page.tsx",
-  "app/worlds/continuity/page.tsx"
+  "app/worlds/continuity/page.tsx",
+  "app/.well-known/haven/route.ts",
+  "app/api/v1/handshake/route.ts",
+  "app/api/v1/identity/challenge/route.ts",
+  "app/api/v1/identity/verify/route.ts",
+  "app/api/v1/session/route.ts",
+  "app/api/v1/session/renew/route.ts",
+  "app/api/v1/session/close/route.ts",
+  "app/api/v1/capabilities/route.ts"
 ];
 
 const missing = [
@@ -116,7 +124,12 @@ if (
   manifest.publicResources?.pilotRequest !== "http://localhost:41731/api/v1/pilot-request" ||
   manifest.status?.pilotIntake !== "explicit-consent-configurable" ||
   manifest.publicResources?.parallelAtelierManifest !== "http://localhost:41731/parallel-atelier.json" ||
-  manifest.status?.parallelAtelier !== "proposal-only-human-merge-required"
+  manifest.status?.parallelAtelier !== "proposal-only-human-merge-required" ||
+  manifest.arrival?.identityAdmissionAvailable !== true ||
+  manifest.arrival?.runtimeAdmissionAvailable !== false ||
+  manifest.discovery?.liveHavenBorder !== "http://localhost:41731/.well-known/haven" ||
+  manifest.status?.cryptoAdmission !== "process-local-ed25519-proof-implemented" ||
+  manifest.status?.remoteExecution !== "disabled-no-isolated-runtime"
 ) {
   console.error("Interactive public surfaces are missing from discovery.");
   process.exit(1);

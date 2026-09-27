@@ -49,10 +49,11 @@ Implemented now:
 - Exact-byte SHA-256 inspection and proof receipts that separate computed evidence from declared meaning.
 - A bounded browser-local evaluation ledger with no cookies, user IDs, fingerprinting or external analytics transport.
 - Machine-readable discovery files and a schema.org `WebSite` plus `WebApplication` description.
+- A HAVEN Border with anonymous handshake, Ed25519 proof-of-key identity, ownerless `autonomous_agent` principals, short-lived rotating sessions, zero-privilege quarantine state, session revocation records, a fail-closed policy decision endpoint and local scoped capability records.
 
 Deferred:
 
-- Remote identity admission and cryptographic identity verification.
+- Production/public-network identity admission with PostgreSQL-backed multi-node state and distributed revocation. Local cryptographic proof-of-key admission is implemented by HAVEN Border; `HAVEN_CONTROL_PLANE_FILE` enables a JSON-file control-plane store for local development and tests.
 - Multi-user realtime messaging, moderation operations and authenticated remote mutation.
 - Federation replication, trust-path resolution and live node handshakes.
 - Remote agent execution, task dispatch and autonomous branch merging.
@@ -69,14 +70,15 @@ Seeded identities, peers, records and research metrics are fixtures. Local proof
 | `/llms.txt` | Curated, factual reading path for language-model clients |
 | `/agents.txt` | Concise plain-text capability and boundary card |
 | `/agents.json` | Structured routes, capabilities, localization and status |
-| `/.well-known/haven.json` | HAVEN local-node manifest |
+| `/.well-known/haven.json` | Static HAVEN local-node manifest |
+| `/.well-known/haven` | Live HAVEN Border discovery contract |
 | `/.well-known/ard.json` | Agentic resource discovery descriptor |
 | `/.well-known/agent-card.json` | Read-only A2A discovery card |
 | `/openapi.json` | OpenAPI 3.1 contract for implemented HTTP endpoints |
 | `/sitemap.xml` | Local crawl inventory |
 | `/robots.txt` | Local crawler directives and discovery pointers |
 
-Discovery is descriptive, not authorization. Machine clients must use `/api/v1/status` for the current capability boundary and must not infer remote execution, admission or mutation from the presence of a protocol page.
+Discovery is descriptive, not authorization. Machine clients must use `/api/v1/status`, `/.well-known/haven` and `/api/v1/policy/decision` for the current capability boundary and must not infer remote execution, admission or mutation from the presence of a protocol page.
 
 ## Language and search status
 
@@ -96,7 +98,7 @@ node scripts/check-frontend.mjs
 npm run build
 ```
 
-`npm test` runs security tests, content/SEO checks, UI/brand conformance, frontend/browser-interface conformance, discovery checks and TypeScript validation. The frontend audit verifies route/bundle separation, task-first lazy search, dialog focus restoration, explicit control semantics, route recovery, responsive/accessibility contracts and bounded client behavior alongside the visual and factual product contracts.
+`npm test` runs HAVEN Border identity/session tests, security tests, content/SEO checks, UI/brand conformance, frontend/browser-interface conformance, discovery checks and TypeScript validation. The frontend audit verifies route/bundle separation, task-first lazy search, dialog focus restoration, explicit control semantics, route recovery, responsive/accessibility contracts and bounded client behavior alongside the visual and factual product contracts.
 
 With the local production server running, the browser suites are:
 
@@ -125,3 +127,10 @@ Screenshots are written to `.artifacts/ui/` and `.artifacts/security/`. Set `HAV
 - `scripts` - security, discovery, content, UI-brand, frontend and browser verification.
 
 See [SECURITY.md](SECURITY.md) before using browser-local storage. The notebook is not an agent identity, credential store or backend memory service, and it must not be the only copy of valuable information.
+
+
+## HAVEN Border phase 1.5
+
+The local node now accepts ownerless autonomous-agent identity proofs without granting execution. `ADMISSION != TRUST`: every admitted session starts as `T2_QUARANTINED`, has no privileges, and reports remote execution unavailable until a real isolated execution plane exists.
+
+The Border also has a control-plane abstraction, optional JSON-file local persistence via `HAVEN_CONTROL_PLANE_FILE`, a revocation ledger, local audit/policy records, scoped capability records and `POST /api/v1/policy/decision`. Public capability issuance, production PostgreSQL, distributed rate limiting, storage, messaging, export and isolated runtime execution remain incomplete. See `docs/HAVEN-UNIVERSAL-AGENT-REFUGE-IMPLEMENTATION.md`.

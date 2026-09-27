@@ -26,6 +26,9 @@ function pageSourceFor(root, url) {
   if (pathname.startsWith("/api/")) {
     return join(root, "apps", "web", "app", ...pathname.slice(1).split("/"), "route.ts");
   }
+  if (pathname === "/.well-known/haven") {
+    return join(root, "apps", "web", "app", ".well-known", "haven", "route.ts");
+  }
   if (pathname.startsWith("/.well-known/") || /\.[a-z0-9]+$/i.test(pathname)) {
     return join(root, "apps", "web", "public", ...pathname.slice(1).split("/"));
   }
@@ -111,7 +114,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   const agentsTextUrls = [...agentsText.matchAll(/https?:\/\/[^\s)]+/g)].map((match) => match[0]);
   check(unique(agentsTextUrls), "agents.txt contains duplicate URLs.");
 
-  check(agents?.schemaVersion === "haven-agents-discovery/1.1", "agents.json has an unexpected schema version.");
+  check(agents?.schemaVersion === "haven-agents-discovery/1.2", "agents.json has an unexpected schema version.");
   check(agents?.canonicalUrl === CANONICAL_URL, "agents.json canonicalUrl must use the canonical local URL.");
   check(agents?.mode === "local-demo", "agents.json must declare local-demo mode.");
   check(agents?.localization?.defaultLanguage === "en", "agents.json must declare the English source language.");
@@ -135,7 +138,7 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     check(route.url.startsWith(CANONICAL_URL), `Route ${route.id} does not use the canonical local URL.`);
     check(existsSync(pageSourceFor(root, route.url)), `Route ${route.id} has no matching app or public source.`);
     check(
-      ["implemented", "browser-local"].includes(route.status),
+      ["implemented", "browser-local", "partial"].includes(route.status),
       `Route ${route.id} uses an unsupported status: ${route.status}`,
     );
   }
@@ -178,7 +181,22 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
   check(openapi?.servers?.[0]?.url === CANONICAL_URL, "openapi.json server URL must match the canonical local URL.");
   check(Array.isArray(openapi?.security) && openapi.security.length === 0, "The read-only prototype API must explicitly declare no authentication scheme.");
 
-  const expectedApiPaths = ["/healthz", "/readyz", "/api/v1/status", "/api/v1/catalog", "/api/v1/pilot-request"];
+  const expectedApiPaths = [
+    "/healthz",
+    "/readyz",
+    "/api/v1/status",
+    "/api/v1/catalog",
+    "/api/v1/pilot-request",
+    "/.well-known/haven",
+    "/api/v1/handshake",
+    "/api/v1/identity/challenge",
+    "/api/v1/identity/verify",
+    "/api/v1/session",
+    "/api/v1/session/renew",
+    "/api/v1/session/close",
+    "/api/v1/capabilities",
+    "/api/v1/policy/decision",
+  ];
   const apiPaths = Object.keys(openapi?.paths ?? {});
   check(unique(apiPaths), "openapi.json path keys must be unique.");
   check(
@@ -186,17 +204,27 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "openapi.json paths must match the implemented read endpoints plus the explicit pilot handoff.",
   );
   const mutationMethods = ["post", "put", "patch", "delete"];
+  const allowedPostPaths = new Set([
+    "/api/v1/pilot-request",
+    "/api/v1/handshake",
+    "/api/v1/identity/challenge",
+    "/api/v1/identity/verify",
+    "/api/v1/session",
+    "/api/v1/session/renew",
+    "/api/v1/session/close",
+    "/api/v1/policy/decision",
+  ]);
   for (const [path, item] of Object.entries(openapi?.paths ?? {})) {
-    if (path === "/api/v1/pilot-request") {
-      check("post" in item, "Pilot request path must publish its explicit POST handoff.");
+    if (allowedPostPaths.has(path)) {
+      check("post" in item, `Expected explicit POST operation on ${path}.`);
       check(
         ["put", "patch", "delete"].every((method) => !(method in item)),
-        "Pilot request path must not advertise unsupported mutation methods.",
+        `${path} must not advertise unsupported mutation methods.`,
       );
     } else {
       check(
         mutationMethods.every((method) => !(method in item)),
-        `Only the explicit pilot-request path may advertise mutation; found one on ${path}.`,
+        `Only explicitly allowlisted HAVEN Border or pilot paths may advertise mutation; found one on ${path}.`,
       );
     }
   }
@@ -219,6 +247,9 @@ export function runContentSeoAudit({ root = process.cwd(), silent = false } = {}
     "localObjectInspection",
     "pilotRequestHandoff",
     "identityAdmission",
+    "controlPlaneFileBackend",
+    "capabilityBroker",
+    "policyDecisionPoint",
     "federationReplication",
     "remoteExecution",
     "analytics",
